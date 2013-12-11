@@ -6,6 +6,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{E09F05D7-4993-4195-B58B-DE7531873E46}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{FDA3AD19-09F1-4CAA-85E0-B07EB496D97C}"
+	ProjectSection(SolutionItems) = preProject
+		packages\Moq.4.1.1311.0615\lib\net40\Moq.dll = packages\Moq.4.1.1311.0615\lib\net40\Moq.dll
+		packages\NUnit.2.6.3\lib\nunit.framework.dll = packages\NUnit.2.6.3\lib\nunit.framework.dll
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EED.Ui.Web", "src\EED.Ui.Web\EED.Ui.Web.csproj", "{EA426655-63A2-42BA-8E68-3B41AB4230AB}"
 EndProject
