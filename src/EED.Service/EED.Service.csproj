@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F5053C1-911C-49B3-8E66-53C24B62DF92}</ProjectGuid>
+    <ProjectGuid>{8A5421CE-AC49-42C8-8A70-DB82691E5177}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EED.Domain</RootNamespace>
-    <AssemblyName>EED.Domain</AssemblyName>
+    <RootNamespace>EED.Service</RootNamespace>
+    <AssemblyName>EED.Service</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,9 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,11 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IUserService.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\User.hbm.xml" />
+    <ProjectReference Include="..\EED.DAL\EED.DAL.csproj">
+      <Project>{2677737F-02FC-420D-94C9-E1E36659DF3D}</Project>
+      <Name>EED.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EED.Domain\EED.Domain.csproj">
+      <Project>{8F5053C1-911C-49B3-8E66-53C24B62DF92}</Project>
+      <Name>EED.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

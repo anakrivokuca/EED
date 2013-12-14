@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4E47C66C-C3E1-48FA-B15B-DE6EE08A53C9}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{E09F05D7-4993-4195-B58B-DE7531873E46}"
 EndProject
@@ -14,6 +17,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EED.Unit.Tests", "EED.Unit.Tests\EED.Unit.Tests.csproj", "{F0FD6C2C-600F-4E4A-91E2-270450BFF4C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{5770092B-89B6-4E23-92ED-74E1D4965B28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{7820BE85-5F2D-4A7D-92A0-4EBA506A9319}"
+	ProjectSection(SolutionItems) = preProject
+		Solution Files\hibernate.cfg.xml = Solution Files\hibernate.cfg.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EED.Service", "EED.Service\EED.Service.csproj", "{8A5421CE-AC49-42C8-8A70-DB82691E5177}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EED.DAL", "EED.DAL\EED.DAL.csproj", "{2677737F-02FC-420D-94C9-E1E36659DF3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +49,14 @@ Global
 		{F0FD6C2C-600F-4E4A-91E2-270450BFF4C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0FD6C2C-600F-4E4A-91E2-270450BFF4C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0FD6C2C-600F-4E4A-91E2-270450BFF4C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A5421CE-AC49-42C8-8A70-DB82691E5177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5421CE-AC49-42C8-8A70-DB82691E5177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A5421CE-AC49-42C8-8A70-DB82691E5177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5421CE-AC49-42C8-8A70-DB82691E5177}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2677737F-02FC-420D-94C9-E1E36659DF3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2677737F-02FC-420D-94C9-E1E36659DF3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2677737F-02FC-420D-94C9-E1E36659DF3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2677737F-02FC-420D-94C9-E1E36659DF3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +66,6 @@ Global
 		{8F5053C1-911C-49B3-8E66-53C24B62DF92} = {4E47C66C-C3E1-48FA-B15B-DE6EE08A53C9}
 		{EA426655-63A2-42BA-8E68-3B41AB4230AB} = {4E47C66C-C3E1-48FA-B15B-DE6EE08A53C9}
 		{F0FD6C2C-600F-4E4A-91E2-270450BFF4C6} = {4E47C66C-C3E1-48FA-B15B-DE6EE08A53C9}
+		{7820BE85-5F2D-4A7D-92A0-4EBA506A9319} = {4E47C66C-C3E1-48FA-B15B-DE6EE08A53C9}
 	EndGlobalSection
 EndGlobal

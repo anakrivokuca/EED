@@ -1,0 +1,16 @@
+﻿@model IEnumerable<EED.Domain.User>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+@foreach (var p in Model)
+{
+    <div class="item">
+        <h3>@p.Name @p.Surname</h3>
+        @p.State 
+        @p.Country
+        <h4>@p.Email</h4>
+    </div>
+}
