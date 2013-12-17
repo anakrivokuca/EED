@@ -14,7 +14,7 @@ namespace EED.DAL
 
         public static void Init()
         {
-            var config = new Configuration();
+            var config = new Configuration().Configure();
             config.AddAssembly("EED.Domain");
 
             config.Configure();

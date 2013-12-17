@@ -21,6 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{7820BE85-5F2D-4A7D-92A0-4EBA506A9319}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Files\hibernate.cfg.xml = Solution Files\hibernate.cfg.xml
+		..\packages\NHibernate.3.3.3.4001\nhibernate-configuration.xsd = ..\packages\NHibernate.3.3.3.4001\nhibernate-configuration.xsd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EED.Service", "EED.Service\EED.Service.csproj", "{8A5421CE-AC49-42C8-8A70-DB82691E5177}"

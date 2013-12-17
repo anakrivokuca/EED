@@ -10,7 +10,12 @@ namespace EED.Service
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<User> _repository = new Repository<User>();
+        private readonly IRepository<User> _repository;
+
+        public UserService(IRepository<User> repository)
+        {
+            _repository = repository;
+        }
 
         public IEnumerable<User> FindAllUsers()
         {

@@ -9,7 +9,12 @@ namespace EED.Ui.Web.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserService _service = new UserService();
+        private readonly IUserService _service;
+
+        public UserController(IUserService service)
+        {
+            service = _service;
+        }
 
         //
         // GET: /User/
