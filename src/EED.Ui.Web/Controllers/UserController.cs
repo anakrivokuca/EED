@@ -13,7 +13,8 @@ namespace EED.Ui.Web.Controllers
 
         public UserController(IUserService service)
         {
-            service = _service;
+            _service = service;
+
         }
 
         //
@@ -21,8 +22,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Users()
         {
+            ViewData["Title"] = "Users";
             return View(_service.FindAllUsers());
         }
-
     }
 }

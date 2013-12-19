@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using EED.Infrastructure;
 
 namespace EED.Ui.Web
 {
@@ -17,6 +18,8 @@ namespace EED.Ui.Web
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
