@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EED.Domain;
 using EED.Service;
 
 namespace EED.Ui.Web.Controllers
@@ -14,7 +15,6 @@ namespace EED.Ui.Web.Controllers
         public UserController(IUserService service)
         {
             _service = service;
-
         }
 
         //

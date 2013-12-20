@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EED.Domain">
-      <HintPath>..\EED.Domain\obj\Debug\EED.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="EED.Ui.Web">
-      <HintPath>..\EED.Ui.Web\obj\Debug\EED.Ui.Web.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -73,6 +67,10 @@
       <Project>{2677737F-02FC-420D-94C9-E1E36659DF3D}</Project>
       <Name>EED.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EED.Domain\EED.Domain.csproj">
+      <Project>{8F5053C1-911C-49B3-8E66-53C24B62DF92}</Project>
+      <Name>EED.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EED.Infrastructure\EED.Infrastructure.csproj">
       <Project>{2BD2C28C-10FE-4FE2-9283-376776EC31C3}</Project>
       <Name>EED.Infrastructure</Name>
@@ -80,6 +78,10 @@
     <ProjectReference Include="..\EED.Service\EED.Service.csproj">
       <Project>{8A5421CE-AC49-42C8-8A70-DB82691E5177}</Project>
       <Name>EED.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EED.Ui.Web\EED.Ui.Web.csproj">
+      <Project>{EA426655-63A2-42BA-8E68-3B41AB4230AB}</Project>
+      <Name>EED.Ui.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

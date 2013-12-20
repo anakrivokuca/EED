@@ -39,9 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EED.Domain">
-      <HintPath>..\EED.Domain\obj\Debug\EED.Domain.dll</HintPath>
-    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -245,6 +242,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EED.Domain\EED.Domain.csproj">
+      <Project>{8F5053C1-911C-49B3-8E66-53C24B62DF92}</Project>
+      <Name>EED.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EED.Infrastructure\EED.Infrastructure.csproj">
       <Project>{2BD2C28C-10FE-4FE2-9283-376776EC31C3}</Project>
       <Name>EED.Infrastructure</Name>
