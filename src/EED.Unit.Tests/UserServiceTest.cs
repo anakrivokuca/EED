@@ -12,7 +12,7 @@ namespace EED.Unit.Tests
     public class UserServiceTest
     {
         [Test]
-        public void Can_list_all_users()
+        public void Can_List_All_Users()
         {
             // Arrange
             var mock = new Mock<IRepository<User>>();

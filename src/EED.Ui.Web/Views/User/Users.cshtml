@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EED.Domain.User>
+﻿@using EED.Ui.Web.Pagination
+@model IEnumerable<EED.Domain.User>
 
 @{
     ViewBag.Title = "Users";
@@ -14,3 +15,8 @@
         <h4>@p.Email</h4>
     </div>
 }
+
+<div class="pager">
+    @{PagingInfo pageInfo = (PagingInfo)ViewBag.PagingInfo;}
+    @Html.PageLinks(pageInfo, x => Url.Action("Users", new {page = x}))
+</div>
