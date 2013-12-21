@@ -1,22 +1,31 @@
-﻿@using EED.Ui.Web.Pagination
+﻿@using EED.Domain
+@using EED.Ui.Web.Pagination
 @model IEnumerable<EED.Domain.User>
 
-@{
-    ViewBag.Title = "Users";
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
 }
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
 
-<h2>Users</h2>
-@foreach (var p in Model)
+@foreach (var u in Model)
 {
     <div class="item">
-        <h3>@p.Name @p.Surname</h3>
-        @p.State 
-        @p.Country
-        <h4>@p.Email</h4>
+        <h3>@u.Name @u.Surname</h3>
+        @u.State 
+        @u.Country
+        <h4>@u.Email</h4>
     </div>
 }
 
 <div class="pager">
-    @{PagingInfo pageInfo = (PagingInfo)ViewBag.PagingInfo;}
+    @{var pageInfo = (PagingInfo)ViewBag.PagingInfo;}
     @Html.PageLinks(pageInfo, x => Url.Action("Users", new {page = x}))
 </div>

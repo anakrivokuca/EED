@@ -25,7 +25,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Users(int page = 1)
         {
-            ViewData["Title"] = "Users";
+            ViewBag.Title = "Users";
 
             PagingInfo pagingInfo = new PagingInfo()
             {

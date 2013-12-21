@@ -32,7 +32,7 @@ namespace EED.Acceptance.Tests.Steps
             Assert.IsInstanceOf<ViewResult>(_result);
             Assert.IsEmpty(((ViewResult)_result).ViewName);
             Assert.AreEqual("Users",
-                   _controller.ViewData["Title"],
+                   _controller.ViewBag.Title,
                    "Page title is wrong. Expected to be at the Users page");
         }
     }
