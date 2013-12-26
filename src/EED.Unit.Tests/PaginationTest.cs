@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using EED.Ui.Web.Pagination;
+using EED.Ui.Web.Helpers.Pagination;
 using NUnit.Framework;
 
 namespace EED.Unit.Tests

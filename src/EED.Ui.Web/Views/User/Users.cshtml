@@ -1,13 +1,18 @@
 ﻿@using EED.Domain
-@using EED.Ui.Web.Pagination
-@model IEnumerable<EED.Domain.User>
+@using EED.Ui.Web.Helpers.Pagination
+@model EED.Ui.Web.Models.UsersListViewModel
 
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
+                <h2>Filter users</h2>
             </hgroup>
+            @using (Html.BeginForm("Users", "User", FormMethod.Get))
+            {
+                @Html.TextBoxFor(m => m.SearchText)
+                <input type="submit" value="Search" />
+            }
         </div>
     </section>
 }
@@ -15,7 +20,7 @@
     <h1>@ViewBag.Title</h1>
 </hgroup>
 
-@foreach (var u in Model)
+@foreach (var u in Model.Users)
 {
     <div class="item">
         <h3>@u.Name @u.Surname</h3>
@@ -26,6 +31,8 @@
 }
 
 <div class="pager">
-    @{var pageInfo = (PagingInfo)ViewBag.PagingInfo;}
-    @Html.PageLinks(pageInfo, x => Url.Action("Users", new {page = x}))
+    @{var pageInfo = Model.PagingInfo;}
+    @Html.PageLinks(pageInfo, x => Url.Action("Users", new {
+        searchText = Model.SearchText, 
+        page = x}))
 </div>

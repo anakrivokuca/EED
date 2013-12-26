@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using EED.Domain;
 using EED.Service;
-using EED.Ui.Web.Pagination;
+using EED.Ui.Web.Helpers.Pagination;
+using EED.Ui.Web.Models;
 
 namespace EED.Ui.Web.Controllers
 {
@@ -23,24 +25,51 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /User/
 
-        public ViewResult Users(int page = 1)
+        public ViewResult Users(string searchText, int page = 1)
         {
             ViewBag.Title = "Users";
+            
+            var users = _service.FindAllUsers().ToList();
+            if (!String.IsNullOrEmpty(searchText))
+                users = FilterUsers(users, searchText).ToList();
 
-            PagingInfo pagingInfo = new PagingInfo()
+            var pagingInfo = new PagingInfo()
             {
                 CurrentPage = page,
                 ItemsPerPage = ItemsPerPage,
-                TotalNumberOfItems = _service.FindAllUsers().Count()
+                TotalNumberOfItems = users.Count()
             };
-            ViewBag.PagingInfo = pagingInfo;
 
-            var users = _service.FindAllUsers()
+            var usersPerPage = users
                 .OrderBy(u => u.Id)
                 .Skip((page - 1)*ItemsPerPage)
                 .Take(ItemsPerPage);
 
-            return View(users);
+            var usersListViewModel = new UsersListViewModel()
+            {
+                Users = usersPerPage,
+                PagingInfo = pagingInfo,
+                SearchText = searchText
+            };
+
+            return View(usersListViewModel);
+        }
+
+        public IEnumerable<User> FilterUsers(IEnumerable<User> users, string searchText)
+        {
+            string[] keywords = searchText.Trim().Split(' ');
+            foreach (var k in keywords.Where(k => !k.IsEmpty()))
+            {
+                string keyword = k;
+                users = users
+                    .Where(u => (String.Equals(u.Name, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Surname, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Email, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.State, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Country, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Username, keyword, StringComparison.CurrentCultureIgnoreCase)));
+            }
+            return users;
         }
     }
 }

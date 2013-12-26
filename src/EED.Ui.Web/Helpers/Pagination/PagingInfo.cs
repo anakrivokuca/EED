@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace EED.Ui.Web.Pagination
+namespace EED.Ui.Web.Helpers.Pagination
 {
     public class PagingInfo
     {

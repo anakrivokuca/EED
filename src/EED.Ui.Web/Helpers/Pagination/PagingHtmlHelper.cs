@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace EED.Ui.Web.Pagination
+namespace EED.Ui.Web.Helpers.Pagination
 {
     public static class PagingHtmlHelper
     {

@@ -28,8 +28,8 @@ namespace EED.Unit.Tests
             var result = service.FindAllUsers();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Count());
+            Assert.IsNotNull(result, "Null list is returned.");
+            Assert.AreEqual(3, result.Count(), "Number of all users should be three.");
         }
     }
 }

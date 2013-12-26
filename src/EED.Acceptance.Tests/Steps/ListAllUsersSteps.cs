@@ -23,7 +23,7 @@ namespace EED.Acceptance.Tests.Steps
             _repository = new Repository<User>();
             _service = new UserService(_repository);
             _controller = new UserController(_service);
-            _result = _controller.Users();
+            _result = _controller.Users(null);
         }
 
         [Then(@"the Users page should be displayed")]
