@@ -16,23 +16,45 @@
         </div>
     </section>
 }
+
+@if (TempData["message"] != null) {
+    <div class="message-success">@TempData["message"]</div>
+}
+
+<p>
+    @Html.ActionLink("Add New User", "Create")
+</p>
+
 <hgroup class="title">
     <h1>@ViewBag.Title</h1>
 </hgroup>
 
-@foreach (var u in Model.Users)
-{
-    <div class="item">
-        <h3>@u.Name @u.Surname</h3>
-        @u.State 
-        @u.Country
-        <h4>@u.Email</h4>
-    </div>
-}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var u in Model.Users) {
+        <tr>
+            <td>@Html.DisplayFor(model => u.Name) 
+                @Html.DisplayFor(model => u.Surname)
+            </td>
+            <td>@Html.DisplayFor(model => u.Email)</td>
+            <td>@Html.DisplayFor(model => u.State) 
+                @Html.DisplayFor(model => u.Country)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = u.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = u.Id })
+            </td>
+        </tr>
+    }
+</table>
 
 <div class="pager">
     @{var pageInfo = Model.PagingInfo;}
-    @Html.PageLinks(pageInfo, x => Url.Action("Users", new {
+    @Html.PageLinks(pageInfo, x => Url.Action("Users", "User", new {
         searchText = Model.SearchText, 
         page = x}))
 </div>

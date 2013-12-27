@@ -563,6 +563,7 @@ table {
     border-spacing: 0;
     margin-top: 0.75em;
     border: 0 none;
+    width:100%;
 }
 
 th {
@@ -570,6 +571,7 @@ th {
     text-align: left;
     border: none 0px;
     padding-left: 0;
+    border-bottom: 1px dotted gray;
 }
 
     th a {
@@ -609,7 +611,7 @@ th {
     }
 
 td {
-    padding: 0.25em 2em 0.25em 0em;
+    padding: 1em 2em 0.25em 0em;
     border: 0 none;
 }
 

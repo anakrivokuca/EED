@@ -21,5 +21,10 @@ namespace EED.Service
         {
             return _repository.FindAll();
         }
+
+        public void SaveUser(User user)
+        {
+            _repository.Save(user);
+        }
     }
 }

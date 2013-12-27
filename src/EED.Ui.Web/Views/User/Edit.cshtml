@@ -1,0 +1,19 @@
+﻿@model EED.Domain.User
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<hgroup class="title">
+    <h1>Edit @Model.Name</h1>
+</hgroup>
+
+@using (Html.BeginForm()) {
+    @Html.EditorForModel()
+    <input type="submit" value="Save" />
+    @Html.ActionLink("Cancel and Return to Users List", "Users")
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

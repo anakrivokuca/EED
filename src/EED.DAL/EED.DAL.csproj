@@ -7,8 +7,8 @@
     <ProjectGuid>{2677737F-02FC-420D-94C9-E1E36659DF3D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EED.DAO</RootNamespace>
-    <AssemblyName>EED.DAO</AssemblyName>
+    <RootNamespace>EED.DAL</RootNamespace>
+    <AssemblyName>EED.DAL</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using EED.Domain;
 using EED.Service;
 using EED.Ui.Web.Controllers;
@@ -17,7 +18,7 @@ namespace EED.Unit.Tests
         private UserController _controller;
         
         [SetUp]
-        public void Set_Up_User_ControllerTest()
+        public void Set_Up_UserControllerTest()
         {
             // Arrange
             _mock = new Mock<IUserService>();
@@ -163,7 +164,7 @@ namespace EED.Unit.Tests
             // Act
             var resultWithSpaces = _controller.FilterUsers(_users, 
                 "  John   Doe johndoe@gmail.com   US ");
-            var resultWithNonExistingUser = _controller.FilterUsers(_users, "Don");
+            var resultWithNonexistentUser = _controller.FilterUsers(_users, "Don");
             var resultWithKeywordsFromDifferentUsers = _controller.FilterUsers(_users, "Ana Krivokuca US");
 
             // Assert
@@ -173,13 +174,70 @@ namespace EED.Unit.Tests
             Assert.AreEqual("John", users[0].Name,
                 "User with all criteria specified should be John.");
 
-            users = resultWithNonExistingUser.ToList();
+            users = resultWithNonexistentUser.ToList();
             Assert.AreEqual(0, users.Count,
                 "No user should be listed with specified criteria.");
 
             users = resultWithKeywordsFromDifferentUsers.ToList();
             Assert.AreEqual(0, users.Count,
                 "No user should be listed with specified criteria.");
+        }
+
+        [Test]
+        public void Can_Edit_User()
+        {
+            // Act
+            var result1 = (User)_controller.Edit(1).Model;
+            var result2 = (User)_controller.Edit(2).Model;
+            var result3 = (User)_controller.Edit(3).Model;
+
+            // Assert
+            Assert.AreEqual("Ana Krivokuca", result1.Name + " " + result1.Surname,
+                "Selected user should be Ana Krivokuca.");
+            Assert.AreEqual("Ana Maley", result2.Name + " " + result2.Surname,
+                "Selected user should be Ana Maley.");
+            Assert.AreEqual("John Doe", result3.Name + " " + result3.Surname,
+                "Selected user should be John Doe.");
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.InvalidOperationException))]
+        public void Cannot_Edit_Nonexistent_User()
+        {
+            // Act
+            var result = (User)_controller.Edit(101).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void Can_Save_User_With_Valid_Changes()
+        {
+            // Arrange
+            var user = new User { Name = "Jack" };
+
+            // Act
+            var result = _controller.Edit(user);
+
+            // Assert
+            _mock.Verify(m => m.SaveUser(user));
+            Assert.IsNotInstanceOf(typeof(ViewResult), result);
+        }
+
+        [Test]
+        public void Cannot_Save_User_With_Invalid_Changes()
+        {
+            // Arrange
+            var user = new User { Name = "Jack" };
+            _controller.ModelState.AddModelError("error", "error");
+
+            // Act
+            var result = _controller.Edit(user);
+
+            // Assert
+            _mock.Verify(m => m.SaveUser(It.IsAny<User>()), Times.Never());
+            Assert.IsInstanceOf(typeof(ViewResult), result);
         }
     }
 }

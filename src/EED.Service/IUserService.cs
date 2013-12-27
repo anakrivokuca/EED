@@ -10,5 +10,6 @@ namespace EED.Service
     public interface IUserService
     {
         IEnumerable<User> FindAllUsers();
+        void SaveUser(User user);
     }
 }

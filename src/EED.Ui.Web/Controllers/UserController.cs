@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
 using EED.Domain;
@@ -70,6 +69,35 @@ namespace EED.Ui.Web.Controllers
                         String.Equals(u.Username, keyword, StringComparison.CurrentCultureIgnoreCase)));
             }
             return users;
+        }
+
+        //
+        // GET: /User/Edit/Id
+
+        public ViewResult Edit(int id)
+        {
+            var user = _service.FindAllUsers()
+                .First(u => u.Id == id);
+            return View(user);
+        }
+
+        //
+        // POST: /User/Edit/Id
+
+        [HttpPost]
+        public ActionResult Edit(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                _service.SaveUser(user);
+                TempData["message"] = string.Format("User {0} {1} has been successfully saved.", 
+                    user.Name, user.Surname);
+                return RedirectToAction("Users");
+            }
+            else
+            {
+                return View(user);
+            }
         }
     }
 }

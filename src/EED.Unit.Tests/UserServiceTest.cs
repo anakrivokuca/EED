@@ -11,25 +11,47 @@ namespace EED.Unit.Tests
     [TestFixture]
     public class UserServiceTest
     {
-        [Test]
-        public void Can_List_All_Users()
+        private Mock<IRepository<User>> _mock;
+        private UserService _service;
+
+        [SetUp]
+        public void Set_Up_UserServiceTest()
         {
             // Arrange
-            var mock = new Mock<IRepository<User>>();
-            mock.Setup(r => r.FindAll()).Returns(new List<User> {
+            _mock = new Mock<IRepository<User>>();
+            _mock.Setup(r => r.FindAll()).Returns(new List<User> {
                 new User { Name = "Ana", Surname = "Krivokuca", 
                     Email = "anakrivokuca@gmail.com"},
                 new User { Name = "Pera", Surname = "Peric", Email = "pera@gmail.com"},
                 new User { Name = "John", Surname = "Doe", Email = "johndoe@gmail.com"},
             });
-            var service = new UserService(mock.Object);
-            
+            _service = new UserService(_mock.Object);
+        }
+        [Test]
+        public void Can_List_All_Users()
+        {
             // Act
-            var result = service.FindAllUsers();
+            var result = _service.FindAllUsers();
 
             // Assert
             Assert.IsNotNull(result, "Null list is returned.");
             Assert.AreEqual(3, result.Count(), "Number of all users should be three.");
+        }
+
+        [Test]
+        public void Can_Save_Valid_User()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = 4,
+                Name = "Sarah"
+            };
+            // Act
+            _service.SaveUser(user);
+
+            // Assert
+            _mock.Verify(m => m.Save(user));
         }
     }
 }
