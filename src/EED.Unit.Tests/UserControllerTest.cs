@@ -35,29 +35,35 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Send_Paging_Info_To_Users_View()
+        public void Can_List_Users_On_First_Page()
         {
             // Act
-            var pagingInfo = ((UsersListViewModel)_controller.Users(null, 2).Model).PagingInfo;
+            var result = ((UsersListViewModel)_controller.Users(null).Model).Users;
 
             // Assert
-            Assert.AreEqual(2, pagingInfo.CurrentPage, 
-                "Current page should be two.");
-            Assert.AreEqual(2, pagingInfo.ItemsPerPage, 
-                "Items per page should be two.");
-            Assert.AreEqual(5, pagingInfo.TotalNumberOfItems, 
-                "Total number of items should be five.");
+            var users = result.ToList();
+
+            Assert.AreEqual(2, users.Count(),
+                "Number of users listed on the first page should be two.");
+            Assert.AreEqual("Ana Krivokuca", users[0].Name + " " + users[0].Surname,
+                "First user on the first page should be Ana Krivokuca.");
+            Assert.AreEqual("Ana Maley", users[1].Name + " " + users[1].Surname,
+                "Second user on the first page should be Ana Maley.");
         }
 
         [Test]
-        public void Can_Calculate_Total_Number_Of_Filtered_Items()
+        public void Can_Send_Paging_Info_To_Users_View()
         {
             // Act
-            var pagingInfo = ((UsersListViewModel)_controller.Users("US", 2).Model).PagingInfo;
+            var result = ((UsersListViewModel)_controller.Users(null, 2).Model).PagingInfo;
 
             // Assert
-            Assert.AreEqual(3, pagingInfo.TotalNumberOfItems,
-                "Total number of items should be three.");
+            Assert.AreEqual(2, result.CurrentPage, 
+                "Current page should be two.");
+            Assert.AreEqual(2, result.ItemsPerPage, 
+                "Items per page should be two.");
+            Assert.AreEqual(5, result.TotalNumberOfItems, 
+                "Total number of items should be five.");
         }
 
         [Test]
@@ -75,6 +81,17 @@ namespace EED.Unit.Tests
                 "First user on the second page should be John.");
             Assert.AreEqual("Jane", users[1].Name, 
                 "Second user on the second page should be Jane.");
+        }
+
+        [Test]
+        public void Can_Calculate_Total_Number_Of_Filtered_Items()
+        {
+            // Act
+            var result = ((UsersListViewModel)_controller.Users("US").Model).PagingInfo;
+
+            // Assert
+            Assert.AreEqual(3, result.TotalNumberOfItems,
+                "Total number of items should be three.");
         }
 
         [Test]
