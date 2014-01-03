@@ -72,6 +72,14 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
+        // GET: /User/Create
+
+        public ViewResult Create()
+        {
+            return View("Edit", new User());
+        }
+
+        //
         // GET: /User/Edit/Id
 
         public ViewResult Edit(int id)

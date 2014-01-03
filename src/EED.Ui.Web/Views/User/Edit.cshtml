@@ -1,14 +1,28 @@
 ﻿@model EED.Domain.User
 
 @{
-    ViewBag.Title = "Edit";
+    if(Model.Id.Equals(0))
+    {
+        ViewBag.Title = "Add New User";
+    }
+    else
+    {
+        ViewBag.Title = "Edit";
+    }
 }
 
 <hgroup class="title">
-    <h1>Edit @Model.Name</h1>
+    @if (Model.Id.Equals(0))
+    {
+        <h1>Add New User</h1>
+    }
+    else
+    {
+        <h1>Edit @Model.Name</h1>
+    }
 </hgroup>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Edit", "User")) {
     @Html.EditorForModel()
     <input type="submit" value="Save" />
     @Html.ActionLink("Cancel and Return to Users List", "Users")
