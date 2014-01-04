@@ -26,5 +26,10 @@ namespace EED.Service
         {
             _repository.Save(user);
         }
+
+        public void DeleteUser(User user)
+        {
+            _repository.Delete(user);
+        }
     }
 }

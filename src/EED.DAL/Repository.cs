@@ -16,7 +16,6 @@ namespace EED.DAL
             }
         }
 
-
         public void Save(TEntity entity)
         {
             using (_session = SessionFactory.OpenSession())
@@ -24,6 +23,18 @@ namespace EED.DAL
                 using (_transaction = _session.BeginTransaction())
                 {
                     _session.SaveOrUpdate(entity);
+                    _transaction.Commit();
+                }
+            }
+        }
+
+        public void Delete(TEntity entity)
+        {
+            using (_session = SessionFactory.OpenSession())
+            {
+                using (_transaction = _session.BeginTransaction())
+                {
+                    _session.Delete(entity);
                     _transaction.Commit();
                 }
             }

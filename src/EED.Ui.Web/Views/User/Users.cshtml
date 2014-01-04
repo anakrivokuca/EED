@@ -38,15 +38,17 @@
     </tr>
     @foreach (var u in Model.Users) {
         <tr>
-            <td>@Html.DisplayFor(model => u.Name) 
-                @Html.DisplayFor(model => u.Surname)
+            <td>@Html.ActionLink((u.Name + " " + u.Surname), "Edit",  new { id = u.Id })
             </td>
-            <td>@Html.DisplayFor(model => u.Email)</td>
-            <td>@Html.DisplayFor(model => u.State) 
-                @Html.DisplayFor(model => u.Country)</td>
+            <td>@u.Email</td>
+            <td>@u.State @u.Country</td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = u.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = u.Id })
+                @using (Html.BeginForm("Delete", "User")) {
+                    @Html.Hidden("Id", u.Id)
+                    @Html.Hidden("Name", u.Name)
+                    @Html.Hidden("Surname", u.Surname)
+                    <input type="submit" value="Delete"/>
+                }
             </td>
         </tr>
     }

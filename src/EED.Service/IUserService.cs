@@ -11,5 +11,6 @@ namespace EED.Service
     {
         IEnumerable<User> FindAllUsers();
         void SaveUser(User user);
+        void DeleteUser(User user);
     }
 }

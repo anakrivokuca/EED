@@ -20,10 +20,12 @@ namespace EED.Unit.Tests
             // Arrange
             _mock = new Mock<IRepository<User>>();
             _mock.Setup(r => r.FindAll()).Returns(new List<User> {
-                new User { Name = "Ana", Surname = "Krivokuca", 
+                new User { Id = 1, Name = "Ana", Surname = "Krivokuca", 
                     Email = "anakrivokuca@gmail.com"},
-                new User { Name = "Pera", Surname = "Peric", Email = "pera@gmail.com"},
-                new User { Name = "John", Surname = "Doe", Email = "johndoe@gmail.com"},
+                new User { Id = 2, Name = "Pera", Surname = "Peric", 
+                    Email = "pera@gmail.com"},
+                new User { Id = 3, Name = "John", Surname = "Doe", 
+                    Email = "johndoe@gmail.com"},
             });
             _service = new UserService(_mock.Object);
         }
@@ -47,11 +49,25 @@ namespace EED.Unit.Tests
                 Id = 4,
                 Name = "Sarah"
             };
+
             // Act
             _service.SaveUser(user);
 
             // Assert
             _mock.Verify(m => m.Save(user));
+        }
+
+        [Test]
+        public void Can_Delete_Valid_User()
+        {
+            // Arrange
+            var user = new User { Id = 1 };
+
+            // Act
+            _service.DeleteUser(user);
+
+            // Assert
+            _mock.Verify(m => m.Delete(user));
         }
     }
 }

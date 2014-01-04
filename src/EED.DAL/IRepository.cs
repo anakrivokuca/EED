@@ -10,5 +10,6 @@ namespace EED.DAL
     {
         IEnumerable<TEntity> FindAll();
         void Save(TEntity entity);
+        void Delete(TEntity entity);
     }
 }

@@ -107,5 +107,19 @@ namespace EED.Ui.Web.Controllers
                 return View(user);
             }
         }
+
+
+        //
+        // POST: /User/Delete/Id
+
+        [HttpPost]
+        public ActionResult Delete(int id, string name, string surname)
+        {
+           var user = new User { Id = id };
+            _service.DeleteUser(user); 
+            TempData["message"] = string.Format("User {0} {1} has been successfully deleted.", 
+                name, surname);
+            return RedirectToAction("Users");
+        }
     }
 }

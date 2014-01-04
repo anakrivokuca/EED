@@ -239,5 +239,15 @@ namespace EED.Unit.Tests
             _mock.Verify(m => m.SaveUser(It.IsAny<User>()), Times.Never());
             Assert.IsInstanceOf(typeof(ViewResult), result);
         }
+
+        [Test]
+        public void Can_Delete_User()
+        {
+            // Act
+            _controller.Delete(1, "Jane", "Smith");
+
+            // Assert
+            _mock.Verify(m => m.DeleteUser(It.IsAny<User>()), Times.Once());
+        }
     }
 }
