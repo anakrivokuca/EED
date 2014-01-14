@@ -1,40 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+using System.Web.Security;
 
 namespace EED.Domain
 {
-    public class User
+    public class User : MembershipUser
     {
-        [HiddenInput(DisplayValue = false)]
         public virtual int Id { get; set; }
-
-        [Required(ErrorMessage = "Please enter name.")]
         public virtual string Name { get; set; }
-
-        [Required(ErrorMessage = "Please enter surname.")]
         public virtual string Surname { get; set; }
-
-        public virtual string Email { get; set; }
-
+        //public virtual string Email { get; set; }
         public virtual string State { get; set; }
-
-        [Required(ErrorMessage = "Please enter country.")]
         public virtual string Country { get; set; }
-
-        [DisplayName("Phone Number")]
         public virtual string PhoneNumber { get; set; }
-
-        [Required(ErrorMessage = "Please enter username.")]
-        public virtual string Username { get; set; }
-
-        [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Please enter password.")]
+        public new virtual string UserName { get; set; }
         public virtual string Password { get; set; }
+        public new virtual DateTime? LastLoginDate { get; set; }
+        public new virtual DateTime? CreationDate { get; set; }
+        public new virtual bool IsOnline { get; set; }
+        public new virtual bool IsLockedOut { get; set; }
     }
 }

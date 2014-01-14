@@ -11,7 +11,7 @@ namespace EED.Unit.Tests
         private PagingInfo _pageInfo;
 
         [SetUp]
-        public void Set_Up_PaginationTest()
+        public void SetUp_PaginationTest()
         {
             // Arrange
             _pageInfo = new PagingInfo()
@@ -23,7 +23,7 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Calculate_Total_Number_Of_Pages()
+        public void CalculateTotalNumberOfPages_GivenTwentySevenItemsAndTwoItemsPerPage_ReturnsThreePages()
         {
             // Act
             var result = _pageInfo.CalculateNumberOfPages();
@@ -33,13 +33,12 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Generate_Page_Links()
+        public void PageLinks_GivenThreePages_ReturnsThreePageLinksWithSelectedPage()
         {
             // Arrange
             HtmlHelper htmlHelper = null;
             Func<int, string> pageUrl = i => "Page" + i;
             
-
             // Act
             var result = htmlHelper.PageLinks(_pageInfo, pageUrl);
 

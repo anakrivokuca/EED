@@ -3,7 +3,7 @@
                    assembly="EED.Domain"
                    namespace="EED.Domain">
 
-  <class name="User" table="[User]">
+  <class name="User" table="[User]" lazy="false">
     <id name="Id">
       <generator class="native" />
     </id>
@@ -13,8 +13,13 @@
     <property name="State" />
     <property name="Country" />
     <property name="PhoneNumber" />
-    <property name="Username" />
+    <property name="UserName" column="Username" />
     <property name="Password" />
+    <property name="IsApproved" />
+    <property name="LastLoginDate" />
+    <property name="CreationDate" />
+    <property name="IsOnline" />
+    <property name="IsLockedOut" />
   </class>
 
 </hibernate-mapping>

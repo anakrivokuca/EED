@@ -18,9 +18,9 @@
                     </p>
                 </div>
                 <div class="float-right">
-                    <!--<section id="login">
-                        Html.Partial("_LoginPartial")
-                    </section>-->
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
@@ -33,6 +33,9 @@
         <div id="body">
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
+                @if (TempData["message"] != null) {
+                    <div class="message-success">@TempData["message"]</div>
+                }
                 @RenderBody()
             </section>
         </div>

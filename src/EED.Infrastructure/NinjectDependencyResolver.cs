@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using EED.DAL;
 using EED.Domain;
-using EED.Service;
 using Ninject;
+using EED.Service.Membership_Provider;
 
 namespace EED.Infrastructure
 {
@@ -31,7 +31,7 @@ namespace EED.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<IRepository<User>>().To<Repository<User>>();
-            _kernel.Bind<IUserService>().To<UserService>();
+            _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
         }
 
     }

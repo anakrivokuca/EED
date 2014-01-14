@@ -2,41 +2,48 @@
 using System.Linq;
 using System.Web.Mvc;
 using EED.Domain;
-using EED.Service;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models;
 using Moq;
 using NUnit.Framework;
+using EED.Service.Membership_Provider;
+using System.Web.Security;
+using EED.DAL;
 
-namespace EED.Unit.Tests
+namespace EED.Unit.Tests.Controllers
 {
     [TestFixture]
     class UserControllerTest
     {
-        private Mock<IUserService> _mock;
+        private Mock<IMembershipProvider> _mock;
         private IEnumerable<User> _users; 
         private UserController _controller;
         
         [SetUp]
-        public void Set_Up_UserControllerTest()
+        public void SetUp_UserControllerTest()
         {
             // Arrange
-            _mock = new Mock<IUserService>();
-            _mock.Setup(s => s.FindAllUsers()).Returns(new List<User> {
+            _mock = new Mock<IMembershipProvider>();
+            _mock.Setup(p => p.GetAllUsers()).Returns(new List<User> {
                 new User { Id = 1, Name = "Ana", Surname = "Krivokuca", 
-                    Email = "anakrivokuca@gmail.com", Country = "Serbia", Username = "anakrivokuca"},
+                    Email = "anakrivokuca@gmail.com", Country = "Serbia", UserName = "anakrivokuca"},
                 new User { Id = 2, Name = "Ana", Surname = "Maley", Email = "ana@gmail.com"},
                 new User { Id = 5, Name = "Sarah", State = "US", Country = "NY"},
                 new User { Id = 3, Name = "John", Surname = "Doe", Email = "johndoe@gmail.com", 
-                    State = "US", Country = "Oklahoma", Username = "johndoe"},
+                    State = "US", Country = "Oklahoma", UserName = "johndoe"},
                 new User { Id = 4, Name = "Jane", State = "US"}
             });
-            _users = _mock.Object.FindAllUsers();
-            _controller = new UserController(_mock.Object) {ItemsPerPage = 2};
+            
+            _controller = new UserController()
+            {
+                ItemsPerPage = 2,
+                _provider = _mock.Object
+            };
         }
 
+        #region Test Users Method
         [Test]
-        public void Can_List_Users_On_First_Page()
+        public void Users_GetTwoUsersOnTheFirstPage_ReturnsTwoUsers()
         {
             // Act
             var result = ((UsersListViewModel)_controller.Users(null).Model).Users;
@@ -53,7 +60,7 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Send_Paging_Info_To_Users_View()
+        public void Users_GetPagingInfo_ReturnsPagingInfo()
         {
             // Act
             var result = ((UsersListViewModel)_controller.Users(null, 2).Model).PagingInfo;
@@ -68,7 +75,7 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Paginate_Sorted_Users()
+        public void Users_GetTwoUsersOnTheSecondPage_ReturnsTwoUsers()
         {
             // Act
             var result = ((UsersListViewModel)_controller.Users(null, 2).Model).Users;
@@ -85,19 +92,24 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Calculate_Total_Number_Of_Filtered_Items()
+        public void Users_GetFilteredUsers_ReturnsThreeUsers()
         {
             // Act
-            var result = ((UsersListViewModel)_controller.Users("US").Model).PagingInfo;
+            var result = ((UsersListViewModel)_controller.Users("US").Model)
+                .PagingInfo.TotalNumberOfItems;
 
             // Assert
-            Assert.AreEqual(3, result.TotalNumberOfItems,
-                "Total number of items should be three.");
+            Assert.AreEqual(3, result, "Total number of items should be three.");
         }
+        #endregion
 
+        #region Test FilterUsers Method
         [Test]
-        public void Can_Filter_Users_By_Multiple_Criteria()
+        public void FilterUsers_ByMultipleCriteria_ReturnsDifferentUsers()
         {
+            // Arrange
+            _users = _mock.Object.GetAllUsers();
+
             // Act
             var resultByName = _controller.FilterUsers(_users, "Ana");
             var resultByNameAndSurname = _controller.FilterUsers(_users, "Ana Krivokuca");
@@ -159,8 +171,11 @@ namespace EED.Unit.Tests
         }
 
         [Test]
-        public void Can_Filter_Users_By_Incorrect_Values()
+        public void FilterUsers_ByIncorrectValues_ReturnsUsersWithoutError()
         {
+            // Arrange
+            _users = _mock.Object.GetAllUsers();
+
             // Act
             var resultWithSpaces = _controller.FilterUsers(_users, 
                 "  John   Doe johndoe@gmail.com   US ");
@@ -182,14 +197,16 @@ namespace EED.Unit.Tests
             Assert.AreEqual(0, users.Count,
                 "No user should be listed with specified criteria.");
         }
+        #endregion
 
+        #region Test Edit (Get) Method
         [Test]
-        public void Can_Edit_User()
+        public void Edit_GetValidUser_ReturnsCreateViewModel()
         {
             // Act
-            var result1 = (User)_controller.Edit(1).Model;
-            var result2 = (User)_controller.Edit(2).Model;
-            var result3 = (User)_controller.Edit(3).Model;
+            var result1 = (CreateViewModel)_controller.Edit(1).Model;
+            var result2 = (CreateViewModel)_controller.Edit(2).Model;
+            var result3 = (CreateViewModel)_controller.Edit(3).Model;
 
             // Assert
             Assert.AreEqual("Ana Krivokuca", result1.Name + " " + result1.Surname,
@@ -202,52 +219,98 @@ namespace EED.Unit.Tests
 
         [Test]
         [ExpectedException(typeof(System.InvalidOperationException))]
-        public void Cannot_Edit_Nonexistent_User()
+        public void Edit_GetNonexistentUser_ThrowsException()
         {
             // Act
-            var result = (User)_controller.Edit(101).Model;
+            var result = (CreateViewModel)_controller.Edit(101).Model;
 
             // Assert
             Assert.IsNull(result);
         }
+        #endregion
 
+        #region Test Edit (Post) Method
         [Test]
-        public void Can_Save_User_With_Valid_Changes()
+        public void Edit_PostNewUserWithInvalidPassword_ReturnsViewResult()
         {
             // Arrange
-            var user = new User { Name = "Jack" };
+            var model = new CreateViewModel
+            {
+                Id = 5,
+                Name = "Jack",
+                Surname = "Doe",
+                Email = "jackdoe@ny.com",
+                UserName = "jackdoe",
+                Password = "badpass"
+            };
+            var user = model.ConvertModelToUser(model);
+            var status = new MembershipCreateStatus();
+            status = MembershipCreateStatus.InvalidPassword;
+            User returnUser = null;
+            _mock.Setup(p => p.CreateUser(user, out status)).Returns(returnUser);
 
             // Act
-            var result = _controller.Edit(user);
+            var result = _controller.Edit(model);
 
             // Assert
-            _mock.Verify(m => m.SaveUser(user));
-            Assert.IsNotInstanceOf(typeof(ViewResult), result);
-        }
-
-        [Test]
-        public void Cannot_Save_User_With_Invalid_Changes()
-        {
-            // Arrange
-            var user = new User { Name = "Jack" };
-            _controller.ModelState.AddModelError("error", "error");
-
-            // Act
-            var result = _controller.Edit(user);
-
-            // Assert
-            _mock.Verify(m => m.SaveUser(It.IsAny<User>()), Times.Never());
+            //_mock.Verify(m => m.CreateUser(user, out status), Times.Once());
+            Assert.IsFalse(_controller.ModelState.IsValid);
             Assert.IsInstanceOf(typeof(ViewResult), result);
         }
 
         [Test]
-        public void Can_Delete_User()
+        public void Edit_PostValidUser_ReturnsRedirectResult()
         {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 3,
+                Name = "John",
+                Surname = "Doe",
+                UserName = "johndoe"
+            };
+            var user = model.ConvertModelToUser(model);
+            _mock.Setup(p => p.UpdateUser(user));
+
             // Act
-            _controller.Delete(1, "Jane", "Smith");
+            var result = _controller.Edit(model);
 
             // Assert
-            _mock.Verify(m => m.DeleteUser(It.IsAny<User>()), Times.Once());
+            //_mock.Verify(m => m.UpdateUser(user));
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
+
+        [Test]
+        public void Edit_PostInvalidUser_ReturnsViewResult()
+        {
+            // Arrange
+            var model = new CreateViewModel { Name = "Jack" };
+            var user = model.ConvertModelToUser(model);
+            _controller.ModelState.AddModelError("error", "error");
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.UpdateUser(user), Times.Never());
+            Assert.IsInstanceOf(typeof(ViewResult), result);
+        }
+        #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_PostValidUser_ReturnsActionResult()
+        {
+            // Arrange
+            var username = "johndoe";
+            _mock.Setup(p => p.DeleteUser(username, true)).Returns(true);
+
+            // Act
+            _controller.Delete(3, "John", "Doe", username);
+
+            // Assert
+            _mock.Verify(m => m.DeleteUser(username, true), Times.Once());
+        }
+        #endregion
     }
 }

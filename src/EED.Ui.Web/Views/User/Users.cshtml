@@ -17,10 +17,6 @@
     </section>
 }
 
-@if (TempData["message"] != null) {
-    <div class="message-success">@TempData["message"]</div>
-}
-
 <p>
     @Html.ActionLink("Add New User", "Create")
 </p>
@@ -47,6 +43,7 @@
                     @Html.Hidden("Id", u.Id)
                     @Html.Hidden("Name", u.Name)
                     @Html.Hidden("Surname", u.Surname)
+                    @Html.Hidden("Username", u.UserName)
                     <input type="submit" value="Delete"/>
                 }
             </td>

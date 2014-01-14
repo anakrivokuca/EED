@@ -2,27 +2,25 @@
 using System.Web.Mvc;
 using EED.DAL;
 using EED.Domain;
-using EED.Service;
 using EED.Ui.Web.Controllers;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
+using EED.Service.Membership_Provider;
+using EED.Infrastructure;
 
 namespace EED.Acceptance.Tests.Steps
 {
     [Binding]
     public class ListAllUsersSteps
     {
-        private IRepository<User> _repository;
-        private IUserService _service;
         private UserController _controller;
         private ActionResult _result;
 
         [When(@"an administrator browses to the Users page")]
         public void WhenAnAdministratorBrowsesToTheUsersPage()
-        {   
-            _repository = new Repository<User>();
-            _service = new UserService(_repository);
-            _controller = new UserController(_service);
+        {
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            _controller = new UserController();
             _result = _controller.Users(null);
         }
 

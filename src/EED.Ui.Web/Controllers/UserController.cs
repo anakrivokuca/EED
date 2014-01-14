@@ -4,31 +4,33 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.WebPages;
 using EED.Domain;
-using EED.Service;
+using EED.Service.Membership_Provider;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models;
+using System.Web.Security;
 
 namespace EED.Ui.Web.Controllers
 {
+    [Authorize(Users = "admin")]
     public class UserController : Controller
     {
-        private readonly IUserService _service;
-
+        public IMembershipProvider _provider;
         public int ItemsPerPage = 10;
 
-        public UserController(IUserService service)
+        public UserController()
         {
-            _service = service;
+           _provider =
+                (CustomMembershipProvider)Membership.Providers["CustomMembershipProvider"];
         }
 
         //
-        // GET: /User/
+        // GET: /User/Users
 
         public ViewResult Users(string searchText, int page = 1)
         {
             ViewBag.Title = "Users";
             
-            var users = _service.FindAllUsers().ToList();
+            var users = _provider.GetAllUsers().ToList();
             if (!String.IsNullOrEmpty(searchText))
                 users = FilterUsers(users, searchText).ToList();
 
@@ -66,7 +68,7 @@ namespace EED.Ui.Web.Controllers
                         String.Equals(u.Email, keyword, StringComparison.CurrentCultureIgnoreCase) ||
                         String.Equals(u.State, keyword, StringComparison.CurrentCultureIgnoreCase) ||
                         String.Equals(u.Country, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Username, keyword, StringComparison.CurrentCultureIgnoreCase)));
+                        String.Equals(u.UserName, keyword, StringComparison.CurrentCultureIgnoreCase)));
             }
             return users;
         }
@@ -76,7 +78,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Create()
         {
-            return View("Edit", new User());
+            return View("Edit", new CreateViewModel());
         }
 
         //
@@ -84,41 +86,63 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
-            var user = _service.FindAllUsers()
+            var user = _provider.GetAllUsers()
                 .First(u => u.Id == id);
-            return View(user);
+            var model = new CreateViewModel();
+            model = model.ConvertUserToModel(user);
+            return View(model);
         }
 
         //
-        // POST: /User/Edit/Id
+        // POST: /User/Edit
 
         [HttpPost]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(CreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _service.SaveUser(user);
-                TempData["message"] = string.Format("User {0} {1} has been successfully saved.", 
-                    user.Name, user.Surname);
-                return RedirectToAction("Users");
+                User existingUser = _provider.GetAllUsers().SingleOrDefault
+                    (u => u.UserName == model.UserName);
+
+                var user = model.ConvertModelToUser(model);
+                var status = new MembershipCreateStatus();
+                
+                if (existingUser == null)
+                    user = _provider.CreateUser(user, out status);
+                else
+                    _provider.UpdateUser(user);
+                
+                if (user == null)
+                {
+                    ModelState.AddModelError("",
+                        "User is not saved. " + status);
+                    return View(model);
+                }
+                else
+                {
+                    TempData["message"] = string.Format("User {0} {1} has been successfully saved.",
+                                model.Name, model.Surname);
+                    return RedirectToAction("Users");
+                }
             }
             else
             {
-                return View(user);
+                return View(model);
             }
         }
 
 
         //
-        // POST: /User/Delete/Id
+        // POST: /User/Delete
 
         [HttpPost]
-        public ActionResult Delete(int id, string name, string surname)
+        public ActionResult Delete(int id, string name, string surname, string username)
         {
-           var user = new User { Id = id };
-            _service.DeleteUser(user); 
+            var user = new User { Id = id };
+            _provider.DeleteUser(username, true);
             TempData["message"] = string.Format("User {0} {1} has been successfully deleted.", 
                 name, surname);
+            
             return RedirectToAction("Users");
         }
     }
