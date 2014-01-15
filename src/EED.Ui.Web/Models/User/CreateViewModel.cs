@@ -38,6 +38,7 @@ namespace EED.Ui.Web.Models
         [Required(ErrorMessage = "Please enter password.")]
         public string Password { get; set; }
 
+        [DisplayName("Is Approved")]
         public bool IsApproved { get; set; }
 
         

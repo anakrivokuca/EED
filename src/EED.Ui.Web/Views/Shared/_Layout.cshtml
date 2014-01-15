@@ -24,7 +24,9 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Users", "Users", "User")</li>
+                            @if(User.Identity.Name == "admin") {
+                                <li>@Html.ActionLink("Users", "Users", "User")</li>
+                            }
                         </ul>
                     </nav>
                 </div>
