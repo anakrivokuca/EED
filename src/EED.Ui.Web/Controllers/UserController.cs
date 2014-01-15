@@ -5,9 +5,11 @@ using System.Web.Mvc;
 using System.Web.WebPages;
 using EED.Domain;
 using EED.Service.Membership_Provider;
+using EED.Infrastructure;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models;
 using System.Web.Security;
+using System.Collections.Specialized;
 
 namespace EED.Ui.Web.Controllers
 {
@@ -19,8 +21,10 @@ namespace EED.Ui.Web.Controllers
 
         public UserController()
         {
-           _provider =
-                (CustomMembershipProvider)Membership.Providers["CustomMembershipProvider"];
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
+            _provider.Initialize("", new NameValueCollection());
+            //_provider = (CustomMembershipProvider)Membership.Providers["CustomMembershipProvider"];
         }
 
         //

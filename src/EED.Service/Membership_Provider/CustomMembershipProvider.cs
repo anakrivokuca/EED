@@ -17,14 +17,14 @@ namespace EED.Service.Membership_Provider
 {
     public class CustomMembershipProvider : MembershipProvider, IMembershipProvider
     {
-        public IRepository<User> _repository;
+        private IRepository<User> _repository;
         
         private MembershipPasswordFormat _passwordFormat;
         private int _minRequiredNonAlphanumericCharacters;
         private int _minRequiredPasswordLength;
         private string _passwordStrengthRegularExpression;
         private bool _requiresUniqueEmail;
-        public MachineKeySection _machineKey;
+        private MachineKeySection _machineKey;
 
         #region Initialization
 
@@ -130,6 +130,23 @@ namespace EED.Service.Membership_Provider
         }
 
         #endregion
+
+        public string ProviderName
+        {
+            get { return Name; }
+        }
+
+        public MachineKeySection MachineKey
+        {
+            get { return _machineKey; }
+            set { _machineKey = value; }
+        }
+
+        public IRepository<User> Repository
+        {
+            get { return _repository; }
+            set { _repository = value; }
+        }
 
         public override string ApplicationName
         {

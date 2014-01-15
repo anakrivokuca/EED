@@ -31,6 +31,7 @@ namespace EED.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<IRepository<User>>().To<Repository<User>>();
+            _kernel.Bind<IMembershipProvider>().To<CustomMembershipProvider>();
             _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
         }
 

@@ -19,7 +19,7 @@ namespace EED.Unit.Tests.Services
     public class CustomMembershipProviderTest
     {
         private Mock<IRepository<User>> _mock;
-        private CustomMembershipProvider _provider;
+        private IMembershipProvider _provider;
 
         [SetUp]
         public void SetUp_CustomerMembershipProviderTest()
@@ -34,10 +34,11 @@ namespace EED.Unit.Tests.Services
                     Email = "johndoe@gmail.com", UserName = "johndoe", 
                     Password = "password", IsApproved = false},
             });
-            _provider = new CustomMembershipProvider();
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
             var config = new NameValueCollection();
             _provider.Initialize("", config);
-            _provider._repository = _mock.Object;
+            _provider.Repository = _mock.Object;
         }
 
         #region Test Initialize Method
@@ -45,28 +46,27 @@ namespace EED.Unit.Tests.Services
         public void Initialize_NullName_SetsDefaultName()
         {
             // Arrange
-            _provider = new CustomMembershipProvider();
+            _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
 
             // Act
             _provider.Initialize("", new NameValueCollection());
 
             // Assert
-            Assert.AreEqual("CustomMembershipProvider", _provider.Name);
+            Assert.AreEqual("CustomMembershipProvider", _provider.ProviderName);
         }
 
         [Test]
         public void Initialize_NullRepository_CreatesDefaultRepository()
         {
             // Arrange
-            DependencyResolver.SetResolver(new NinjectDependencyResolver());
-            _provider = new CustomMembershipProvider();
-            _provider._repository = null;
+            _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
+            _provider.Repository = null;
 
             // Act
             _provider.Initialize("", new NameValueCollection());
 
             // Assert
-            Assert.IsNotNull(_provider._repository);
+            Assert.IsNotNull(_provider.Repository);
         }
 
         [Test]
@@ -74,9 +74,9 @@ namespace EED.Unit.Tests.Services
         public void Initialize_CheckEncryptionKeyFails_ThrowsProviderException()
         {
             // Arrange
-            _provider = new CustomMembershipProvider();
-            _provider._machineKey = _provider.GetMachineKeySection();
-            _provider._machineKey.ValidationKey = "AutoGenerate";
+            _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
+            _provider.MachineKey = _provider.GetMachineKeySection();
+            _provider.MachineKey.ValidationKey = "AutoGenerate";
             var config = new NameValueCollection();
             config.Add("passwordFormat", "Hashed");
 

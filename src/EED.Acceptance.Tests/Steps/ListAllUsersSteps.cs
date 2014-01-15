@@ -19,7 +19,7 @@ namespace EED.Acceptance.Tests.Steps
         [When(@"an administrator browses to the Users page")]
         public void WhenAnAdministratorBrowsesToTheUsersPage()
         {
-            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            //DependencyResolver.SetResolver(new NinjectDependencyResolver());
             _controller = new UserController();
             _result = _controller.Users(null);
         }
