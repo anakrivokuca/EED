@@ -138,15 +138,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
+    <Compile Include="Models\Project\ProjectsViewModel.cs" />
     <Compile Include="Models\User\CreateViewModel.cs" />
     <Compile Include="Models\User\LoginViewModel.cs" />
-    <Compile Include="Models\User\ListViewModel.cs" />
+    <Compile Include="Models\User\UsersViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +262,7 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Project\Projects.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

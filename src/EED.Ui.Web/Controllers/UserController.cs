@@ -36,7 +36,7 @@ namespace EED.Ui.Web.Controllers
             
             var users = _provider.GetAllUsers().ToList();
             if (!String.IsNullOrEmpty(searchText))
-                users = FilterUsers(users, searchText).ToList();
+                users = _provider.FilterUsers(users, searchText).ToList();
 
             var pagingInfo = new PagingInfo()
             {
@@ -50,31 +50,14 @@ namespace EED.Ui.Web.Controllers
                 .Skip((page - 1)*ItemsPerPage)
                 .Take(ItemsPerPage);
 
-            var usersListViewModel = new UsersListViewModel()
+            var model = new UsersViewModel()
             {
                 Users = usersPerPage,
                 PagingInfo = pagingInfo,
                 SearchText = searchText
             };
 
-            return View(usersListViewModel);
-        }
-
-        public IEnumerable<User> FilterUsers(IEnumerable<User> users, string searchText)
-        {
-            string[] keywords = searchText.Trim().Split(' ');
-            foreach (var k in keywords.Where(k => !k.IsEmpty()))
-            {
-                string keyword = k;
-                users = users
-                    .Where(u => (String.Equals(u.Name, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Surname, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Email, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.State, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Country, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.UserName, keyword, StringComparison.CurrentCultureIgnoreCase)));
-            }
-            return users;
+            return View(model);
         }
 
         //

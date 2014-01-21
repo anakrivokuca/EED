@@ -8,7 +8,7 @@ using EED.Ui.Web.Helpers.Pagination;
 
 namespace EED.Ui.Web.Models
 {
-    public class UsersListViewModel
+    public class UsersViewModel
     {
         public IEnumerable<User> Users { get; set; }
         public PagingInfo PagingInfo { get; set; }

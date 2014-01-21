@@ -5,6 +5,7 @@ using EED.DAL;
 using EED.Domain;
 using Ninject;
 using EED.Service.Membership_Provider;
+using EED.Service.Project;
 
 namespace EED.Infrastructure
 {
@@ -31,8 +32,11 @@ namespace EED.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<IRepository<User>>().To<Repository<User>>();
+            _kernel.Bind<IRepository<ElectionProject>>().To<Repository<ElectionProject>>();
+
             _kernel.Bind<IMembershipProvider>().To<CustomMembershipProvider>();
             _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
+            _kernel.Bind<IProjectService>().To<ProjectService>();
         }
 
     }

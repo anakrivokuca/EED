@@ -17,7 +17,7 @@ namespace EED.Service.Membership_Provider
         IRepository<User> Repository { get; set; }
         MachineKeySection MachineKey { get;  set; }
         
-void Initialize(string name, NameValueCollection config);
+        void Initialize(string name, NameValueCollection config);
         MachineKeySection GetMachineKeySection();
         IEnumerable<User> GetAllUsers();
         User GetUser(string username);
@@ -27,5 +27,6 @@ void Initialize(string name, NameValueCollection config);
         bool DeleteUser(string username, bool deleteAllRelatedData);
         bool ValidateUser(string username, string password);
         void OnValidatePassword(object sender, ValidatePasswordEventArgs e);
+        IEnumerable<User> FilterUsers(IEnumerable<User> users, string searchText);
     }
 }

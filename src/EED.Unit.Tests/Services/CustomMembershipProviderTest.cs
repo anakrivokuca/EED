@@ -20,6 +20,7 @@ namespace EED.Unit.Tests.Services
     {
         private Mock<IRepository<User>> _mock;
         private IMembershipProvider _provider;
+        private IEnumerable<User> _users;
 
         [SetUp]
         public void SetUp_CustomerMembershipProviderTest()
@@ -28,11 +29,15 @@ namespace EED.Unit.Tests.Services
             _mock = new Mock<IRepository<User>>();
             _mock.Setup(r => r.FindAll()).Returns(new List<User> {
                 new User { Id = 1, Name = "Ana", Surname = "Krivokuca", 
-                    Email = "anakrivokuca@gmail.com", UserName = "anakrivokuca", 
+                    Email = "anakrivokuca@gmail.com", Country = "Serbia", UserName = "anakrivokuca",
                     Password = "password", IsApproved = true},
-                new User { Id = 3, Name = "John", Surname = "Doe", 
-                    Email = "johndoe@gmail.com", UserName = "johndoe", 
+                new User { Id = 2, Name = "Ana", Surname = "Maley", Email = "ana@gmail.com"},
+                new User { Id = 5, Name = "Sarah", Email = "sarah@ny.com", 
+                    State = "US", Country = "NY"},
+                new User { Id = 3, Name = "John", Surname = "Doe", Email = "johndoe@gmail.com", 
+                    State = "US", Country = "Oklahoma", UserName = "johndoe",
                     Password = "password", IsApproved = false},
+                new User { Id = 4, Name = "Jane", Email = "jane@nyuscom", State = "US"}
             });
             DependencyResolver.SetResolver(new NinjectDependencyResolver());
             _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
@@ -87,14 +92,14 @@ namespace EED.Unit.Tests.Services
 
         #region Test GetAllUsers Method
         [Test]
-        public void GetAllUsers_GivenTwoUsers_ReturnsTwoUsers()
+        public void GetAllUsers_GivenFiveUsers_ReturnsFiveUsers()
         {
             // Act
             var result = _provider.GetAllUsers();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(5, result.Count());
         }
 
         [Test]
@@ -176,10 +181,10 @@ namespace EED.Unit.Tests.Services
             // Arrange
             var user = new User
             {
-                Id = 4,
-                Name = "Sarah",
-                UserName = "sarah",
-                Password = "sarah12345!"
+                Id = 100,
+                Name = "NewUser",
+                UserName = "newUsername",
+                Password = "psw12345!"
             };
             var status = new MembershipCreateStatus();
 
@@ -442,6 +447,102 @@ namespace EED.Unit.Tests.Services
             // Assert
             Assert.IsTrue(args.Cancel);
             Assert.AreEqual(errorMessage, args.FailureInformation.Message);
+        }
+        #endregion
+
+        #region Test FilterUsers Method
+        [Test]
+        public void FilterUsers_ByMultipleCriteria_ReturnsDifferentUsers()
+        {
+            // Arrange
+            _users = _mock.Object.FindAll();
+
+            // Act
+            var resultByName = _provider.FilterUsers(_users, "Ana");
+            var resultByNameAndSurname = _provider.FilterUsers(_users, "Ana Krivokuca");
+            var resultByEmail = _provider.FilterUsers(_users, "anakrivokuca@gmail.com");
+            var resultByState = _provider.FilterUsers(_users, "US");
+            var resultByStateAndCountry = _provider.FilterUsers(_users, "US Oklahoma");
+            var resultByUsername = _provider.FilterUsers(_users, "anakrivokuca");
+            var resultByAll = _provider.FilterUsers(_users,
+                "John Doe johndoe@gmail.com US Oklahoma johndoe");
+
+            // Assert
+            var users = resultByName.ToList();
+            Assert.AreEqual(2, users.Count,
+                "Two users should be listed with the same name.");
+            Assert.AreEqual("Ana Krivokuca", users[0].Name + " " + users[0].Surname,
+                "First user with specified name should be Ana Krivokuca.");
+            Assert.AreEqual("Ana Maley", users[1].Name + " " + users[1].Surname,
+                "Second user with specified name should be Ana Maley.");
+
+            users = resultByNameAndSurname.ToList();
+            Assert.AreEqual(1, users.Count,
+                "One user should be listed with specified name and surname.");
+            Assert.AreEqual("Ana Krivokuca", users[0].Name + " " + users[0].Surname,
+                "User with specified name ana surname should be Ana Krivokuca.");
+
+            users = resultByEmail.ToList();
+            Assert.AreEqual(1, users.Count,
+                "One user should be listed with specified email.");
+            Assert.AreEqual("Ana Krivokuca", users[0].Name + " " + users[0].Surname,
+                "User with specified email should be Ana Krivokuca.");
+
+            users = resultByState.ToList();
+            Assert.AreEqual(3, users.Count,
+                "Three users should be listed with the same state.");
+            Assert.AreEqual("Sarah", users[0].Name,
+                "First user with specified state should be Sarah.");
+            Assert.AreEqual("John", users[1].Name,
+                "Second user with specified state should be John.");
+            Assert.AreEqual("Jane", users[2].Name,
+                "Third user with specified state should be Jane.");
+
+            users = resultByStateAndCountry.ToList();
+            Assert.AreEqual(1, users.Count,
+                "One user should be listed with specified state and country.");
+            Assert.AreEqual("John", users[0].Name,
+                "User with specified state and country should be John.");
+
+            users = resultByUsername.ToList();
+            Assert.AreEqual(1, users.Count,
+                 "One user should be listed with specified state and country.");
+            Assert.AreEqual("Ana Krivokuca", users[0].Name + " " + users[0].Surname,
+                "User with specified email should be Ana Krivokuca.");
+
+            users = resultByAll.ToList();
+            Assert.AreEqual(1, users.Count,
+                "One user should be listed with specified criteria.");
+            Assert.AreEqual("John", users[0].Name,
+                "User with all criteria specified should be John.");
+        }
+
+        [Test]
+        public void FilterUsers_ByIncorrectValues_ReturnsUsersWithoutError()
+        {
+            // Arrange
+            _users = _mock.Object.FindAll();
+
+            // Act
+            var resultWithSpaces = _provider.FilterUsers(_users,
+                "  John   Doe johndoe@gmail.com   US ");
+            var resultWithNonexistentUser = _provider.FilterUsers(_users, "Don");
+            var resultWithKeywordsFromDifferentUsers = _provider.FilterUsers(_users, "Ana Krivokuca US");
+
+            // Assert
+            var users = resultWithSpaces.ToList();
+            Assert.AreEqual(1, users.Count,
+                "One user should be listed with specified criteria.");
+            Assert.AreEqual("John", users[0].Name,
+                "User with all criteria specified should be John.");
+
+            users = resultWithNonexistentUser.ToList();
+            Assert.AreEqual(0, users.Count,
+                "No user should be listed with specified criteria.");
+
+            users = resultWithKeywordsFromDifferentUsers.ToList();
+            Assert.AreEqual(0, users.Count,
+                "No user should be listed with specified criteria.");
         }
         #endregion
     }

@@ -1,0 +1,56 @@
+﻿@model EED.Ui.Web.Models.Project.ProjectsViewModel
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h2>Filter projects</h2>
+            </hgroup>
+            @using (Html.BeginForm("Projects", "Project", FormMethod.Get))
+            {
+                @Html.TextBoxFor(m => m.SearchText)
+                <input type="submit" value="Search" />
+            }
+        </div>
+    </section>
+}
+
+<p>
+    @Html.ActionLink("Add New Project", "Create")
+</p>
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+@if (Model.Projects.Count() != 0) {
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Jurisdiction</th>
+        <th>Election Date</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var p in Model.Projects) {
+        <tr>
+            <td>@Html.ActionLink(p.Name, "Edit",  new { id = p.Id })
+            </td>
+            <td>@p.JurisdictionName</td>
+            <td>@p.Date</td>
+            <td>
+                @using (Html.BeginForm("Delete", "Project")) {
+                    @Html.Hidden("Id", p.Id)
+                    @Html.Hidden("Name", p.Name)
+                    <input type="submit" value="Delete"/>
+                }
+            </td>
+        </tr>
+    }
+</table>
+} @if ((Model.Projects.Count() == 0)) {
+      <p>There are no projects created.</p>
+}
