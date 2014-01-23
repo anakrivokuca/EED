@@ -1,4 +1,4 @@
-﻿@model EED.Ui.Web.Models.Project.ProjectsViewModel
+﻿@model EED.Ui.Web.Models.Project.ListViewModel
 
 @{
     ViewBag.Title = "Projects";
@@ -40,7 +40,7 @@
             <td>@Html.ActionLink(p.Name, "Edit",  new { id = p.Id })
             </td>
             <td>@p.JurisdictionName</td>
-            <td>@p.Date</td>
+            <td>@p.Date.ToLongDateString()</td>
             <td>
                 @using (Html.BeginForm("Delete", "Project")) {
                     @Html.Hidden("Id", p.Id)

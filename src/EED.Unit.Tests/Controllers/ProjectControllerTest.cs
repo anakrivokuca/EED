@@ -56,7 +56,7 @@ namespace EED.Unit.Tests.Controllers
         public void List_GivenTwoProjects_ReturnsTwoProjects()
         {
             // Act
-            var result = ((ProjectsViewModel)_controller.List(null).Model).Projects;
+            var result = ((ListViewModel)_controller.List(null).Model).Projects;
 
             // Assert
             Assert.AreEqual(2, result.Count());
@@ -72,7 +72,7 @@ namespace EED.Unit.Tests.Controllers
                     new ElectionProject { Id = 1, Name = "Project1" }});
 
             // Act
-            var result = ((ProjectsViewModel)_controller.List(searchText).Model).Projects;
+            var result = ((ListViewModel)_controller.List(searchText).Model).Projects;
 
             // Assert
             Assert.AreEqual(1, result.Count());

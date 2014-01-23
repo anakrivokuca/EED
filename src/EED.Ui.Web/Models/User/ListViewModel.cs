@@ -8,11 +8,10 @@ using EED.Ui.Web.Helpers.Pagination;
 
 namespace EED.Ui.Web.Models
 {
-    public class UsersViewModel
+    public class ListViewModel
     {
         public IEnumerable<User> Users { get; set; }
         public PagingInfo PagingInfo { get; set; }
-        //public UserSearchCriteria UserSearchCriteria { get; set; }
         public string SearchText { get; set; }
     }
 }

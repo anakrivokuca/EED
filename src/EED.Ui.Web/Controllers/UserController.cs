@@ -50,7 +50,7 @@ namespace EED.Ui.Web.Controllers
                 .Skip((page - 1)*ItemsPerPage)
                 .Take(ItemsPerPage);
 
-            var model = new UsersViewModel()
+            var model = new ListViewModel()
             {
                 Users = usersPerPage,
                 PagingInfo = pagingInfo,

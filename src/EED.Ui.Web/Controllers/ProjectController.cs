@@ -38,7 +38,7 @@ namespace EED.Ui.Web.Controllers
             if (!String.IsNullOrEmpty(searchText))
                 projects = _service.FilterProjects(projects, searchText).ToList();
 
-            var model = new ProjectsViewModel() { 
+            var model = new ListViewModel() { 
                 Projects = projects,
                 SearchText = searchText
             };

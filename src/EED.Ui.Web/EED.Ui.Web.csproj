@@ -146,10 +146,10 @@
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
     <Compile Include="Models\Project\CreateViewModel.cs" />
-    <Compile Include="Models\Project\ProjectsViewModel.cs" />
+    <Compile Include="Models\Project\ListViewModel.cs" />
     <Compile Include="Models\User\CreateViewModel.cs" />
     <Compile Include="Models\User\LoginViewModel.cs" />
-    <Compile Include="Models\User\UsersViewModel.cs" />
+    <Compile Include="Models\User\ListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

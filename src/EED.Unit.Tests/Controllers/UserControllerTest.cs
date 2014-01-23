@@ -47,7 +47,7 @@ namespace EED.Unit.Tests.Controllers
         public void List_GivenTwoUsersOnTheFirstPage_ReturnsTwoUsers()
         {
             // Act
-            var result = ((UsersViewModel)_controller.List(null).Model).Users;
+            var result = ((ListViewModel)_controller.List(null).Model).Users;
 
             // Assert
             var users = result.ToList();
@@ -64,7 +64,7 @@ namespace EED.Unit.Tests.Controllers
         public void List_GetPagingInfo_ReturnsPagingInfo()
         {
             // Act
-            var result = ((UsersViewModel)_controller.List(null, 2).Model).PagingInfo;
+            var result = ((ListViewModel)_controller.List(null, 2).Model).PagingInfo;
 
             // Assert
             Assert.AreEqual(2, result.CurrentPage, 
@@ -79,7 +79,7 @@ namespace EED.Unit.Tests.Controllers
         public void List_GetTwoUsersOnTheSecondPage_ReturnsTwoUsers()
         {
             // Act
-            var result = ((UsersViewModel)_controller.List(null, 2).Model).Users;
+            var result = ((ListViewModel)_controller.List(null, 2).Model).Users;
 
             // Assert
             var users = result.ToList();
@@ -104,7 +104,7 @@ namespace EED.Unit.Tests.Controllers
                 new User { Id = 4, Name = "Jane", State = "US"}});
 
             // Act
-            var result = ((UsersViewModel)_controller.List(searchText).Model)
+            var result = ((ListViewModel)_controller.List(searchText).Model)
                 .PagingInfo.TotalNumberOfItems;
 
             // Assert

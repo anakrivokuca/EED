@@ -6,7 +6,7 @@ using System.Web;
 
 namespace EED.Ui.Web.Models.Project
 {
-    public class ProjectsViewModel
+    public class ListViewModel
     {
         public IEnumerable<ElectionProject> Projects { get; set; }
         public string SearchText { get; set; }
