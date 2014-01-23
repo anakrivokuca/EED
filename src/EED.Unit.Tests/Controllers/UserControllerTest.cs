@@ -166,7 +166,7 @@ namespace EED.Unit.Tests.Controllers
             var result = _controller.Edit(model);
 
             // Assert
-            //_mock.Verify(m => m.CreateUser(user, out status), Times.Once());
+            _mock.Verify(m => m.CreateUser(It.IsAny<User>(), out status), Times.Once());
             Assert.IsFalse(_controller.ModelState.IsValid);
             Assert.IsInstanceOf(typeof(ViewResult), result);
         }
@@ -184,13 +184,14 @@ namespace EED.Unit.Tests.Controllers
                 UserName = "johndoe"
             };
             var user = model.ConvertModelToUser(model);
-            _mock.Setup(p => p.UpdateUser(user));
 
             // Act
             var result = _controller.Edit(model);
 
             // Assert
-            //_mock.Verify(m => m.UpdateUser(user));
+            _mock.Verify(m => m.UpdateUser(It.IsAny<User>()));
+            Assert.AreEqual("User John Doe has been successfully saved.",
+                _controller.TempData["message"]); 
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -224,6 +225,8 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             _mock.Verify(m => m.DeleteUser(username, true), Times.Once());
+            Assert.AreEqual("User John Doe has been successfully deleted.",
+                _controller.TempData["message"]); 
         }
         #endregion
     }

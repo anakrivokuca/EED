@@ -182,5 +182,20 @@ namespace EED.Unit.Tests.Services
             _mock.Verify(m => m.Save(project), Times.Never());
         }
         #endregion
+
+        #region Test DeleteProject Method
+        [Test]
+        public void DeleteProject_ValidProject_DoesNotThrowError()
+        {
+            // Arrange
+            var project = new ElectionProject { Id = 1, Name = "Project1" };
+
+            // Act
+            _service.DeleteProject(project);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<ElectionProject>()));
+        }
+        #endregion
     }
 }

@@ -120,13 +120,14 @@ namespace EED.Unit.Tests.Controllers
                 JurisdictionTypeId = 1
             };
             var project = model.ConvertModelToProject(model);
-            _mock.Setup(p => p.SaveProject(project));
 
             // Act
             var result = _controller.Edit(model);
 
             // Assert
-            //_mock.Verify(m => m.SaveProject(project), Times.Once());
+            _mock.Verify(m => m.SaveProject(It.IsAny<ElectionProject>()), Times.Once());
+            Assert.AreEqual("Project NewProject has been successfully saved.",
+                _controller.TempData["message"]); 
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -143,13 +144,14 @@ namespace EED.Unit.Tests.Controllers
                 JurisdictionTypeId = 1
             };
             var project = model.ConvertModelToProject(model);
-            _mock.Setup(p => p.SaveProject(project));
 
             // Act
             var result = _controller.Edit(model);
 
             // Assert
-            //_mock.Verify(m => m.SaveProject(project));
+            _mock.Verify(m => m.SaveProject(It.IsAny<ElectionProject>()));
+            Assert.AreEqual("Project Project 2 has been successfully saved.",
+                _controller.TempData["message"]); 
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -170,6 +172,23 @@ namespace EED.Unit.Tests.Controllers
             // Assert
             _mock.Verify(m => m.SaveProject(project), Times.Never());
             Assert.IsInstanceOf(typeof(ViewResult), result);
+        }
+        #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_PostValidProject_ReturnsActionResult()
+        {
+            // Arrange
+            var project = new ElectionProject { Id = 1, Name = "Project1" };
+
+            // Act
+            _controller.Delete(project.Id, project.Name);
+
+            // Assert
+            _mock.Verify(m => m.DeleteProject(It.IsAny<ElectionProject>()), Times.Once());
+            Assert.AreEqual("Project Project1 has been successfully deleted.", 
+                _controller.TempData["message"]); 
         }
         #endregion
     }

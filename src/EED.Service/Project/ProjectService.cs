@@ -64,7 +64,14 @@ namespace EED.Service.Project
 
         public void DeleteProject(ElectionProject project)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _repository.Delete(project);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
     }
 }

@@ -93,6 +93,20 @@ namespace EED.Ui.Web.Controllers
             }
         }
 
+        //
+        // POST: /Project/Delete
+
+        [HttpPost]
+        public ActionResult Delete(int id, string name)
+        {
+            var project = new ElectionProject { Id = id };
+            _service.DeleteProject(project);
+            TempData["message"] = string.Format("Project {0} has been successfully deleted.",
+                name);
+
+            return RedirectToAction("Projects");
+        }
+
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
         {
             var jurisdictionTypes = _jurisdictionTypeService.FindAllJurisdictionTypes();
