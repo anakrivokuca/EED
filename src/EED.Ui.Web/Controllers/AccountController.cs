@@ -37,9 +37,9 @@ namespace EED.Ui.Web.Controllers
                 if (_authProvider.Authenticate(model.Username, model.Password))
                 {
                     if (model.Username == "admin")
-                        return Redirect(returnUrl ?? Url.Action("Users", "User"));
+                        return Redirect(returnUrl ?? Url.Action("List", "User"));
                     else
-                        return Redirect(returnUrl ?? Url.Action("Projects", "Project"));
+                        return Redirect(returnUrl ?? Url.Action("List", "Project"));
                 }
                 else
                 {

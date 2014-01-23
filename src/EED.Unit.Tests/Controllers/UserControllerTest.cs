@@ -42,12 +42,12 @@ namespace EED.Unit.Tests.Controllers
             };
         }
 
-        #region Test Users Method
+        #region Test List Method
         [Test]
-        public void Users_GetTwoUsersOnTheFirstPage_ReturnsTwoUsers()
+        public void List_GivenTwoUsersOnTheFirstPage_ReturnsTwoUsers()
         {
             // Act
-            var result = ((UsersViewModel)_controller.Users(null).Model).Users;
+            var result = ((UsersViewModel)_controller.List(null).Model).Users;
 
             // Assert
             var users = result.ToList();
@@ -61,10 +61,10 @@ namespace EED.Unit.Tests.Controllers
         }
 
         [Test]
-        public void Users_GetPagingInfo_ReturnsPagingInfo()
+        public void List_GetPagingInfo_ReturnsPagingInfo()
         {
             // Act
-            var result = ((UsersViewModel)_controller.Users(null, 2).Model).PagingInfo;
+            var result = ((UsersViewModel)_controller.List(null, 2).Model).PagingInfo;
 
             // Assert
             Assert.AreEqual(2, result.CurrentPage, 
@@ -76,10 +76,10 @@ namespace EED.Unit.Tests.Controllers
         }
 
         [Test]
-        public void Users_GetTwoUsersOnTheSecondPage_ReturnsTwoUsers()
+        public void List_GetTwoUsersOnTheSecondPage_ReturnsTwoUsers()
         {
             // Act
-            var result = ((UsersViewModel)_controller.Users(null, 2).Model).Users;
+            var result = ((UsersViewModel)_controller.List(null, 2).Model).Users;
 
             // Assert
             var users = result.ToList();
@@ -93,7 +93,7 @@ namespace EED.Unit.Tests.Controllers
         }
 
         [Test]
-        public void Users_GetFilteredUsers_ReturnsThreeUsers()
+        public void List_GetFilteredUsers_ReturnsThreeUsers()
         {
             // Arrange
             var searchText = "US";
@@ -104,7 +104,7 @@ namespace EED.Unit.Tests.Controllers
                 new User { Id = 4, Name = "Jane", State = "US"}});
 
             // Act
-            var result = ((UsersViewModel)_controller.Users(searchText).Model)
+            var result = ((UsersViewModel)_controller.List(searchText).Model)
                 .PagingInfo.TotalNumberOfItems;
 
             // Assert

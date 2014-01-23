@@ -23,9 +23,9 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Projects", "Projects", "Project")</li>
+                            <li>@Html.ActionLink("Projects", "List", "Project")</li>
                             @if(User.Identity.Name == "admin") {
-                                <li>@Html.ActionLink("Users", "Users", "User")</li>
+                                <li>@Html.ActionLink("Users", "List", "User")</li>
                             }
                         </ul>
                     </nav>

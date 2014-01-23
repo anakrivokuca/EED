@@ -10,7 +10,7 @@
             <hgroup class="title">
                 <h2>Filter projects</h2>
             </hgroup>
-            @using (Html.BeginForm("Projects", "Project", FormMethod.Get))
+            @using (Html.BeginForm("List", "Project", FormMethod.Get))
             {
                 @Html.TextBoxFor(m => m.SearchText)
                 <input type="submit" value="Search" />

@@ -28,9 +28,9 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /User/Users
+        // GET: /User/List
 
-        public ViewResult Users(string searchText, int page = 1)
+        public ViewResult List(string searchText, int page = 1)
         {
             ViewBag.Title = "Users";
             
@@ -109,7 +109,7 @@ namespace EED.Ui.Web.Controllers
                 {
                     TempData["message"] = string.Format("User {0} {1} has been successfully saved.",
                                 model.Name, model.Surname);
-                    return RedirectToAction("Users");
+                    return RedirectToAction("List");
                 }
             }
             else
@@ -117,7 +117,6 @@ namespace EED.Ui.Web.Controllers
                 return View(model);
             }
         }
-
 
         //
         // POST: /User/Delete
@@ -130,7 +129,7 @@ namespace EED.Ui.Web.Controllers
             TempData["message"] = string.Format("User {0} {1} has been successfully deleted.", 
                 name, surname);
             
-            return RedirectToAction("Users");
+            return RedirectToAction("List");
         }
     }
 }

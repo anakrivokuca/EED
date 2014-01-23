@@ -29,9 +29,9 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Project/Projects
+        // GET: /Project/List
 
-        public ViewResult Projects(string searchText)
+        public ViewResult List(string searchText)
         {
             var projects = _service.FindAllProjectsFromUser();
 
@@ -84,8 +84,8 @@ namespace EED.Ui.Web.Controllers
                 _service.SaveProject(project);
                 TempData["message"] = string.Format("Project {0} has been successfully saved.", 
                     model.Name);
-                
-                return RedirectToAction("Projects");
+
+                return RedirectToAction("List");
             }
             else
             {
@@ -104,7 +104,7 @@ namespace EED.Ui.Web.Controllers
             TempData["message"] = string.Format("Project {0} has been successfully deleted.",
                 name);
 
-            return RedirectToAction("Projects");
+            return RedirectToAction("List");
         }
 
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)

@@ -21,7 +21,7 @@ namespace EED.Acceptance.Tests.Steps
         {
             //DependencyResolver.SetResolver(new NinjectDependencyResolver());
             _controller = new UserController();
-            _result = _controller.Users(null);
+            _result = _controller.List(null);
         }
 
         [Then(@"the Users page should be displayed")]

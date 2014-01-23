@@ -16,7 +16,7 @@ namespace EED.Ui.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "User", action = "Users", id = UrlParameter.Optional }
+                defaults: new { controller = "Project", action = "List", id = UrlParameter.Optional }
             );
         }
     }

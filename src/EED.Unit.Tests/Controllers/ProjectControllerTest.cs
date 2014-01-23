@@ -51,19 +51,19 @@ namespace EED.Unit.Tests.Controllers
                 _mockElectionType.Object);
         }
 
-        #region Test Projects Method
+        #region Test List Method
         [Test]
-        public void Projects_GetTwoProjects_ReturnsTwoProjects()
+        public void List_GivenTwoProjects_ReturnsTwoProjects()
         {
             // Act
-            var result = ((ProjectsViewModel)_controller.Projects(null).Model).Projects;
+            var result = ((ProjectsViewModel)_controller.List(null).Model).Projects;
 
             // Assert
             Assert.AreEqual(2, result.Count());
         }
 
         [Test]
-        public void Projects_GetFilteredProjects_ReturnsOneProject()
+        public void List_GetFilteredProjects_ReturnsOneProject()
         {
             // Arrange
             var searchText = "Project1";
@@ -72,7 +72,7 @@ namespace EED.Unit.Tests.Controllers
                     new ElectionProject { Id = 1, Name = "Project1" }});
 
             // Act
-            var result = ((ProjectsViewModel)_controller.Projects(searchText).Model).Projects;
+            var result = ((ProjectsViewModel)_controller.List(searchText).Model).Projects;
 
             // Assert
             Assert.AreEqual(1, result.Count());

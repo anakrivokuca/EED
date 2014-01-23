@@ -8,7 +8,7 @@
             <hgroup class="title">
                 <h2>Filter users</h2>
             </hgroup>
-            @using (Html.BeginForm("Users", "User", FormMethod.Get))
+            @using (Html.BeginForm("List", "User", FormMethod.Get))
             {
                 @Html.TextBoxFor(m => m.SearchText)
                 <input type="submit" value="Search" />
