@@ -20,6 +20,7 @@ namespace EED.Ui.Web.Models
         [Required(ErrorMessage = "Please enter surname.")]
         public string Surname { get; set; }
 
+        [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Please enter email.")]
         public string Email { get; set; }
 

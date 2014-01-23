@@ -1,0 +1,85 @@
+﻿@model EED.Ui.Web.Models.Project.CreateViewModel
+
+@{
+    if(Model.Id.Equals(0)) {
+        ViewBag.Title = "Add New Project";
+    }
+    else {
+        ViewBag.Title = "Edit";
+    }
+}
+
+<hgroup class="title">
+    @if (Model.Id.Equals(0)) {
+        <h1>Add New Project</h1>
+    }
+    else {
+        <h1>Edit @Model.Name</h1>
+    }
+</hgroup>
+
+@using (Html.BeginForm("Edit", "Project")) {
+    @Html.ValidationSummary(true);
+    <fieldset>
+        <legend>User</legend>
+        
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Date)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Date)
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ElectionTypeId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.ElectionTypeId, Model.ElectionTypes, string.Empty)
+            @Html.ValidationMessageFor(model => model.ElectionTypeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.JurisdictionName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.JurisdictionName)
+            @Html.ValidationMessageFor(model => model.JurisdictionName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.JurisdictionTypeId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty)
+            @Html.ValidationMessageFor(model => model.JurisdictionTypeId)
+        </div>
+        
+        <p>
+            <input type="submit" value="Save" />
+            @Html.ActionLink("Cancel and Return to Project List", "Projects")
+        </p>
+    </fieldset> 
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,23 +1,19 @@
 ﻿@model EED.Ui.Web.Models.CreateViewModel
 
 @{
-    if(Model.Id.Equals(0))
-    {
+    if(Model.Id.Equals(0)) {
         ViewBag.Title = "Add New User";
     }
-    else
-    {
+    else {
         ViewBag.Title = "Edit";
     }
 }
 
 <hgroup class="title">
-    @if (Model.Id.Equals(0))
-    {
+    @if (Model.Id.Equals(0)) {
         <h1>Add New User</h1>
     }
-    else
-    {
+    else {
         <h1>Edit @Model.Name @Model.Surname</h1>
     }
 </hgroup>

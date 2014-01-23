@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Election_Type\ElectionTypeService.cs" />
+    <Compile Include="Election_Type\IElectionTypeService.cs" />
+    <Compile Include="Jurisdiction_Type\IJurisdictionTypeService.cs" />
+    <Compile Include="Jurisdiction_Type\JurisdictionTypeService.cs" />
     <Compile Include="Membership_Provider\CustomMembershipProvider.cs" />
     <Compile Include="Membership_Provider\FormsAuthProvider.cs" />
     <Compile Include="Membership_Provider\IAuthProvider.cs" />
@@ -60,9 +64,6 @@
       <Project>{8F5053C1-911C-49B3-8E66-53C24B62DF92}</Project>
       <Name>EED.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

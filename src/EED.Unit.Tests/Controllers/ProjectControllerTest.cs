@@ -1,4 +1,6 @@
 ﻿using EED.Domain;
+using EED.Service.Election_Type;
+using EED.Service.Jurisdiction_Type;
 using EED.Service.Project;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.Project;
@@ -25,13 +27,28 @@ namespace EED.Unit.Tests.Controllers
         {
             // Arrange
             _projects = new List<ElectionProject> {
-                new ElectionProject { Id = 1, Name = "Project1" },
-                new ElectionProject { Id = 2, Name = "Project2" }};
+                new ElectionProject { Id = 1, Name = "Project1", JurisdictionName = "County1",
+                    JurisdictionType = new JurisdictionType { Id = 1 },
+                    ElectionType = new ElectionType { Id = 1 }},
+                new ElectionProject { Id = 2, Name = "Project2", JurisdictionName = "County2",
+                    JurisdictionType = new JurisdictionType { Id = 1 },
+                    ElectionType = new ElectionType { Id = 1 } }};
 
             _mock = new Mock<IProjectService>();
             _mock.Setup(s => s.FindAllProjectsFromUser()).Returns(_projects);
 
-            _controller = new ProjectController(_mock.Object);
+            var _mockJurisdictionType = new Mock<IJurisdictionTypeService>();
+            _mockJurisdictionType.Setup(s => s.FindAllJurisdictionTypes()).Returns(new List<JurisdictionType> { 
+                new JurisdictionType { Id = 1, Name = "County"},
+                new JurisdictionType { Id = 1, Name = "Municipality"}});
+
+            var _mockElectionType = new Mock<IElectionTypeService>();
+            _mockElectionType.Setup(s => s.FindAllElectionTypes()).Returns(new List<ElectionType> { 
+                new ElectionType { Id = 1, Name = "General Elections"},
+                new ElectionType { Id = 1, Name = "General Elections"}});
+
+            _controller = new ProjectController(_mock.Object, _mockJurisdictionType.Object, 
+                _mockElectionType.Object);
         }
 
         #region Test Projects Method
@@ -59,6 +76,100 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             Assert.AreEqual(1, result.Count());
+        }
+        #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetProject_ReturnsCreateViewModel()
+        {
+            // Act
+            var result1 = (CreateViewModel)_controller.Edit(1).Model;
+            var result2 = (CreateViewModel)_controller.Edit(2).Model;
+
+            // Assert
+            Assert.AreEqual("Project1", result1.Name,
+                "Selected project should be Project1.");
+            Assert.AreEqual("Project2", result2.Name,
+                "Selected project should be Project2.");
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.InvalidOperationException))]
+        public void Edit_GetNonexistentProject_ThrowsException()
+        {
+            // Act
+            var result = (CreateViewModel)_controller.Edit(101).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test Edit (Post) Method
+        [Test]
+        public void Edit_PostNewProject_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 100,
+                Name = "NewProject", 
+                Date = new DateTime(2012, 2, 8),
+                ElectionTypeId =  1,
+                JurisdictionTypeId = 1
+            };
+            var project = model.ConvertModelToProject(model);
+            _mock.Setup(p => p.SaveProject(project));
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            //_mock.Verify(m => m.SaveProject(project), Times.Once());
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingProjectWithValidChanges_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 2,
+                Name = "Project 2", 
+                Date = new DateTime(2012, 2, 8),
+                Description = "Project description.",
+                JurisdictionTypeId = 1
+            };
+            var project = model.ConvertModelToProject(model);
+            _mock.Setup(p => p.SaveProject(project));
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            //_mock.Verify(m => m.SaveProject(project));
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingProjectWithInvalidChanges_ReturnsViewResult()
+        {
+            // Arrange
+            var model = new CreateViewModel { 
+                Name = "Project2", 
+                Date = new DateTime(2012, 2, 8) 
+            };
+            var project = model.ConvertModelToProject(model);
+            _controller.ModelState.AddModelError("error", "error");
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveProject(project), Times.Never());
+            Assert.IsInstanceOf(typeof(ViewResult), result);
         }
         #endregion
     }

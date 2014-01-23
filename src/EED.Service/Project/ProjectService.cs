@@ -27,8 +27,8 @@ namespace EED.Service.Project
 
         public IEnumerable<ElectionProject> FindAllProjectsFromUser()
         {
-            int id = _provider.GetUserFromCookie().Id;
-            var projects = FindAllProjects().Where(p => p.User.Id == id);
+            int userId = _provider.GetUserFromCookie().Id;
+            var projects = FindAllProjects().Where(p => p.User.Id == userId);
             
             return projects;
         }
@@ -49,7 +49,17 @@ namespace EED.Service.Project
 
         public void SaveProject(ElectionProject project)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int userId = _provider.GetUserFromCookie().Id;
+                project.User = new User { Id = userId };
+
+                _repository.Save(project);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
 
         public void DeleteProject(ElectionProject project)

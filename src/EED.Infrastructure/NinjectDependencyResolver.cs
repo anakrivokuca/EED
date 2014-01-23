@@ -6,6 +6,8 @@ using EED.Domain;
 using Ninject;
 using EED.Service.Membership_Provider;
 using EED.Service.Project;
+using EED.Service.Election_Type;
+using EED.Service.Jurisdiction_Type;
 
 namespace EED.Infrastructure
 {
@@ -33,10 +35,14 @@ namespace EED.Infrastructure
         {
             _kernel.Bind<IRepository<User>>().To<Repository<User>>();
             _kernel.Bind<IRepository<ElectionProject>>().To<Repository<ElectionProject>>();
+            _kernel.Bind<IRepository<JurisdictionType>>().To<Repository<JurisdictionType>>();
+            _kernel.Bind<IRepository<ElectionType>>().To<Repository<ElectionType>>();
 
             _kernel.Bind<IMembershipProvider>().To<CustomMembershipProvider>();
             _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
             _kernel.Bind<IProjectService>().To<ProjectService>();
+            _kernel.Bind<IJurisdictionTypeService>().To<JurisdictionTypeService>();
+            _kernel.Bind<IElectionTypeService>().To<ElectionTypeService>();
         }
 
     }

@@ -145,6 +145,7 @@
     </Compile>
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
+    <Compile Include="Models\Project\CreateViewModel.cs" />
     <Compile Include="Models\Project\ProjectsViewModel.cs" />
     <Compile Include="Models\User\CreateViewModel.cs" />
     <Compile Include="Models\User\LoginViewModel.cs" />
@@ -263,6 +264,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Project\Projects.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

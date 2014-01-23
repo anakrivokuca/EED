@@ -31,6 +31,8 @@ namespace EED.Unit.Tests.Services
                     JurisdictionName = "Jurisdiction1", User = new User { Id = 2} }});
 
             _mockProvider = new Mock<IAuthProvider>();
+            _mockProvider.Setup(p => p.GetUserFromCookie()).Returns(
+                new User { Id = 3, UserName = "sarah" });
 
             _service = new ProjectService(_mock.Object, _mockProvider.Object);
         }
@@ -67,10 +69,6 @@ namespace EED.Unit.Tests.Services
         [Test]
         public void FindAllProjectsFromUser_GivenZeroProjectsForSpecifiedUser_ReturnsZeroProjects()
         {
-            // Arrange
-            _mockProvider.Setup(p => p.GetUserFromCookie()).Returns(
-                new User { Id = 3, UserName = "sarah" });
-
             // Act
             var result = _service.FindAllProjectsFromUser();
 
@@ -140,6 +138,48 @@ namespace EED.Unit.Tests.Services
             projects = resultWithKeywordsFromDifferentProjects.ToList();
             Assert.AreEqual(0, projects.Count,
                 "No project should be listed with specified criteria.");
+        }
+        #endregion
+
+        #region Test SaveProject Method
+        [Test]
+        public void SaveProject_NewValidProject_DoesNotThrowError()
+        {
+            // Arrange
+            var project = new ElectionProject
+            {
+                Id = 100,
+                Name = "NewProject",
+                Date = new DateTime(2012, 6, 5),
+                JurisdictionName = "CountyName",
+                JurisdictionType = new JurisdictionType { Id = 1 },
+                ElectionType = new ElectionType { Id = 1 }
+            };
+
+            // Act
+            _service.SaveProject(project);
+
+            // Assert
+            _mock.Verify(m => m.Save(project));
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void SaveProject_WithInvalidDate_ThrowsException()
+        {
+            // Arrange
+            var project = new ElectionProject
+            {
+                Id = 100,
+                Name = "ProjectWithInvalidDate",
+                Date = new DateTime(2012, 2012, 5)
+            };
+
+            // Act
+            _service.SaveProject(project);
+
+            // Assert
+            _mock.Verify(m => m.Save(project), Times.Never());
         }
         #endregion
     }
