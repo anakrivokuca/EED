@@ -3,18 +3,7 @@
 @model EED.Ui.Web.Models.ListViewModel
 
 @section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h2>Filter users</h2>
-            </hgroup>
-            @using (Html.BeginForm("List", "User", FormMethod.Get))
-            {
-                @Html.TextBoxFor(m => m.SearchText)
-                <input type="submit" value="Search" />
-            }
-        </div>
-    </section>
+    @Html.Partial("_FilterPartial")
 }
 
 <p>
@@ -53,7 +42,7 @@
 
 <div class="pager">
     @{var pageInfo = Model.PagingInfo;}
-    @Html.PageLinks(pageInfo, x => Url.Action("Users", "User", new {
+    @Html.PageLinks(pageInfo, x => Url.Action("List", "User", new {
         searchText = Model.SearchText, 
         page = x}))
 </div>

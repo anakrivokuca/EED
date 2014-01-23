@@ -1,0 +1,17 @@
+﻿@{ 
+    string title = ViewBag.Title;
+    string controller = ViewBag.Title.TrimEnd('s');
+}
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h2>Filter @title</h2>
+        </hgroup>
+        @using (Html.BeginForm("List", controller, FormMethod.Get))
+        {
+            @Html.TextBox("SearchText")
+            //Html.TextBoxFor(m => m.SearchText)
+            <input type="submit" value="Search" />
+        }
+    </div>
+</section>

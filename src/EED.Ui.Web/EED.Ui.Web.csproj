@@ -265,6 +265,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Project\List.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Shared\_FilterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

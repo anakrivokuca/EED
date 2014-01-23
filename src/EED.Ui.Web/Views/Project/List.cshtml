@@ -5,18 +5,7 @@
 }
 
 @section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h2>Filter projects</h2>
-            </hgroup>
-            @using (Html.BeginForm("List", "Project", FormMethod.Get))
-            {
-                @Html.TextBoxFor(m => m.SearchText)
-                <input type="submit" value="Search" />
-            }
-        </div>
-    </section>
+    @Html.Partial("_FilterPartial")
 }
 
 <p>
