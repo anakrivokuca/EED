@@ -2,6 +2,7 @@
 using EED.Service.Election_Type;
 using EED.Service.Jurisdiction_Type;
 using EED.Service.Project;
+using EED.Ui.Web.Helpers;
 using EED.Ui.Web.Models.Project;
 using NHibernate.Mapping;
 using System;
@@ -82,7 +83,8 @@ namespace EED.Ui.Web.Controllers
             {
                 var project = model.ConvertModelToProject(model);
                 _service.SaveProject(project);
-                TempData["message"] = string.Format("Project {0} has been successfully saved.", 
+                TempData["message-success"] = string.Format(
+                    "Project {0} has been successfully saved.", 
                     model.Name);
 
                 return RedirectToAction("List");
@@ -96,13 +98,39 @@ namespace EED.Ui.Web.Controllers
         //
         // POST: /Project/Delete
 
-        [HttpPost]
-        public ActionResult Delete(int id, string name)
+        [HttpGet]
+        //[HttpPost]
+        //[MultipleButton(Name = "action", Argument = "Delete")]
+        public ActionResult Delete(int id)
         {
             var project = new ElectionProject { Id = id };
             _service.DeleteProject(project);
-            TempData["message"] = string.Format("Project {0} has been successfully deleted.",
-                name);
+            TempData["message-success"] = string.Format(
+                "Project {0} has been successfully deleted.", id);
+
+            return RedirectToAction("List");
+        }
+
+        //
+        // POST: /Project/Delete
+
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "DeleteSelected")]
+        public ActionResult Delete(int[] deleteInputs)
+        {
+            if (deleteInputs == null) {
+                TempData["message-info"] = string.Format(
+                    "None of the projects has been selected for delete action.");
+                
+                return RedirectToAction("List");
+            }
+            foreach (var id in deleteInputs)
+            {
+                var project = new ElectionProject { Id = id };
+                _service.DeleteProject(project);
+            }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() + 
+                " project(s) has been successfully deleted.");
 
             return RedirectToAction("List");
         }

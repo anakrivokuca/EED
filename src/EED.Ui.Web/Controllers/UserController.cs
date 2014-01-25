@@ -107,8 +107,8 @@ namespace EED.Ui.Web.Controllers
                 }
                 else
                 {
-                    TempData["message"] = string.Format("User {0} {1} has been successfully saved.",
-                                model.Name, model.Surname);
+                    TempData["message-success"] = string.Format(
+                        "User {0} {1} has been successfully saved.", model.Name, model.Surname);
                     return RedirectToAction("List");
                 }
             }
@@ -126,7 +126,7 @@ namespace EED.Ui.Web.Controllers
         {
             var user = new User { Id = id };
             _provider.DeleteUser(username, true);
-            TempData["message"] = string.Format("User {0} {1} has been successfully deleted.", 
+            TempData["message-success"] = string.Format("User {0} {1} has been successfully deleted.", 
                 name, surname);
             
             return RedirectToAction("List");

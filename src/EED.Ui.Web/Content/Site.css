@@ -333,26 +333,70 @@ aside {
     display: inline;
 }
 
-/* users */
-div.item {
-     border-top: 1px dotted gray; 
-     padding-top: .7em; 
-     margin-bottom: .7em;
+/* list image links and buttons */
+a.imageBarNew {
+    background: url(../Images/buttonBarAdd.gif) no-repeat top left;
+    float:left;
+    width: 26px;
+    height: 26px;
+    padding-left: 0;
+    padding-right: 0;
+    text-indent: -9999px; /* hides the link text */
 }
 
-    div.item:first-child {
-         border-top:none; 
-         padding-top: 0;
+    a.imageBarNew:hover {
+        background: url(../Images/buttonBarAddOver.gif) no-repeat top left;
     }
 
-    div.item h3 {
-         font-size: 1.3em; 
-         margin: 0 0 .25em 0;
+a.imageBarDelete, input[type="submit"].imageBarDelete, button.imageBarDelete {
+    background: url(../Images/buttonBarDelete.gif) no-repeat top left;
+    float:left;
+    width: 26px;
+    height: 26px;
+        margin-right: 0px;
+        padding: 0px;
+        border: 0;
+        text-indent: -9999px; /* hides the link text */
     }
 
-    div.item h4 {
-         font-size: 1.1em; 
-         margin:.4em 0 0 0;
+    a.imageBarDelete:hover, input[type="submit"].imageBarDelete:hover, button.imageBarDelete:hover {
+        background: url(../Images/buttonBarDeleteOver.gif) no-repeat top left;
+    }
+
+a.imageView {
+    background: url(../Images/iconView.gif) no-repeat top left;
+    float:left;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px; /* hides the link text */
+}
+
+    a.imageView:hover {
+        background: url(../Images/iconViewOver.gif) no-repeat top left;
+    }
+
+a.imageEdit {
+    background: url(../Images/iconEdit.gif) no-repeat top left;
+    float:left;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px; /* hides the link text */
+}
+
+    a.imageEdit:hover {
+        background: url(../Images/iconEditOver.gif) no-repeat top left;
+    }
+
+a.imageDelete, input[type="submit"].imageDelete, button.imageDelete {
+    background: url(../Images/iconDelete.gif) no-repeat top left;
+    float:left;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px; /* hides the link text */
+}
+
+    a.imageDelete:hover, input[type="submit"].imageDelete:hover, button.imageDelete:hover {
+        background: url(../Images/iconDeleteOver.gif) no-repeat top left;
     }
 
 /* pagination links */
@@ -437,7 +481,7 @@ textarea {
     input[type="button"],
     button {
         background-color: #d3dce0;
-        border: 1px solid #787878;
+        /*border: 1px solid #787878;*/
         cursor: pointer;
         font-size: 1.2em;
         font-weight: 600;
@@ -459,6 +503,7 @@ textarea {
     border: 1px solid;
     clear: both;
     padding: 10px 20px;
+    margin: 20px 0 10px 0;
 }
 
 .message-error {
@@ -470,8 +515,9 @@ textarea {
 }
 
 .message-success {
+    clear: both;
     color: #7ac0da;
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: bold;
     margin: 20px 0 10px 0;
 }
@@ -524,6 +570,9 @@ th {
     text-align: left;
     border: none 0px;
     padding-left: 0;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-top: 1px dotted gray;
     border-bottom: 1px dotted gray;
 }
 
@@ -564,13 +613,17 @@ th {
     }
 
 td {
-    padding: 1em 2em 0.25em 0em;
+    padding: 1em 0em 1em 0.25em;
     border: 0 none;
 }
 
-tr.pager td {
-    padding: 0 0.25em 0 0;
+tr.selected {
+    background-color: #e2e2e2;
 }
+
+    tr.pager td {
+        padding: 0 0.25em 0 0;
+    }
 
 
 /********************

@@ -126,8 +126,9 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             _mock.Verify(m => m.SaveProject(It.IsAny<ElectionProject>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
             Assert.AreEqual("Project NewProject has been successfully saved.",
-                _controller.TempData["message"]); 
+                _controller.TempData["message-success"]); 
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -150,8 +151,9 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             _mock.Verify(m => m.SaveProject(It.IsAny<ElectionProject>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
             Assert.AreEqual("Project Project 2 has been successfully saved.",
-                _controller.TempData["message"]); 
+                _controller.TempData["message-success"]); 
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -177,18 +179,51 @@ namespace EED.Unit.Tests.Controllers
 
         #region Test Delete Method
         [Test]
-        public void Delete_PostValidProject_ReturnsActionResult()
+        public void Delete_GetValidProject_ReturnsSuccessMessage()
         {
             // Arrange
-            var project = new ElectionProject { Id = 1, Name = "Project1" };
+            var projectId = 1;
 
             // Act
-            _controller.Delete(project.Id, project.Name);
+            _controller.Delete(projectId);
 
             // Assert
             _mock.Verify(m => m.DeleteProject(It.IsAny<ElectionProject>()), Times.Once());
-            Assert.AreEqual("Project Project1 has been successfully deleted.", 
-                _controller.TempData["message"]); 
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Project " + projectId + " has been successfully deleted.", 
+                _controller.TempData["message-success"]); 
+        }
+
+        [Test]
+        public void Delete_PostMultipleProjects_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var projects = new int[] { 1, 2, 3 };
+
+            // Act
+            _controller.Delete(projects);
+
+            // Assert
+            _mock.Verify(m => m.DeleteProject(It.IsAny<ElectionProject>()), Times.Exactly(projects.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(projects.Count() + " project(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoProject_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] projects = null;
+
+            // Act
+            _controller.Delete(projects);
+
+            // Assert
+            _mock.Verify(m => m.DeleteProject(It.IsAny<ElectionProject>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the projects has been selected for delete action.",
+                _controller.TempData["message-info"]);
         }
         #endregion
     }

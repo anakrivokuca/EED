@@ -6,36 +6,46 @@
     @Html.Partial("_FilterPartial")
 }
 
-<p>
-    @Html.ActionLink("Add New User", "Create")
-</p>
-
 <hgroup class="title">
     <h1>@ViewBag.Title</h1>
 </hgroup>
 
 <table>
     <tr>
+        <td>@Html.ActionLink("Add New", "Create", null, 
+                new { @class = "imageBarNew", title = "Add new" })</td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th>Actions</th>
         <th>Name</th>
         <th>Email</th>
         <th>Country</th>
-        <th>Action</th>
     </tr>
     @foreach (var u in Model.Users) {
         <tr>
+            <td>@Html.ActionLink("Edit", "Edit", new { id = u.Id }, 
+                    new { @class = "imageEdit", title = "Edit" })
+                @using (Html.BeginForm()) {
+                    @Ajax.ActionLink("Delete", "Delete", 
+                        new { id = u.Id, name = u.Name, surname = u.Surname, username = u.UserName }, 
+                        new AjaxOptions { HttpMethod = "POST", 
+                            Confirm = "Are you sure you want to delete this item?", 
+                            OnSuccess="window.location.reload()" }, 
+                        new { @class = "imageDelete", title = "Delete" })
+                    <!--Html.Hidden("Id", u.Id)
+                    Html.Hidden("Name", u.Name)
+                    Html.Hidden("Surname", u.Surname)
+                    Html.Hidden("Username", u.UserName)
+                    <input type="submit" value="Delete" title="Delete" class="imageDelete" />-->
+                }
+            </td>
             <td>@Html.ActionLink((u.Name + " " + u.Surname), "Edit",  new { id = u.Id })
             </td>
             <td>@u.Email</td>
             <td>@u.State @u.Country</td>
-            <td>
-                @using (Html.BeginForm("Delete", "User")) {
-                    @Html.Hidden("Id", u.Id)
-                    @Html.Hidden("Name", u.Name)
-                    @Html.Hidden("Surname", u.Surname)
-                    @Html.Hidden("Username", u.UserName)
-                    <input type="submit" value="Delete"/>
-                }
-            </td>
         </tr>
     }
 </table>
@@ -46,3 +56,7 @@
         searchText = Model.SearchText, 
         page = x}))
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+}

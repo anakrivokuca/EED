@@ -190,8 +190,9 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             _mock.Verify(m => m.UpdateUser(It.IsAny<User>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
             Assert.AreEqual("User John Doe has been successfully saved.",
-                _controller.TempData["message"]); 
+                _controller.TempData["message-success"]); 
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -225,8 +226,9 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             _mock.Verify(m => m.DeleteUser(username, true), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
             Assert.AreEqual("User John Doe has been successfully deleted.",
-                _controller.TempData["message"]); 
+                _controller.TempData["message-success"]); 
         }
         #endregion
     }
