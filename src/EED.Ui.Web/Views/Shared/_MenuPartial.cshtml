@@ -1,0 +1,14 @@
+﻿<ul id="menu">
+    @{
+        var projectId = HttpContext.Current.Session["projectId"];
+        if (projectId == null)
+        {
+            <li>@Html.ActionLink("Projects", "List", "Project")</li>
+            if(User.Identity.Name == "admin") {
+                <li>@Html.ActionLink("Users", "List", "User")</li>
+            }
+        } else {
+            <li>@Html.ActionLink("Close project", "Close", "Project")</li>
+        }
+    }
+</ul>

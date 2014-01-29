@@ -204,6 +204,32 @@ ul#menu {
             text-decoration: none;
         }
 
+div#menuList { 
+    float: left; 
+    width: 8em; 
+    padding: .3em;
+}
+
+div#menuList a {
+    font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
+    display: block; 
+    padding: .6em;
+    border-bottom: 1px solid silver;
+}
+
+div#menuList a.selected { 
+    background-color: #666; 
+    color: White; 
+}
+
+div#menuList a:hover { 
+    background-color: #CCC; 
+}
+
+div#menuList a.selected:hover { 
+    background-color: #666; 
+}
+
 
 /* page elements
 ----------------------------------------------------------*/
@@ -569,7 +595,7 @@ th {
     font-size: 1.2em;
     text-align: left;
     border: none 0px;
-    padding-left: 0;
+    padding-left: 0.25em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     border-top: 1px dotted gray;

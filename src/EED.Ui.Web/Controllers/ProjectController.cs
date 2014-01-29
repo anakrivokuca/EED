@@ -131,6 +131,33 @@ namespace EED.Ui.Web.Controllers
             return RedirectToAction("List");
         }
 
+        //
+        // GET: /Project/Open
+
+        public ActionResult Open(int id)
+        {
+            var project = _service.FindAllProjectsFromUser()
+                .First(p => p.Id == id);
+            if (project != null)
+            {
+                Session["projectId"] = id;
+                Session["projectName"] = project.Name;
+            }
+            
+            return RedirectToAction("List", "DistrictType");
+        }
+
+        //
+        // GET: /Project/Close
+
+        public ActionResult Close()
+        {
+            Session["projectId"] = null;
+            Session["projectName"] = null;
+
+            return RedirectToAction("List", "Project");
+        }
+
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
         {
             var jurisdictionTypes = _jurisdictionTypeService.FindAllJurisdictionTypes();

@@ -1,0 +1,24 @@
+﻿<ul id="menu">
+    @{
+        var controller = 
+            HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+        var projectId = HttpContext.Current.Session["projectId"];
+        
+        if (projectId != null) {
+            <li>@Html.ActionLink("District Types", "List", "DistrictType", new { page = 1},
+                new { @class = "DistrictType" == controller ? "selected" : null })</li>
+            <li>@Html.ActionLink("Districts", "List", "District", new { page = 1},
+                new { @class = "District" == controller ? "selected" : null })</li>
+            <li>@Html.ActionLink("Precincts", "List", "Precinct", new { page = 1},
+                new { @class = "Precinct" == controller ? "selected" : null })</li>
+            <li>@Html.ActionLink("Offices", "List", "Office", new { page = 1},
+                new { @class = "Office" == controller ? "selected" : null })</li>
+            <li>@Html.ActionLink("Contests", "List", "Contest", new { page = 1},
+                new { @class = "Contest" == controller ? "selected" : null })</li>
+            <li>@Html.ActionLink("Political Parties", "List", "PoliticalParty", new { page = 1},
+                new { @class = "PoliticalPartiy" == controller ? "selected" : null })</li>
+            <li>@Html.ActionLink("Choices", "List", "Choice", new { page = 1},
+                new { @class = "Choice" == controller ? "selected" : null })</li>
+        }
+    }
+</ul>

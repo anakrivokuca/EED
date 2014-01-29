@@ -9,7 +9,9 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace EED.Unit.Tests.Controllers
 {
@@ -49,6 +51,12 @@ namespace EED.Unit.Tests.Controllers
 
             _controller = new ProjectController(_mock.Object, _mockJurisdictionType.Object, 
                 _mockElectionType.Object);
+
+            var session = new Mock<HttpSessionStateBase>();
+            var context = new Mock<HttpContextBase>();
+            context.SetupGet(x => x.Session).Returns(session.Object);
+            _controller.ControllerContext = new ControllerContext(context.Object, 
+                new RouteData(), _controller);
         }
 
         #region Test List Method
@@ -224,6 +232,33 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsNotNull(_controller.TempData["message-info"]);
             Assert.AreEqual("None of the projects has been selected for delete action.",
                 _controller.TempData["message-info"]);
+        }
+        #endregion
+
+        #region Test Open Method
+        [Test]
+        public void Open_GetValidProject_ReturnsRedirectResult()
+        {
+            // Arrange
+            var projectId = 1;
+            
+            // Act
+            var result = _controller.Open(projectId);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+        #endregion
+
+        #region Test Close Method
+        [Test]
+        public void Close_GetValidProject_ReturnsRedirectResult()
+        {
+            // Act
+            var result = _controller.Close();
+
+            // Assert
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
     }

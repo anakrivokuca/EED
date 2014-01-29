@@ -22,18 +22,14 @@
                         @Html.Partial("_LoginPartial")
                     </section>
                     <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Projects", "List", "Project")</li>
-                            @if(User.Identity.Name == "admin") {
-                                <li>@Html.ActionLink("Users", "List", "User")</li>
-                            }
-                        </ul>
+                        @Html.Partial("_MenuPartial")
                     </nav>
                 </div>
             </div>
         </header>
         <div id="body">
             @RenderSection("featured", required: false)
+            <div id="menuList">@Html.Partial("_LeftSideMenuPartial")</div>
             <section class="content-wrapper main-content clear-fix">
                 @if (TempData["message-success"] != null) {
                     <div class="message-success">@TempData["message-success"]</div>
