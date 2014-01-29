@@ -210,25 +210,25 @@ div#menuList {
     padding: .3em;
 }
 
-div#menuList a {
-    font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
-    display: block; 
-    padding: .6em;
-    border-bottom: 1px solid silver;
-}
+    div#menuList a {
+        font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
+        display: block; 
+        padding: .6em;
+        border-bottom: 1px solid silver;
+    }
 
-div#menuList a.selected { 
-    background-color: #666; 
-    color: White; 
-}
+    div#menuList a.selected { 
+        background-color: #666; 
+        color: White; 
+    }
 
-div#menuList a:hover { 
-    background-color: #CCC; 
-}
+    div#menuList a:hover { 
+        background-color: #CCC; 
+    }
 
-div#menuList a.selected:hover { 
-    background-color: #666; 
-}
+    div#menuList a.selected:hover { 
+        background-color: #666; 
+    }
 
 
 /* page elements

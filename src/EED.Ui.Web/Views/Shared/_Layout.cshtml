@@ -14,13 +14,15 @@
                 <div class="float-left">
                     <p class="site-title">
                         <img src="~/Images/logo.jpg" alt="Home" />
-                        <!--Html.ActionLink("Logo", "Index", "Home")-->
                     </p>
                 </div>
                 <div class="float-right">
                     <section id="login">
                         @Html.Partial("_LoginPartial")
                     </section>
+                    <p class="site-title">
+                        @Session["projectName"]
+                    </p>
                     <nav>
                         @Html.Partial("_MenuPartial")
                     </nav>

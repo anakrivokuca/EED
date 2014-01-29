@@ -2,4 +2,10 @@
     ViewBag.Title = "District Types";
 }
 
-<h2>District Types</h2>
+@section featured {
+    @Html.Partial("_FilterPartial")
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
