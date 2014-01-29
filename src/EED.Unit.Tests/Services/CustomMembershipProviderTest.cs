@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -29,15 +27,19 @@ namespace EED.Unit.Tests.Services
             _mock = new Mock<IRepository<User>>();
             _mock.Setup(r => r.FindAll()).Returns(new List<User> {
                 new User { Id = 1, Name = "Ana", Surname = "Krivokuca", 
-                    Email = "anakrivokuca@gmail.com", Country = "Serbia", UserName = "anakrivokuca",
-                    Password = "password", IsApproved = true},
-                new User { Id = 2, Name = "Ana", Surname = "Maley", Email = "ana@gmail.com"},
-                new User { Id = 5, Name = "Sarah", Email = "sarah@ny.com", 
-                    State = "US", Country = "NY"},
-                new User { Id = 3, Name = "John", Surname = "Doe", Email = "johndoe@gmail.com", 
-                    State = "US", Country = "Oklahoma", UserName = "johndoe",
-                    Password = "password", IsApproved = false},
-                new User { Id = 4, Name = "Jane", Email = "jane@nyuscom", State = "US"}
+                    Email = "anakrivokuca@gmail.com", Country = "Serbia", 
+                    UserName = "anakrivokuca", Password = "password", 
+                    IsApproved = true},
+                new User { Id = 2, Name = "Ana", Surname = "Maley", 
+                    Email = "ana@gmail.com"},
+                new User { Id = 5, Name = "Sarah", 
+                    Email = "sarah@ny.com", State = "US", Country = "NY"},
+                new User { Id = 3, Name = "John", Surname = "Doe", 
+                    Email = "johndoe@gmail.com",  State = "US", Country = "Oklahoma", 
+                    UserName = "johndoe", Password = "password", 
+                    IsApproved = false},
+                new User { Id = 4, Name = "Jane", 
+                    Email = "jane@nyuscom", State = "US"}
             });
             DependencyResolver.SetResolver(new NinjectDependencyResolver());
             _provider = DependencyResolver.Current.GetService<IMembershipProvider>();

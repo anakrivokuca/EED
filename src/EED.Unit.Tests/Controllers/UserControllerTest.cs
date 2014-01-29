@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using EED.Domain;
+﻿using EED.Domain;
+using EED.Service.Membership_Provider;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models;
 using Moq;
 using NUnit.Framework;
-using EED.Service.Membership_Provider;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using System.Web.Security;
-using EED.DAL;
 
 namespace EED.Unit.Tests.Controllers
 {
@@ -26,10 +25,11 @@ namespace EED.Unit.Tests.Controllers
             _users = new List<User> {
                 new User { Id = 1, Name = "Ana", Surname = "Krivokuca", 
                     Email = "anakrivokuca@gmail.com", UserName = "anakrivokuca"},
-                new User { Id = 2, Name = "Ana", Surname = "Maley", Email = "ana@gmail.com"},
+                new User { Id = 2, Name = "Ana", Surname = "Maley", 
+                    Email = "ana@gmail.com"},
                 new User { Id = 5, Name = "Sarah", State = "US"},
-                new User { Id = 3, Name = "John", Surname = "Doe", Email = "johndoe@gmail.com",
-                    State = "US", UserName = "johndoe"},
+                new User { Id = 3, Name = "John", Surname = "Doe", 
+                    Email = "johndoe@gmail.com", State = "US", UserName = "johndoe"},
                 new User { Id = 4, Name = "Jane", State = "US"}};
 
             _mock = new Mock<IMembershipProvider>();

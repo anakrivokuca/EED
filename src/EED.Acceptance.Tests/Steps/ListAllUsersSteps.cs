@@ -1,12 +1,7 @@
-﻿using System;
-using System.Web.Mvc;
-using EED.DAL;
-using EED.Domain;
-using EED.Ui.Web.Controllers;
+﻿using EED.Ui.Web.Controllers;
 using NUnit.Framework;
+using System.Web.Mvc;
 using TechTalk.SpecFlow;
-using EED.Service.Membership_Provider;
-using EED.Infrastructure;
 
 namespace EED.Acceptance.Tests.Steps
 {

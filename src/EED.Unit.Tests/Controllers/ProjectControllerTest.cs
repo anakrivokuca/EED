@@ -9,8 +9,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EED.Unit.Tests.Controllers
@@ -38,14 +36,16 @@ namespace EED.Unit.Tests.Controllers
             _mock.Setup(s => s.FindAllProjectsFromUser()).Returns(_projects);
 
             var _mockJurisdictionType = new Mock<IJurisdictionTypeService>();
-            _mockJurisdictionType.Setup(s => s.FindAllJurisdictionTypes()).Returns(new List<JurisdictionType> { 
-                new JurisdictionType { Id = 1, Name = "County"},
-                new JurisdictionType { Id = 1, Name = "Municipality"}});
+            _mockJurisdictionType.Setup(s => s.FindAllJurisdictionTypes()).Returns(
+                new List<JurisdictionType> { 
+                    new JurisdictionType { Id = 1, Name = "County"},
+                    new JurisdictionType { Id = 1, Name = "Municipality"}});
 
             var _mockElectionType = new Mock<IElectionTypeService>();
-            _mockElectionType.Setup(s => s.FindAllElectionTypes()).Returns(new List<ElectionType> { 
-                new ElectionType { Id = 1, Name = "General Elections"},
-                new ElectionType { Id = 1, Name = "General Elections"}});
+            _mockElectionType.Setup(s => s.FindAllElectionTypes()).Returns(
+                new List<ElectionType> { 
+                    new ElectionType { Id = 1, Name = "General Elections"},
+                    new ElectionType { Id = 1, Name = "General Elections"}});
 
             _controller = new ProjectController(_mock.Object, _mockJurisdictionType.Object, 
                 _mockElectionType.Object);

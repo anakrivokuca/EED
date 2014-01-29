@@ -1,11 +1,7 @@
 ﻿using EED.DAL;
 using EED.Domain;
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Security;
 
@@ -26,7 +22,7 @@ namespace EED.Service.Membership_Provider
         void UpdateUser(User user);
         bool DeleteUser(string username, bool deleteAllRelatedData);
         bool ValidateUser(string username, string password);
-        void OnValidatePassword(object sender, ValidatePasswordEventArgs e);
         IEnumerable<User> FilterUsers(IEnumerable<User> users, string searchText);
+        void OnValidatePassword(object sender, ValidatePasswordEventArgs e);
     }
 }

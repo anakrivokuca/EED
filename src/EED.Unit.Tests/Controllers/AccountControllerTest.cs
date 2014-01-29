@@ -1,11 +1,15 @@
-﻿using EED.Domain;
-using EED.Service.Membership_Provider;
+﻿using EED.Service.Membership_Provider;
+using EED.Ui.Web;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models;
 using Moq;
 using NUnit.Framework;
-using System.Linq;
+using System;
+using System.Collections.Specialized;
+using System.Security.Policy;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace EED.Unit.Tests.Controllers
 {
@@ -13,8 +17,9 @@ namespace EED.Unit.Tests.Controllers
     class AccountControllerTest
     {
         private Mock<IAuthProvider> _mock;
-        //private IEnumerable<User> _users;
         private AccountController _controller;
+        private RouteCollection _routes;
+        private Mock<HttpContextBase> _context;
 
         [SetUp]
         public void Set_Up_AccountControllerTest()
@@ -23,17 +28,35 @@ namespace EED.Unit.Tests.Controllers
             _mock = new Mock<IAuthProvider>();
             
             _controller = new AccountController(_mock.Object);
+
+            _routes = new RouteCollection();
+            RouteConfig.RegisterRoutes(_routes);
+
+            var request = new Mock<HttpRequestBase>();
+            //request.SetupGet(x => x.ApplicationPath).Returns("/");
+            request.SetupGet(x => x.Url).Returns(new Uri("/Account/Login", UriKind.Relative));
+            //request.SetupGet(x => x.ServerVariables).Returns(new NameValueCollection());
+
+            var response = new Mock<HttpResponseBase>();
+            response.Setup(x => x.ApplyAppPathModifier(It.IsAny<string>())).Returns<string>(x => x);
+
+            _context = new Mock<HttpContextBase>();
+            _context.SetupGet(x => x.Request).Returns(request.Object);
+            _context.SetupGet(x => x.Response).Returns(response.Object);
+
+            _controller.ControllerContext = new ControllerContext(_context.Object, 
+                new RouteData(), _controller);
         }
 
         [Test]
-        public void Login_PostValidCredentials_ReturnsRedirectResult()
+        public void Login_PostValidCredentialsWithUrl_ReturnsRedirectResult()
         {
             // Arrange
-            _mock.Setup(m => m.Authenticate("admin", "admin")).Returns(true);
             var model = new LoginViewModel {
-                Username = "admin",
-                Password = "admin"
+                Username = "validUser",
+                Password = "validPass"
             };
+            _mock.Setup(m => m.Authenticate(model.Username, model.Password)).Returns(true);
 
             // Act
             var result = _controller.Login(model, "/url");
@@ -44,19 +67,60 @@ namespace EED.Unit.Tests.Controllers
         }
 
         [Test]
+        public void Login_PostValidCredentialsWithoutReturnUrl_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new LoginViewModel
+            {
+                Username = "validUser",
+                Password = "validPass"
+            };
+            _mock.Setup(m => m.Authenticate(model.Username, model.Password)).Returns(true);
+            _controller.Url = new UrlHelper(new RequestContext(_context.Object, 
+                new RouteData()), _routes);
+
+            // Act
+            var result = _controller.Login(model, null);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(RedirectResult), result);
+            Assert.AreEqual("/", ((RedirectResult)result).Url);
+        }
+
+        [Test]
+        public void Login_PostAdminCredentialsWithoutReturnUrl_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new LoginViewModel
+            {
+                Username = "admin",
+                Password = "admin"
+            };
+            _mock.Setup(m => m.Authenticate(model.Username, model.Password)).Returns(true);
+            _controller.Url = new UrlHelper(new RequestContext(_context.Object, 
+                new RouteData()), _routes);
+
+            // Act
+            var result = _controller.Login(model, null);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(RedirectResult), result);
+            Assert.AreEqual("/User", ((RedirectResult)result).Url);
+        }
+
+        [Test]
         public void Login_PostInvalidCredentials_ReturnsViewResult()
         {
             // Arrange
-            _mock.Setup(m => m.Authenticate("badUser", "badPass")).Returns(false);
-
             var model = new LoginViewModel
             {
                 Username = "badUser",
                 Password = "badPass"
             };
+            _mock.Setup(m => m.Authenticate(model.Username, model.Password)).Returns(false);
 
             // Act
-            var result = _controller.Login(model, "/MyURL");
+            var result = _controller.Login(model, "/url");
 
             // Assert
             Assert.IsFalse(_controller.ModelState.IsValid);

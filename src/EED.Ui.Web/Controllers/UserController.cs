@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.WebPages;
-using EED.Domain;
-using EED.Service.Membership_Provider;
+﻿using EED.Domain;
 using EED.Infrastructure;
+using EED.Service.Membership_Provider;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models;
-using System.Web.Security;
+using System;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Security;
 
 namespace EED.Ui.Web.Controllers
 {

@@ -1,17 +1,16 @@
-﻿using EED.Domain;
-using EED.DAL;
+﻿using EED.DAL;
+using EED.Domain;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration.Provider;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web.Security;
-using System.Collections.Specialized;
-using System.Web.Configuration;
 using System.Text.RegularExpressions;
+using System.Web.Configuration;
 using System.Web.Mvc;
-using System.Configuration.Provider;
+using System.Web.Security;
 
 namespace EED.Service.Membership_Provider
 {
@@ -186,32 +185,37 @@ namespace EED.Service.Membership_Provider
                 status = MembershipCreateStatus.DuplicateEmail;
                 return null;
             }
-
-            User userObj = GetUser(user.UserName);
-
-            if (userObj == null)
+            
+            try
             {
-                user.CreationDate = DateTime.Now;
-                user.LastLoginDate = DateTime.Now;
-                _repository.Save(user);
+                User userObj = GetUser(user.UserName);
+                if (userObj != null)
+                {
+                    status = MembershipCreateStatus.DuplicateUserName;
+                    return null;
+                }
+                else
+                {
+                    user.CreationDate = DateTime.Now;
+                    user.LastLoginDate = DateTime.Now;
+                    _repository.Save(user);
 
-                status = MembershipCreateStatus.Success;
+                    status = MembershipCreateStatus.Success;
 
-                return GetUser(user.UserName);
+                    return GetUser(user.UserName);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                status = MembershipCreateStatus.DuplicateUserName;
+                throw new MemberAccessException("Error processing membership data - " + ex.Message);
             }
-
-            return null;
         }
 
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
             try
             {
-                User user = GetUser(username);
+                var user = GetUser(username);
 
                 if (user != null)
                 {
@@ -442,6 +446,23 @@ namespace EED.Service.Membership_Provider
             return isValid;
         }
 
+        public IEnumerable<User> FilterUsers(IEnumerable<User> users, string searchText)
+        {
+            string[] keywords = searchText.Trim().Split(' ');
+            foreach (var k in keywords.Where(k => !String.IsNullOrEmpty(k)))
+            {
+                string keyword = k;
+                users = users
+                    .Where(u => (String.Equals(u.Name, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Surname, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Email, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.State, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.Country, keyword, StringComparison.CurrentCultureIgnoreCase) ||
+                        String.Equals(u.UserName, keyword, StringComparison.CurrentCultureIgnoreCase)));
+            }
+            return users;
+        }
+
         public void OnValidatePassword(object sender, ValidatePasswordEventArgs e)
         {
             //Enforce our criteria
@@ -593,23 +614,6 @@ namespace EED.Service.Membership_Provider
                 lastLockedOutDate
                 );
             return membershipUser;
-        }
-
-        public IEnumerable<User> FilterUsers(IEnumerable<User> users, string searchText)
-        {
-            string[] keywords = searchText.Trim().Split(' ');
-            foreach (var k in keywords.Where(k => !String.IsNullOrEmpty(k)))
-            {
-                string keyword = k;
-                users = users
-                    .Where(u => (String.Equals(u.Name, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Surname, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Email, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.State, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.Country, keyword, StringComparison.CurrentCultureIgnoreCase) ||
-                        String.Equals(u.UserName, keyword, StringComparison.CurrentCultureIgnoreCase)));
-            }
-            return users;
         }
     }
 }

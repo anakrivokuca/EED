@@ -1,7 +1,7 @@
-﻿using System;
-using System.Web.Mvc;
-using EED.Ui.Web.Helpers.Pagination;
+﻿using EED.Ui.Web.Helpers.Pagination;
 using NUnit.Framework;
+using System;
+using System.Web.Mvc;
 
 namespace EED.Unit.Tests
 {

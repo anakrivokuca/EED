@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using NHibernate;
+﻿using NHibernate;
+using System.Collections.Generic;
 
 namespace EED.DAL
 {

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using EED.DAL;
+﻿using EED.DAL;
 using EED.Domain;
-using Ninject;
-using EED.Service.Membership_Provider;
-using EED.Service.Project;
 using EED.Service.Election_Type;
 using EED.Service.Jurisdiction_Type;
+using EED.Service.Membership_Provider;
+using EED.Service.Project;
+using Ninject;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace EED.Infrastructure
 {
