@@ -14,9 +14,7 @@ namespace EED.Ui.Web.Filters
         {
             if (filterContext.HttpContext.Session["projectId"] == null)
             {
-                // check if a new session id was generated
                 filterContext.Result = new RedirectResult("/Project/List");
-                return;
             }
 
             base.OnActionExecuting(filterContext);

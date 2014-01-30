@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace EED.Ui.Web.Controllers
 {
+    [Authorize]
     [SessionExpireFilter]
     public class DistrictTypeController : Controller
     {
