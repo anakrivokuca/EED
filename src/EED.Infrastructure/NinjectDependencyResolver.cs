@@ -1,5 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
+using EED.Service.District_Type;
 using EED.Service.Election_Type;
 using EED.Service.Jurisdiction_Type;
 using EED.Service.Membership_Provider;
@@ -37,12 +38,14 @@ namespace EED.Infrastructure
             _kernel.Bind<IRepository<ElectionProject>>().To<Repository<ElectionProject>>();
             _kernel.Bind<IRepository<JurisdictionType>>().To<Repository<JurisdictionType>>();
             _kernel.Bind<IRepository<ElectionType>>().To<Repository<ElectionType>>();
+            _kernel.Bind<IRepository<DistrictType>>().To<Repository<DistrictType>>();
 
             _kernel.Bind<IMembershipProvider>().To<CustomMembershipProvider>();
             _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
             _kernel.Bind<IProjectService>().To<ProjectService>();
             _kernel.Bind<IJurisdictionTypeService>().To<JurisdictionTypeService>();
             _kernel.Bind<IElectionTypeService>().To<ElectionTypeService>();
+            _kernel.Bind<IDistrictTypeService>().To<DistrictTypeService>();
         }
 
     }

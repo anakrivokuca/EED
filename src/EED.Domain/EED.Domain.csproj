@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DistrictType.cs" />
     <Compile Include="ElectionProject.cs" />
     <Compile Include="ElectionType.cs" />
     <Compile Include="JurisdictionType.cs" />
@@ -58,6 +59,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Mappings\ElectionType.hbm.xml" />
     <EmbeddedResource Include="Mappings\JurisdictionType.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\DistrictType.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

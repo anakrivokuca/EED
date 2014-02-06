@@ -1,8 +1,8 @@
-﻿using EED.Ui.Web.Filters;
+﻿using EED.Service.District_Type;
+using EED.Ui.Web.Filters;
+using EED.Ui.Web.Models.District_Type;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EED.Ui.Web.Controllers
@@ -11,12 +11,30 @@ namespace EED.Ui.Web.Controllers
     [SessionExpireFilter]
     public class DistrictTypeController : Controller
     {
+        private readonly IDistrictTypeService _service;
+
+        public DistrictTypeController(IDistrictTypeService service)
+        {
+            _service = service;
+        }
+
         //
         // GET: /DistrictType/
 
-        public ActionResult List()
+        public ViewResult List(string searchText)
         {
-            return View();
+            int projectId = Convert.ToInt32(Session["projectId"]);
+            var districtTypes = _service.FindAllDistrictTypesFromProject(projectId);
+
+            if (!String.IsNullOrEmpty(searchText))
+                districtTypes = _service.FilterDistrictTypes(districtTypes, searchText).ToList();
+
+            var model = new ListViewModel() { 
+                DistrictTypes = districtTypes,
+                SearchText = searchText
+            };
+
+            return View(model);
         }
 
         //
@@ -45,7 +63,7 @@ namespace EED.Ui.Web.Controllers
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
             catch
             {
@@ -63,7 +81,7 @@ namespace EED.Ui.Web.Controllers
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
             catch
             {

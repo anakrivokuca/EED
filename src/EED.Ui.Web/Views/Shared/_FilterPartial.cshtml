@@ -1,6 +1,6 @@
 ﻿@{ 
     string title = ViewBag.Title;
-    string controller = ViewBag.Title.TrimEnd('s');
+    string controller = ViewBag.Title.Replace(" ", "").TrimEnd('s');
 }
 <section class="featured">
     <div class="content-wrapper">
