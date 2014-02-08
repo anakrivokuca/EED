@@ -16,6 +16,14 @@ namespace EED.DAL
             }
         }
 
+        public TEntity Find(int id)
+        {
+            using (_session = SessionFactory.OpenSession())
+            {
+                return _session.Get<TEntity>(id);
+            }
+        }
+
         public void Save(TEntity entity)
         {
             using (_session = SessionFactory.OpenSession())

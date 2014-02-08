@@ -1,6 +1,7 @@
 ﻿using EED.DAL;
 using EED.Domain;
 using EED.Service.District_Type;
+using EED.Service.Project;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -73,6 +74,37 @@ namespace EED.Unit.Tests.Services
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
+        }
+        #endregion
+
+        #region Test FindDistrictType Method
+        [Test]
+        public void FindDistrictType_GoodDistrictType_ReturnsDistrictType()
+        {
+            // Arrange
+            var districtTypeId = 1;
+            _mock.Setup(r => r.Find(districtTypeId)).Returns(new DistrictType { Id = 1, Name = "DistrictType1" });
+
+            // Act
+            var result = _service.FindDistrictType(districtTypeId);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void FindDistrictType_NonExistentDistrictType_ReturnsNull()
+        {
+            // Arrange
+            var districtTypeId = 101;
+            DistrictType districtType = null;
+            _mock.Setup(r => r.Find(districtTypeId)).Returns(districtType);
+
+            //Act
+            var result = _service.FindDistrictType(districtTypeId);
+
+            //Assert
+            Assert.IsNull(result);
         }
         #endregion
 

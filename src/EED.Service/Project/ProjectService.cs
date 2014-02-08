@@ -1,5 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
+using EED.Service.District_Type;
 using EED.Service.Membership_Provider;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,15 @@ namespace EED.Service.Project
     {
         private readonly IRepository<ElectionProject> _repository;
         private readonly IAuthProvider _provider;
+        private readonly IDistrictTypeService _districtTypeService;
+        //private readonly IDistrictService _districtService;
 
-        public ProjectService(IRepository<ElectionProject> repository, IAuthProvider provider)
+        public ProjectService(IRepository<ElectionProject> repository, IAuthProvider provider,
+            IDistrictTypeService districtTypeService)
         {
             _repository = repository;
             _provider = provider;
+            _districtTypeService = districtTypeService;
         }
 
         public IEnumerable<ElectionProject> FindAllProjects()
@@ -29,6 +34,11 @@ namespace EED.Service.Project
             var projects = FindAllProjects().Where(p => p.User.Id == userId);
             
             return projects;
+        }
+
+        public ElectionProject FindProject(int id)
+        {
+            return _repository.Find(id);
         }
 
         public IEnumerable<ElectionProject> FilterProjects(IEnumerable<ElectionProject> projects,
@@ -53,6 +63,16 @@ namespace EED.Service.Project
                 project.User = new User { Id = userId };
 
                 _repository.Save(project);
+
+                if(project.Id == 0)
+                {
+                    var districtType = new DistrictType
+                    {
+                        Name = project.JurisdictionType.Name,
+                        Project = project
+                    };
+                    _districtTypeService.SaveDistrictType(districtType);
+                }
             }
             catch (Exception ex)
             {

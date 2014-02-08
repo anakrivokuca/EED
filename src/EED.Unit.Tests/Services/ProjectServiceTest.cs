@@ -1,5 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
+using EED.Service.District_Type;
 using EED.Service.Membership_Provider;
 using EED.Service.Project;
 using Moq;
@@ -15,6 +16,7 @@ namespace EED.Unit.Tests.Services
     {
         private Mock<IRepository<ElectionProject>> _mock;
         private Mock<IAuthProvider> _mockProvider;
+        private Mock<IDistrictTypeService> _mockDistrictTypeService;
         private IProjectService _service;
         private IEnumerable<ElectionProject> _projects;
 
@@ -34,7 +36,10 @@ namespace EED.Unit.Tests.Services
             _mockProvider.Setup(p => p.GetUserFromCookie()).Returns(
                 new User { Id = 3, UserName = "sarah" });
 
-            _service = new ProjectService(_mock.Object, _mockProvider.Object);
+            _mockDistrictTypeService = new Mock<IDistrictTypeService>();
+
+            _service = new ProjectService(_mock.Object, _mockProvider.Object, 
+                _mockDistrictTypeService.Object);
         }
 
         #region Test FindAllProjects Method
@@ -75,6 +80,37 @@ namespace EED.Unit.Tests.Services
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
+        }
+        #endregion
+
+        #region Test FindProject Method
+        [Test]
+        public void FindPoject_GoodProject_ReturnsProject()
+        {
+            // Arrange
+            var projectId = 1;
+            _mock.Setup(r => r.Find(projectId)).Returns(new ElectionProject { Id = 1, Name = "Project1" });
+
+            // Act
+            var result = _service.FindProject(projectId);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void FindProject_NonExistentProject_ReturnsNull()
+        {
+            // Arrange
+            var projectId = 101;
+            ElectionProject project = null;
+            _mock.Setup(r => r.Find(projectId)).Returns(project);
+
+            //Act
+            var result = _service.FindProject(projectId);
+
+            //Assert
+            Assert.IsNull(result);
         }
         #endregion
 
@@ -148,7 +184,6 @@ namespace EED.Unit.Tests.Services
             // Arrange
             var project = new ElectionProject
             {
-                Id = 100,
                 Name = "NewProject",
                 Date = new DateTime(2012, 6, 5),
                 JurisdictionName = "CountyName",
@@ -161,6 +196,27 @@ namespace EED.Unit.Tests.Services
 
             // Assert
             _mock.Verify(m => m.Save(project));
+            _mockDistrictTypeService.Verify(m => m.SaveDistrictType(It.IsAny<DistrictType>()));
+        }
+
+        [Test]
+        public void SaveProject_ExistingProject_DoesNotSaveDistrict()
+        {
+            // Arrange
+            var project = new ElectionProject
+            {
+                Id = 1,
+                Name = "Project1",
+                JurisdictionName = "JurisdictionNewName",
+                User = new User { Id = 1 }
+            };
+
+            // Act
+            _service.SaveProject(project);
+
+            // Assert
+            _mock.Verify(m => m.Save(project));
+            _mockDistrictTypeService.Verify(m => m.SaveDistrictType(It.IsAny<DistrictType>()), Times.Never());
         }
 
         [Test]

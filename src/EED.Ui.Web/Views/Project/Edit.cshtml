@@ -45,8 +45,15 @@
             @Html.LabelFor(model => model.ElectionTypeId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.ElectionTypeId, Model.ElectionTypes, string.Empty)
-            @Html.ValidationMessageFor(model => model.ElectionTypeId)
+            @if(Model.Id.Equals(0)) {
+                @Html.DropDownListFor(model => model.ElectionTypeId, Model.ElectionTypes, string.Empty)
+                @Html.ValidationMessageFor(model => model.ElectionTypeId)
+            }
+            else
+            {
+                @Html.DropDownListFor(model => model.ElectionTypeId, Model.ElectionTypes, string.Empty, 
+                    new { @disabled = "disabled" })
+            }
         </div>
 
         <div class="editor-label">
@@ -69,8 +76,15 @@
             @Html.LabelFor(model => model.JurisdictionTypeId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty)
-            @Html.ValidationMessageFor(model => model.JurisdictionTypeId)
+            @if(Model.Id.Equals(0)) {
+                @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty)
+                @Html.ValidationMessageFor(model => model.JurisdictionTypeId)
+            }
+            else
+            {
+                @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty, 
+                    new { @disabled = "disabled" })
+            }
         </div>
         
         <p>

@@ -29,7 +29,7 @@ namespace EED.Ui.Web.Controllers
             if (!String.IsNullOrEmpty(searchText))
                 districtTypes = _service.FilterDistrictTypes(districtTypes, searchText).ToList();
 
-            var model = new ListViewModel() { 
+            var model = new ListViewModel() {
                 DistrictTypes = districtTypes,
                 SearchText = searchText
             };

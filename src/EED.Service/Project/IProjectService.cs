@@ -7,6 +7,7 @@ namespace EED.Service.Project
     {
         IEnumerable<ElectionProject> FindAllProjects();
         IEnumerable<ElectionProject> FindAllProjectsFromUser();
+        ElectionProject FindProject(int id);
         IEnumerable<ElectionProject> FilterProjects(IEnumerable<ElectionProject> projects,
             string searchText);
         void SaveProject(ElectionProject project);

@@ -23,8 +23,13 @@ namespace EED.Service.District_Type
         public IEnumerable<DistrictType> FindAllDistrictTypesFromProject(int projectId)
         {
             var districtTypes = FindAllDistrictTypes().Where(dt => dt.Project.Id == projectId);
-
+            
             return districtTypes;
+        }
+
+        public DistrictType FindDistrictType(int id)
+        {
+            return _repository.Find(id);
         }
 
         public IEnumerable<DistrictType> FilterDistrictTypes(IEnumerable<DistrictType> districtTypes,

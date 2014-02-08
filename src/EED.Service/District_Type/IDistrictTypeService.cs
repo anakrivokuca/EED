@@ -7,6 +7,7 @@ namespace EED.Service.District_Type
     {
         IEnumerable<DistrictType> FindAllDistrictTypes();
         IEnumerable<DistrictType> FindAllDistrictTypesFromProject(int projectId);
+        DistrictType FindDistrictType(int id);
         IEnumerable<DistrictType> FilterDistrictTypes(IEnumerable<DistrictType> districtTypes,
             string searchText);
         void SaveDistrictType(DistrictType districtType);
