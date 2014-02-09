@@ -1,24 +1,26 @@
-﻿<ul id="menu">
+﻿<div id="menuList">
+    <ul id="menu">
     @{
         var controller = 
             HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
         var projectId = HttpContext.Current.Session["projectId"];
         
         if (projectId != null) {
-            <li>@Html.ActionLink("District Types", "List", "DistrictType", new { page = 1},
+            <li>@Html.ActionLink("District Types", "List", "DistrictType", null,
                 new { @class = "DistrictType" == controller ? "selected" : null })</li>
-            <li>@Html.ActionLink("Districts", "List", "District", new { page = 1},
+            <li>@Html.ActionLink("Districts", "List", "District", null,
                 new { @class = "District" == controller ? "selected" : null })</li>
-            <li>@Html.ActionLink("Precincts", "List", "Precinct", new { page = 1},
+            <li>@Html.ActionLink("Precincts", "List", "Precinct", null,
                 new { @class = "Precinct" == controller ? "selected" : null })</li>
-            <li>@Html.ActionLink("Offices", "List", "Office", new { page = 1},
+            <li>@Html.ActionLink("Offices", "List", "Office", null,
                 new { @class = "Office" == controller ? "selected" : null })</li>
-            <li>@Html.ActionLink("Contests", "List", "Contest", new { page = 1},
+            <li>@Html.ActionLink("Contests", "List", "Contest", null,
                 new { @class = "Contest" == controller ? "selected" : null })</li>
-            <li>@Html.ActionLink("Political Parties", "List", "PoliticalParty", new { page = 1},
+            <li>@Html.ActionLink("Political Parties", "List", "PoliticalParty", null,
                 new { @class = "PoliticalPartiy" == controller ? "selected" : null })</li>
-            <li>@Html.ActionLink("Choices", "List", "Choice", new { page = 1},
+            <li>@Html.ActionLink("Choices", "List", "Choice", null,
                 new { @class = "Choice" == controller ? "selected" : null })</li>
         }
     }
 </ul>
+    </div>

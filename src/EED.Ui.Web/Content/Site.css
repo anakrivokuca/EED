@@ -204,29 +204,29 @@ ul#menu {
             text-decoration: none;
         }
 
-div#menuList { 
+#menuList { 
     float: left; 
     width: 8em; 
     padding: .3em;
 }
 
-    div#menuList a {
+    #menuList a {
         font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
         display: block; 
         padding: .6em;
         border-bottom: 1px solid silver;
     }
 
-    div#menuList a.selected { 
+    #menuList a.selected { 
         background-color: #666; 
         color: White; 
     }
 
-    div#menuList a:hover { 
+    #menuList a:hover { 
         background-color: #CCC; 
     }
 
-    div#menuList a.selected:hover { 
+    #menuList a.selected:hover { 
         background-color: #666; 
     }
 

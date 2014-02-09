@@ -4,8 +4,12 @@
     ViewBag.Title = "District Types";
 }
 
-@section featured {
+@section filter {
     @Html.Partial("_FilterPartial")
+}
+
+@section leftMenu {
+    @Html.Partial("_LeftSideMenuPartial")
 }
 
 <hgroup class="title">
@@ -45,11 +49,13 @@
                         <input type="submit" value="Delete" title="Delete" class="imageDelete" />-->
                     }
                 </td>
+                <td>@Html.ActionLink((dt.Name), "Edit",  new { id = dt.Id })</td>
+            } else {
+                <td></td>
+                <td>@dt.Name</td>
             }
-            <td>@Html.ActionLink((dt.Name), "Edit",  new { id = dt.Id })
-            </td>
             <td>@dt.Abbreviation</td>
-            @if(@dt.ParentDistrictType != null) {
+            @if(dt.ParentDistrictType != null) {
                 <td>@dt.ParentDistrictType.Name</td>
             } else {
                 <td></td>

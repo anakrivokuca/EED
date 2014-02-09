@@ -30,18 +30,19 @@
             </div>
         </header>
         <div id="body">
-            @RenderSection("featured", required: false)
-            <div id="menuList">@Html.Partial("_LeftSideMenuPartial")</div>
+            @RenderSection("filter", required: false)
+            @RenderSection("leftMenu", required: false)
             <section class="content-wrapper main-content clear-fix">
-                @if (TempData["message-success"] != null) {
-                    <div class="message-success">@TempData["message-success"]</div>
+                <!--if (TempData["message-success"] != null) {
+                    <div class="message-success">TempData["message-success"]</div>
                 }
-                @if (TempData["message-info"] != null) {
-                    <div class="message-info">@TempData["message-info"]</div>
+                if (TempData["message-info"] != null) {
+                    <div class="message-info">TempData["message-info"]</div>
                 }
-                @if (TempData["message-error"] != null) {
-                    <div class="message-error">@TempData["message-error"]</div>
-                }
+                if (TempData["message-error"] != null) {
+                    <div class="message-error">TempData["message-error"]</div>
+                }-->
+                
                 @RenderBody()
             </section>
         </div>

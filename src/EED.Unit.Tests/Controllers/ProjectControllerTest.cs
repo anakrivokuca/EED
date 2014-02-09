@@ -91,23 +91,34 @@ namespace EED.Unit.Tests.Controllers
         [Test]
         public void Edit_GetProject_ReturnsCreateViewModel()
         {
+            // Arrange
+            var projectId = 1;
+            _mock.Setup(p => p.FindProject(projectId)).Returns(new ElectionProject
+            {
+                Id = projectId,
+                Name = "Project1",
+                ElectionType = new ElectionType { Id = 1 },
+                JurisdictionType = new JurisdictionType { Id = 1 }
+            });
+
             // Act
-            var result1 = (CreateViewModel)_controller.Edit(1).Model;
-            var result2 = (CreateViewModel)_controller.Edit(2).Model;
+            var result = (CreateViewModel)_controller.Edit(projectId).Model;
 
             // Assert
-            Assert.AreEqual("Project1", result1.Name,
-                "Selected project should be Project1.");
-            Assert.AreEqual("Project2", result2.Name,
-                "Selected project should be Project2.");
+            Assert.AreEqual("Project1", result.Name);
         }
 
         [Test]
-        [ExpectedException(typeof(System.InvalidOperationException))]
+        [ExpectedException(typeof(System.NullReferenceException))]
         public void Edit_GetNonexistentProject_ThrowsException()
         {
+            // Arrange
+            var projectId = 101;
+            ElectionProject project = null;
+            _mock.Setup(p => p.FindProject(projectId)).Returns(project);
+
             // Act
-            var result = (CreateViewModel)_controller.Edit(101).Model;
+            var result = (CreateViewModel)_controller.Edit(projectId).Model;
 
             // Assert
             Assert.IsNull(result);
@@ -121,13 +132,11 @@ namespace EED.Unit.Tests.Controllers
             // Arrange
             var model = new CreateViewModel
             {
-                Id = 100,
                 Name = "NewProject", 
                 Date = new DateTime(2012, 2, 8),
                 ElectionTypeId =  1,
                 JurisdictionTypeId = 1
             };
-            var project = model.ConvertModelToProject(model);
 
             // Act
             var result = _controller.Edit(model);
@@ -144,15 +153,22 @@ namespace EED.Unit.Tests.Controllers
         public void Edit_PostExistingProjectWithValidChanges_ReturnsRedirectResult()
         {
             // Arrange
+            var projectId = 2;
             var model = new CreateViewModel
             {
-                Id = 2,
+                Id = projectId,
                 Name = "Project 2", 
                 Date = new DateTime(2012, 2, 8),
                 Description = "Project description.",
                 JurisdictionTypeId = 1
             };
-            var project = model.ConvertModelToProject(model);
+            _mock.Setup(p => p.FindProject(projectId)).Returns(new ElectionProject
+            {
+                Id = projectId,
+                Name = "Project2",
+                ElectionType = new ElectionType { Id = 1 },
+                JurisdictionType = new JurisdictionType { Id = 1 }
+            });
 
             // Act
             var result = _controller.Edit(model);

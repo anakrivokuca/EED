@@ -75,5 +75,89 @@ namespace EED.Unit.Tests.Controllers
             Assert.AreEqual(1, result.Count());
         }
         #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetDistrictType_ReturnsCreateViewModel()
+        {
+            // Arrange
+            var districtTypeId = 1;
+            _mock.Setup(s => s.FindDistrictType(districtTypeId)).Returns(new DistrictType
+            {
+                Id = districtTypeId,
+                Name = "DistrictType1",
+                ParentDistrictType = new DistrictType { Id = 1 }
+            });
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(districtTypeId).Model;
+
+            // Assert
+            Assert.AreEqual("DistrictType1", result.Name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.NullReferenceException))]
+        public void Edit_GetNonexistentDistrictType_ThrowsException()
+        {
+            // Arrange
+            var districtTypeId = 101;
+            DistrictType districtType = null;
+            _mock.Setup(s => s.FindDistrictType(districtTypeId)).Returns(districtType);
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(101).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test Edit (Post) Method
+        [Test]
+        public void Edit_PostNewDistrictType_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Name = "NewDistrictType",
+                Abbreviation = "NDT",
+            };
+            //var districtType = model.ConvertModelToDistrictType(model);
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveDistrictType(It.IsAny<DistrictType>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("District type NewDistrictType has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingDistrictTypeWithValidChanges_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 2,
+                Name = "District Type 2",
+                Abbreviation = "DT2"
+            };
+            //var project = model.ConvertModelToProject(model);
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveDistrictType(It.IsAny<DistrictType>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("District type District Type 2 has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+        #endregion
     }
 }

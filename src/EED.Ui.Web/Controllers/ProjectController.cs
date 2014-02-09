@@ -59,8 +59,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
-            var project = _service.FindAllProjectsFromUser()
-                .First(p => p.Id == id);
+            var project = _service.FindProject(id);
 
             var model = new CreateViewModel();
             model = model.ConvertProjectToModel(project);
@@ -78,6 +77,12 @@ namespace EED.Ui.Web.Controllers
             if (ModelState.IsValid)
             {
                 var project = model.ConvertModelToProject(model);
+                if (model.Id != 0)
+                {
+                    var existingProject = _service.FindProject(model.Id);
+                    project.JurisdictionType =  existingProject.JurisdictionType;
+                    project.ElectionType = existingProject.ElectionType;
+                }
                 _service.SaveProject(project);
                 TempData["message-success"] = string.Format(
                     "Project {0} has been successfully saved.", 
@@ -132,12 +137,11 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Project/Open
+        // GET: /Project/Open/Id
 
         public ActionResult Open(int id)
         {
-            var project = _service.FindAllProjectsFromUser()
-                .First(p => p.Id == id);
+            var project = _service.FindProject(id);
             if (project != null)
             {
                 Session["projectId"] = id;
@@ -148,7 +152,7 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Project/Close
+        // GET: /Project/Close/Id
 
         public ActionResult Close()
         {

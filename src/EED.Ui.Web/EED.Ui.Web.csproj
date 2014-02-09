@@ -148,6 +148,7 @@
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
+    <Compile Include="Models\District_Type\CreateViewModel.cs" />
     <Compile Include="Models\District_Type\ListViewModel.cs" />
     <Compile Include="Models\Project\CreateViewModel.cs" />
     <Compile Include="Models\Project\ListViewModel.cs" />
@@ -274,6 +275,7 @@
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\DistrictType\List.cshtml" />
     <Content Include="Views\Shared\_LeftSideMenuPartial.cshtml" />
+    <Content Include="Views\DistrictType\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

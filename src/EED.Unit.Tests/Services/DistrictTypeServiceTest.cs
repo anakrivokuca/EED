@@ -147,5 +147,25 @@ namespace EED.Unit.Tests.Services
                 "No district type should be listed with specified criteria.");
         }
         #endregion
+
+        #region Test SaveDistrictType Method
+        [Test]
+        public void SaveDistrictType_NewValidDistrictType_DoesNotThrowError()
+        {
+            // Arrange
+            var districtType = new DistrictType
+            {
+                Name = "NewPDistrictType",
+                Abbreviation = "NDT",
+                ParentDistrictType = new DistrictType { Id = 1 }
+            };
+
+            // Act
+            _service.SaveDistrictType(districtType);
+
+            // Assert
+            _mock.Verify(m => m.Save(districtType));
+        }
+        #endregion
     }
 }
