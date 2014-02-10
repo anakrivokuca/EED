@@ -159,5 +159,23 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_PostValidDistrictType_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var districtType = new DistrictType { Id = 1, Name = "DistrictType1" };
+
+            // Act
+            _controller.Delete(districtType.Id, districtType.Name);
+
+            // Assert
+            _mock.Verify(m => m.DeleteDistrictType(It.IsAny<DistrictType>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("District type " + districtType.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+        #endregion
     }
 }

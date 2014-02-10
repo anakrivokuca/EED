@@ -93,18 +93,14 @@ namespace EED.Ui.Web.Controllers
         // POST: /DistrictType/Delete/
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, string name)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var districtType = new DistrictType { Id = id };
+            _service.DeleteDistrictType(districtType);
+            TempData["message-success"] = string.Format(
+                "District type {0} has been successfully deleted.", name);
 
-                return RedirectToAction("List");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("List");
         }
 
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)

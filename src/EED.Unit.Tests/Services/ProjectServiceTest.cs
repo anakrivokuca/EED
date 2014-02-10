@@ -250,7 +250,7 @@ namespace EED.Unit.Tests.Services
             _service.DeleteProject(project);
 
             // Assert
-            _mock.Verify(m => m.Delete(It.IsAny<ElectionProject>()));
+            _mock.Verify(m => m.Delete(It.IsAny<ElectionProject>()), Times.Once());
         }
         #endregion
     }
