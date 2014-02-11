@@ -33,6 +33,7 @@ namespace EED.Unit.Tests.Services
             _service = new DistrictService(_mock.Object);
         }
 
+        #region Test FindAllDistricts Method
         [Test]
         public void FindAllDistricts_GivenThreeDistricts_ReturnsThreeDistricts()
         {
@@ -55,5 +56,54 @@ namespace EED.Unit.Tests.Services
             // Assert
             Assert.AreEqual(2, result.Count());
         }
+        #endregion
+
+        #region Test FilterDistricts Method
+        [Test]
+        public void FilterDistricts_ByNameAndDistrictType_ReturnsOneDistrict()
+        {
+            // Arrange
+            var districts = _mock.Object.FindAll();
+            var districtName = "District1";
+
+            // Act
+            var resultByName = _service.FilterDistricts(districts, districtName, 0);
+            var resultByDistrictType = _service.FilterDistricts(districts, "", 2);
+
+            // Assert
+            var districtList = resultByName.ToList();
+            Assert.AreEqual(1, districtList.Count());
+            Assert.AreEqual(districtName, districtList[0].Name,
+                "District with specified name should be " + districtName + ".");
+
+            districtList = resultByDistrictType.ToList();
+            Assert.AreEqual(2, districtList.Count());
+            Assert.AreEqual("District2", districtList[0].Name,
+                "First district with specified district type should be District2.");
+            Assert.AreEqual("District3", districtList[1].Name,
+                "Second district with specified district type should be District3.");
+        }
+
+        [Test]
+        public void FilterDistricts_ByIncorrectValues_ReturnsDistrictsWithoutError()
+        {
+            // Arrange
+            var districts = _mock.Object.FindAll();
+
+            // Act
+            var resultWithSpaces = _service.FilterDistricts(districts, "  District1   ", 0);
+            var resultWithNonexistentDistrict = _service.FilterDistricts(districts, "NonexistentDistrict", 5);
+
+            // Assert
+            var districtTypesList = resultWithSpaces.ToList();
+            Assert.AreEqual(1, districtTypesList.Count(),
+                "One district types should be listed with specified criteria.");
+            Assert.AreEqual("District1", districtTypesList[0].Name,
+                "District type with specified criteria should be District1.");
+
+            Assert.AreEqual(0, resultWithNonexistentDistrict.Count(),
+                "No district type should be listed with specified criteria.");
+        }
+        #endregion
     }
 }

@@ -122,8 +122,7 @@ namespace EED.Unit.Tests.Services
             // Assert
             var districtTypesList = resultByName.ToList();
             Assert.AreEqual(1, districtTypesList.Count);
-            Assert.AreEqual("DistrictType1", districtTypesList[0].Name,
-                "Project with specified name should be DistrictType1.");
+            Assert.AreEqual("DistrictType1", districtTypesList[0].Name);
         }
 
         [Test]

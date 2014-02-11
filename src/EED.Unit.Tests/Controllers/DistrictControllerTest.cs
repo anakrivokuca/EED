@@ -1,5 +1,6 @@
 ﻿using EED.Domain;
 using EED.Service.District;
+using EED.Service.District_Type;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.District;
 using Moq;
@@ -17,13 +18,13 @@ namespace EED.Unit.Tests.Controllers
     {
         private Mock<IDistrictService> _mock;
         private DistrictController _controller;
+        private IEnumerable<District> _districts;
 
         [SetUp]
         public void SetUp_DistrictControllerTest()
         {
             // Arrange
-            _mock = new Mock<IDistrictService>();
-            _mock.Setup(d => d.FindAllDistrictsFromProject(1)).Returns(new List<District> { 
+            _districts = new List<District> { 
                 new District { Id = 1, Name = "District1", 
                     DistrictType = new DistrictType { Id = 1, Name = "DistrictType1"}, 
                     Project = new ElectionProject { Id = 1 }},
@@ -32,9 +33,20 @@ namespace EED.Unit.Tests.Controllers
                     Project = new ElectionProject { Id = 1 }},
                 new District { Id = 3, Name = "District3", 
                     DistrictType = new DistrictType { Id = 2, Name = "DistrictType2"}, 
-                    Project = new ElectionProject { Id = 1 }}});
+                    Project = new ElectionProject { Id = 1 }}};
 
-            _controller = new DistrictController(_mock.Object);
+            _mock = new Mock<IDistrictService>();
+            _mock.Setup(d => d.FindAllDistrictsFromProject(1)).Returns(_districts);
+
+            var mockDistrictTypeService = new Mock<IDistrictTypeService>();
+            mockDistrictTypeService.Setup(dt => dt.FindAllDistrictTypesFromProject(1))
+                .Returns(new List<DistrictType> {
+                    new DistrictType { Id = 1, Name = "DistrictType1", 
+                        Project = new ElectionProject { Id = 1} },
+                    new DistrictType { Id = 2, Name = "DistrictType2", 
+                        Project = new ElectionProject { Id = 1} }});
+
+            _controller = new DistrictController(_mock.Object, mockDistrictTypeService.Object);
 
             var session = new Mock<HttpSessionStateBase>();
             var context = new Mock<HttpContextBase>();
@@ -44,14 +56,45 @@ namespace EED.Unit.Tests.Controllers
                 new RouteData(), _controller);
         }
 
+        #region Test List Method
         [Test]
         public void List_GivenThreeDistricts_ReturnsThreeDistricts()
         {
             // Act
-            var result = ((ListViewModel)_controller.List().Model).Districts;
+            var result = ((ListViewModel)_controller.List(null).Model).DistrictsPerPage;
 
             // Assert
             Assert.AreEqual(3, result.Count());
         }
+
+        [Test]
+        public void List_GivenThreeDistrictsAndTwoDistrictsPerPage_ReturnsOneDistrictOnTheSecondPage()
+        {
+            // Arrange
+            _controller.ItemsPerPage = 2;
+
+            // Act
+            var result = ((ListViewModel)_controller.List(null, 0, 2).Model).DistrictsPerPage;
+
+            // Assert
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void List_GetFilteredDistricts_ReturnsOneDistrict()
+        {
+            // Arrange
+            var searchText = "District1";
+            var districtTypeId = 1;
+            _mock.Setup(d => d.FilterDistricts(_districts, searchText, districtTypeId)).Returns(
+                new List<District> { new District { Id = districtTypeId, Name = searchText }});
+
+            // Act
+            var result = ((ListViewModel)_controller.List(searchText, 1).Model).DistrictsPerPage;
+
+            // Assert
+            Assert.AreEqual(1, result.Count());
+        }
+        #endregion
     }
 }

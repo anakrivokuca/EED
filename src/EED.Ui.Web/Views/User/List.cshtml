@@ -53,8 +53,8 @@
 <div class="pager">
     @{var pageInfo = Model.PagingInfo;}
     @Html.PageLinks(pageInfo, x => Url.Action("List", "User", new {
-        searchText = Model.SearchText, 
-        page = x}))
+        SearchText = Model.SearchText, 
+        Page = x}))
 </div>
 
 @section Scripts {

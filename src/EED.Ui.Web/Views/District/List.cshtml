@@ -1,7 +1,28 @@
-﻿@model EED.Ui.Web.Models.District.ListViewModel
+﻿@using EED.Ui.Web.Helpers.Pagination
+@model EED.Ui.Web.Models.District.ListViewModel
 
 @{
     ViewBag.Title = "Districts";
+}
+
+@section filter {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h2>Filter @ViewBag.Title</h2>
+            </hgroup>
+            @using (Html.BeginForm("List", "District", FormMethod.Get))
+            {
+                @Html.LabelFor(m => m.SearchText)
+                @Html.TextBoxFor(m => m.SearchText)
+                
+                @Html.LabelFor(m => m.DistrictTypeId)
+                @Html.DropDownListFor(m => m.DistrictTypeId, Model.DistrictTypes, string.Empty)
+                
+                <input type="submit" value="Search" />
+            }
+        </div>
+    </section>
 }
 
 @section leftMenu {
@@ -28,7 +49,7 @@
         <th>District Type</th>
         <th>Parent District</th>
     </tr>
-    @foreach (var d in Model.Districts)
+    @foreach (var d in Model.DistrictsPerPage)
     {
         <tr>
             <td><input type="checkbox" name="deleteInputs" value="@d.Id" class="cbSelectRow" /></td>
@@ -60,6 +81,14 @@
     }
 </table>
 }
+
+<div class="pager">
+    @{var pageInfo = Model.PagingInfo;}
+    @Html.PageLinks(pageInfo, x => Url.Action("List", "District", new {
+        SearchText = Model.SearchText, 
+        DistrictTypeId = Model.DistrictTypeId,
+        Page = x}))
+</div>
 
 @section Scripts {
     @Scripts.Render("~/Scripts/selectCheckboxes.js")

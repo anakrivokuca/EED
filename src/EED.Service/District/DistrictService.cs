@@ -26,6 +26,25 @@ namespace EED.Service.District
             return districts;
         }
 
+        public IEnumerable<Domain.District> FilterDistricts(IEnumerable<Domain.District> districts, 
+            string searchText, int districtTypeId)
+        {
+            string text = searchText.Trim();
+            if (!String.IsNullOrEmpty(text))
+            {
+                districts = districts
+                    .Where(d => (String.Equals(d.Name, text, StringComparison.CurrentCultureIgnoreCase)));
+            }
+
+            if (districtTypeId != 0)
+            {
+                districts = districts
+                    .Where(d => d.DistrictType != null && d.DistrictType.Id == districtTypeId);
+            }
+
+            return districts;
+        }
+
         public void SaveDistrict(Domain.District district)
         {
             try

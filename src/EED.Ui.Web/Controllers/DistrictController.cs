@@ -1,8 +1,12 @@
 ﻿using EED.Service.District;
+using EED.Service.District_Type;
 using EED.Ui.Web.Filters;
+using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.District;
 using System;
+using System.Linq;
 using System.Web.Mvc;
+
 
 namespace EED.Ui.Web.Controllers
 {
@@ -11,23 +15,49 @@ namespace EED.Ui.Web.Controllers
     public class DistrictController : Controller
     {
         private readonly IDistrictService _service;
+        private readonly IDistrictTypeService _districtTypeService;
 
-        public DistrictController(IDistrictService service)
+        public int ItemsPerPage = 10;
+
+        public DistrictController(IDistrictService service, IDistrictTypeService districtTypeService)
         {
             _service = service;
+            _districtTypeService = districtTypeService;
         }
 
         //
         // GET: /District/
 
-        public ViewResult List()
+        public ViewResult List(string searchText, int districtTypeId = 0, int page = 1)
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
             var districts = _service.FindAllDistrictsFromProject(projectId);
 
+            var districtTypes = _districtTypeService.FindAllDistrictTypesFromProject(projectId);
+            var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
+
+            if (districtTypeId != 0 || !String.IsNullOrEmpty(searchText))
+                districts = _service.FilterDistricts(districts, searchText, districtTypeId);
+
+            var pagingInfo = new PagingInfo()
+            {
+                CurrentPage = page,
+                ItemsPerPage = ItemsPerPage,
+                TotalNumberOfItems = districts.Count()
+            };
+
+            var districtsPerPage = districts
+                .OrderBy(d => d.Id)
+                .Skip((page - 1) * ItemsPerPage)
+                .Take(ItemsPerPage);
+
             var model = new ListViewModel()
             {
-                Districts = districts
+                DistrictsPerPage = districtsPerPage,
+                PagingInfo = pagingInfo,
+                SearchText = searchText,
+                DistrictTypes = selectListDistrictType,
+                DistrictTypeId = districtTypeId
             };
 
             return View(model);
