@@ -23,8 +23,6 @@
                 title="Delete Selected" class="imageBarDelete" /></td>
         
     </tr>
-    @if (Model.Projects.Count() != 0)
-    {
     <tr>
         <th><input type="checkbox" name="checkAllInputs" id="cbSelectAll"/></th>
         <th>Actions</th>
@@ -32,7 +30,7 @@
         <th>Jurisdiction</th>
         <th>Election Date</th>
     </tr>
-    foreach (var p in Model.Projects)
+    @foreach (var p in Model.Projects)
     {
         <tr>
             <td><input type="checkbox" name="deleteInputs" value="@p.Id" class="cbSelectRow" /></td>
@@ -57,11 +55,8 @@
             <td>@p.Date.ToLongDateString()</td>
         </tr>
     }
-    } @if ((Model.Projects.Count() == 0)) {
-      <tr><td>There are no projects created.</td></tr>
-}
 </table>
-    }
+}
 
 @section Scripts {
     @Scripts.Render("~/Scripts/selectCheckboxes.js")

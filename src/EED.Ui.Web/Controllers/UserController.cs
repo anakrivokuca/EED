@@ -2,7 +2,7 @@
 using EED.Infrastructure;
 using EED.Service.Membership_Provider;
 using EED.Ui.Web.Helpers.Pagination;
-using EED.Ui.Web.Models;
+using EED.Ui.Web.Models.User;
 using System;
 using System.Collections.Specialized;
 using System.Linq;

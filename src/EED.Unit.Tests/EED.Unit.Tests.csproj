@@ -58,12 +58,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTest.cs" />
+    <Compile Include="Controllers\DistrictControllerTest.cs" />
     <Compile Include="Controllers\DistrictTypeControllerTest.cs" />
     <Compile Include="Controllers\ProjectControllerTest.cs" />
     <Compile Include="PaginationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Services\CustomMembershipProviderTest.cs" />
+    <Compile Include="Services\DistrictServiceTest.cs" />
     <Compile Include="Services\DistrictTypeServiceTest.cs" />
     <Compile Include="Services\ProjectServiceTest.cs" />
   </ItemGroup>

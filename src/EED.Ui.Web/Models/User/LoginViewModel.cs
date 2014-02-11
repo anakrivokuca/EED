@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EED.Ui.Web.Models
+namespace EED.Ui.Web.Models.User
 {
     public class LoginViewModel
     {

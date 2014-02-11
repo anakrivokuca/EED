@@ -50,7 +50,7 @@ namespace EED.Unit.Tests.Controllers
 
         #region Test List Method
         [Test]
-        public void List_GivenTwoDistrictTypes_ReturnsTwoDistrictTypes()
+        public void List_GivenThreeoDistrictTypes_ReturnsThreeDistrictTypes()
         {
             // Act
             var result = ((ListViewModel)_controller.List(null).Model).DistrictTypes;

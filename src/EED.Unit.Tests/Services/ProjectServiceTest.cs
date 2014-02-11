@@ -1,5 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
+using EED.Service.District;
 using EED.Service.District_Type;
 using EED.Service.Membership_Provider;
 using EED.Service.Project;
@@ -17,12 +18,14 @@ namespace EED.Unit.Tests.Services
         private Mock<IRepository<ElectionProject>> _mock;
         private Mock<IAuthProvider> _mockProvider;
         private Mock<IDistrictTypeService> _mockDistrictTypeService;
+        private Mock<IDistrictService> _mockDistrictService;
         private IProjectService _service;
         private IEnumerable<ElectionProject> _projects;
 
         [SetUp]
         public void SetUp_ProjectServiceTest()
         {
+            // Arrange
             _mock = new Mock<IRepository<ElectionProject>>();
             _mock.Setup(r => r.FindAll()).Returns(new List<ElectionProject> {
                 new ElectionProject { Id = 1, Name = "Project1", 
@@ -38,8 +41,10 @@ namespace EED.Unit.Tests.Services
 
             _mockDistrictTypeService = new Mock<IDistrictTypeService>();
 
+            _mockDistrictService = new Mock<IDistrictService>();
+
             _service = new ProjectService(_mock.Object, _mockProvider.Object, 
-                _mockDistrictTypeService.Object);
+                _mockDistrictTypeService.Object, _mockDistrictService.Object);
         }
 
         #region Test FindAllProjects Method
@@ -197,10 +202,11 @@ namespace EED.Unit.Tests.Services
             // Assert
             _mock.Verify(m => m.Save(project));
             _mockDistrictTypeService.Verify(m => m.SaveDistrictType(It.IsAny<DistrictType>()));
+            _mockDistrictService.Verify(m => m.SaveDistrict(It.IsAny<District>()));
         }
 
         [Test]
-        public void SaveProject_ExistingProject_DoesNotSaveDistrict()
+        public void SaveProject_ExistingProject_SavesNewDistrictName()
         {
             // Arrange
             var project = new ElectionProject
@@ -210,6 +216,14 @@ namespace EED.Unit.Tests.Services
                 JurisdictionName = "JurisdictionNewName",
                 User = new User { Id = 1 }
             };
+            _mockDistrictService.Setup(s => s.FindAllDistrictsFromProject(project.Id))
+                .Returns(new List<District> {
+                    new District { Id = 1, Name = "District1", 
+                        ParentDistrict = new District { Id = 2 }, 
+                        Project = new ElectionProject { Id = 1} },
+                        new District { Id = 2, Name = "District2", 
+                            Project = new ElectionProject { Id = 1} }
+                });
 
             // Act
             _service.SaveProject(project);
@@ -217,6 +231,7 @@ namespace EED.Unit.Tests.Services
             // Assert
             _mock.Verify(m => m.Save(project));
             _mockDistrictTypeService.Verify(m => m.SaveDistrictType(It.IsAny<DistrictType>()), Times.Never());
+            _mockDistrictService.Verify(m => m.SaveDistrict(It.IsAny<District>()), Times.Once());
         }
 
         [Test]

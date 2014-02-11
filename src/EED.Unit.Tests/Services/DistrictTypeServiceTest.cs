@@ -21,6 +21,7 @@ namespace EED.Unit.Tests.Services
         [SetUp]
         public void SetUp_DistrictTypeServiceTest()
         {
+            // Arrange
             _mock = new Mock<IRepository<DistrictType>>();
             _mock.Setup(r => r.FindAll()).Returns(new List<DistrictType> {
                 new DistrictType { Id = 1, Name = "DistrictType1", 

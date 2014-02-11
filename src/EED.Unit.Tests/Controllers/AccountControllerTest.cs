@@ -2,6 +2,7 @@
 using EED.Ui.Web;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models;
+using EED.Ui.Web.Models.User;
 using Moq;
 using NUnit.Framework;
 using System;

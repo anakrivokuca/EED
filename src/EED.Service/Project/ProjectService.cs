@@ -1,5 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
+using EED.Service.District;
 using EED.Service.District_Type;
 using EED.Service.Membership_Provider;
 using System;
@@ -13,14 +14,15 @@ namespace EED.Service.Project
         private readonly IRepository<ElectionProject> _repository;
         private readonly IAuthProvider _provider;
         private readonly IDistrictTypeService _districtTypeService;
-        //private readonly IDistrictService _districtService;
+        private readonly IDistrictService _districtService;
 
         public ProjectService(IRepository<ElectionProject> repository, IAuthProvider provider,
-            IDistrictTypeService districtTypeService)
+            IDistrictTypeService districtTypeService, IDistrictService districtService)
         {
             _repository = repository;
             _provider = provider;
             _districtTypeService = districtTypeService;
+            _districtService = districtService;
         }
 
         public IEnumerable<ElectionProject> FindAllProjects()
@@ -64,7 +66,7 @@ namespace EED.Service.Project
 
                 _repository.Save(project);
 
-                if(project.Id == 0)
+                if (project.Id == 0)
                 {
                     var districtType = new DistrictType
                     {
@@ -72,6 +74,21 @@ namespace EED.Service.Project
                         Project = project
                     };
                     _districtTypeService.SaveDistrictType(districtType);
+
+                    var district = new Domain.District
+                    {
+                        Name = project.JurisdictionName,
+                        DistrictType = districtType,
+                        Project = project
+                    };
+                    _districtService.SaveDistrict(district);
+                }
+                else
+                {
+                    var district = _districtService.FindAllDistrictsFromProject(project.Id)
+                        .Single(d => d.ParentDistrict == null);
+                    district.Name = project.JurisdictionName;
+                    _districtService.SaveDistrict(district);
                 }
             }
             catch (Exception ex)

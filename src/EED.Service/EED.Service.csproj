@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="District\DistrictService.cs" />
+    <Compile Include="District\IDistrictService.cs" />
     <Compile Include="District_Type\DistrictTypeService.cs" />
     <Compile Include="District_Type\IDistrictTypeService.cs" />
     <Compile Include="Election_Type\ElectionTypeService.cs" />

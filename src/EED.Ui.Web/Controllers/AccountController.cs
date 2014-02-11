@@ -1,5 +1,5 @@
 ﻿using EED.Service.Membership_Provider;
-using EED.Ui.Web.Models;
+using EED.Ui.Web.Models.User;
 using System.Web.Mvc;
 
 namespace EED.Ui.Web.Controllers

@@ -1,0 +1,67 @@
+﻿@model EED.Ui.Web.Models.District.ListViewModel
+
+@{
+    ViewBag.Title = "Districts";
+}
+
+@section leftMenu {
+    @Html.Partial("_LeftSideMenuPartial")
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+@using (Html.BeginForm()) {    
+<table>
+    <tr>
+        <td>@Html.ActionLink("Add New", "Create", null, 
+                new { @class = "imageBarNew", title = "Add new" })</td>
+        <td><input type="submit" value="Delete Selected" name="action:DeleteSelected" 
+                title="Delete Selected" class="imageBarDelete" /></td>
+    </tr>
+    <tr>
+        <th><input type="checkbox" name="checkAllInputs" id="cbSelectAll"/></th>
+        <th>Actions</th>
+        <th>Name</th>
+        <th>Abbreviation</th>
+        <th>District Type</th>
+        <th>Parent District</th>
+    </tr>
+    @foreach (var d in Model.Districts)
+    {
+        <tr>
+            <td><input type="checkbox" name="deleteInputs" value="@d.Id" class="cbSelectRow" /></td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", 
+                    new { id = d.Id }, new { @class = "imageEdit", title = "Edit" })
+                @if(d.ParentDistrict != null) {
+                    @Html.ActionLink("Delete", "Delete", new { id = d.Id }, 
+                        new { @class = "imageDelete", title = "Delete" })
+                    <!--Ajax.ActionLink("Delete", "Delete", 
+                            new { deleteInputs = new int[]{ p.Id } }, 
+                            new AjaxOptions { HttpMethod = "POST", 
+                                Confirm = "Are you sure you want to delete this item?", 
+                                OnSuccess="window.location.reload()" }, 
+                            new { class = "imageDelete", title = "Delete" })-->
+                    <!--Html.Hidden("Id", pd.Id)-->
+                    <!--<input type="submit" value="Delete" name="action:Delete" title="Delete" class="imageDelete" />-->
+                }
+                </td>
+                <td>@Html.ActionLink(d.Name, "Edit", new { id = d.Id }, new { title = "Edit" })</td>
+            <td>@d.Abbreviation</td>
+            <td>@d.DistrictType.Name</td>
+            @if(d.ParentDistrict != null) {
+                <td>@d.ParentDistrict.Name</td>
+            } else {
+                <td></td>
+            }
+        </tr>
+    }
+</table>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/selectCheckboxes.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+}

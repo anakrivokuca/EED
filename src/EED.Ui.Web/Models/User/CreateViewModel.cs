@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace EED.Ui.Web.Models
+namespace EED.Ui.Web.Models.User
 {
     public class CreateViewModel
     {
@@ -39,9 +39,9 @@ namespace EED.Ui.Web.Models
         public bool IsApproved { get; set; }
 
         
-        public User ConvertModelToUser(CreateViewModel model)
+        public Domain.User ConvertModelToUser(CreateViewModel model)
         {
-            var user = new User()
+            var user = new Domain.User()
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -58,7 +58,7 @@ namespace EED.Ui.Web.Models
             return user;
         }
 
-        public CreateViewModel ConvertUserToModel(User user)
+        public CreateViewModel ConvertUserToModel(Domain.User user)
         {
             var model = new CreateViewModel()
             {
