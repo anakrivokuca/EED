@@ -44,6 +44,7 @@ namespace EED.Unit.Tests.Controllers
                     new DistrictType { Id = 1, Name = "DistrictType1", 
                         Project = new ElectionProject { Id = 1} },
                     new DistrictType { Id = 2, Name = "DistrictType2", 
+                        ParentDistrictType = new DistrictType { Id = 1 },
                         Project = new ElectionProject { Id = 1} }});
 
             _controller = new DistrictController(_mock.Object, mockDistrictTypeService.Object);
@@ -94,6 +95,90 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             Assert.AreEqual(1, result.Count());
+        }
+        #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetDistrict_ReturnsCreateViewModel()
+        {
+            // Arrange
+            var districtId = 1;
+            _mock.Setup(s => s.FindDistrict(districtId)).Returns(new District
+            {
+                Id = districtId,
+                Name = "District1",
+                DistrictType = new DistrictType { Id = 1 },
+                ParentDistrict = new District { Id = 2 }
+            });
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(districtId).Model;
+
+            // Assert
+            Assert.AreEqual("District1", result.Name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.NullReferenceException))]
+        public void Edit_GetNonexistentDistrict_ThrowsException()
+        {
+            // Arrange
+            var districtId = 101;
+            District district = null;
+            _mock.Setup(s => s.FindDistrict(districtId)).Returns(district);
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(101).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test Edit (Post) Method
+        [Test]
+        public void Edit_PostNewDistrict_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Name = "NewDistrict",
+                Abbreviation = "ND",
+            };
+            //var districtType = model.ConvertModelToDistrictType(model);
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveDistrict(It.IsAny<District>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("District NewDistrict has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingDistrictTypeWithValidChanges_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 2,
+                Name = "District 2",
+                Abbreviation = "D2"
+            };
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveDistrict(It.IsAny<District>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("District District 2 has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
     }

@@ -53,10 +53,10 @@
     {
         <tr>
             <td><input type="checkbox" name="deleteInputs" value="@d.Id" class="cbSelectRow" /></td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", 
-                    new { id = d.Id }, new { @class = "imageEdit", title = "Edit" })
-                @if(d.ParentDistrict != null) {
+            @if(d.ParentDistrict != null) {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", 
+                        new { id = d.Id }, new { @class = "imageEdit", title = "Edit" })
                     @Html.ActionLink("Delete", "Delete", new { id = d.Id }, 
                         new { @class = "imageDelete", title = "Delete" })
                     <!--Ajax.ActionLink("Delete", "Delete", 
@@ -67,9 +67,13 @@
                             new { class = "imageDelete", title = "Delete" })-->
                     <!--Html.Hidden("Id", pd.Id)-->
                     <!--<input type="submit" value="Delete" name="action:Delete" title="Delete" class="imageDelete" />-->
-                }
+                
                 </td>
                 <td>@Html.ActionLink(d.Name, "Edit", new { id = d.Id }, new { title = "Edit" })</td>
+            } else {
+                <td></td>
+                <td>@d.Name</td>
+            }
             <td>@d.Abbreviation</td>
             <td>@d.DistrictType.Name</td>
             @if(d.ParentDistrict != null) {

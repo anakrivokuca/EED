@@ -11,10 +11,10 @@
 
 <hgroup class="title">
     @if (Model.Id.Equals(0)) {
-        <h1>Add New District Type</h1>
+        <h1>@ViewBag.Title</h1>
     }
     else {
-        <h1>Edit @Model.Name</h1>
+        <h1>@ViewBag.Title @Model.Name</h1>
     }
 </hgroup>
 

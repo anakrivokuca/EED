@@ -1,6 +1,7 @@
 ﻿using EED.DAL;
 using EED.Domain;
 using EED.Service.District;
+using EED.Service.Project;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -30,7 +31,11 @@ namespace EED.Unit.Tests.Services
                     DistrictType = new DistrictType { Id = 2, Name = "DistrictType2"}, 
                     Project = new ElectionProject { Id = 2 }}});
 
-            _service = new DistrictService(_mock.Object);
+            //var mockProjectService = new Mock<IProjectService>();
+
+            _service = new DistrictService(_mock.Object
+                //, mockProjectService.Object
+                );
         }
 
         #region Test FindAllDistricts Method
@@ -103,6 +108,25 @@ namespace EED.Unit.Tests.Services
 
             Assert.AreEqual(0, resultWithNonexistentDistrict.Count(),
                 "No district type should be listed with specified criteria.");
+        }
+        #endregion
+
+        #region Test SaveDistrict Method
+        [Test]
+        public void SaveDistrict_NewValidDistrict_DoesNotThrowError()
+        {
+            // Arrange
+            var district = new District
+            {
+                Name = "NewDistrict",
+                DistrictType = new DistrictType { Id = 1 },
+            };
+
+            // Act
+            _service.SaveDistrict(district);
+
+            // Assert
+            _mock.Verify(d => d.Save(district), Times.Once());
         }
         #endregion
     }

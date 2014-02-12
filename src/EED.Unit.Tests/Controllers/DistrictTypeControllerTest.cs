@@ -123,7 +123,6 @@ namespace EED.Unit.Tests.Controllers
                 Name = "NewDistrictType",
                 Abbreviation = "NDT",
             };
-            //var districtType = model.ConvertModelToDistrictType(model);
 
             // Act
             var result = _controller.Edit(model);
@@ -146,7 +145,6 @@ namespace EED.Unit.Tests.Controllers
                 Name = "District Type 2",
                 Abbreviation = "DT2"
             };
-            //var project = model.ConvertModelToProject(model);
 
             // Act
             var result = _controller.Edit(model);

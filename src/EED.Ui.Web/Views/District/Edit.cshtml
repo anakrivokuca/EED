@@ -1,0 +1,82 @@
+﻿@model EED.Ui.Web.Models.District.CreateViewModel
+
+@{
+    if(Model.Id.Equals(0)) {
+        ViewBag.Title = "Add New District";
+    }
+    else {
+        ViewBag.Title = "Edit";
+    }
+}
+
+<hgroup class="title">
+    @if (Model.Id.Equals(0)) {
+        <h1>@ViewBag.Title</h1>
+    }
+    else {
+        <h1>@ViewBag.Title @Model.Name</h1>
+    }
+</hgroup>
+
+@using (Html.BeginForm("Edit", "District")) {
+    @Html.ValidationSummary(true);
+    <fieldset>
+        <legend>District Type</legend>
+        
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Abbreviation)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Abbreviation)
+            @Html.ValidationMessageFor(model => model.Abbreviation)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DistrictTypeId)
+        </div>
+        @*@if (Model.Id != 0 && Model.ParentDistrictId == 0) {
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.DistrictTypeId, Model.DistrictTypes, string.Empty, new { id = "ddlDistrictType", disabled = "disabled"  })
+            </div>
+        } else {*@
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.DistrictTypeId, Model.DistrictTypes, string.Empty, new { id = "ddlDistrictType", onchange = "javascript:GetParentDistrict(this.value);"  })
+                @Html.ValidationMessageFor(model => model.DistrictTypeId)
+            </div>
+            
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ParentDistrictId)
+            </div>
+            <div class="editor-field">
+                @if (Model.ParentDistrictId != 0) {
+                        @Html.HiddenFor(model => model.ParentDistrictId);
+                    }
+                @Html.DropDownListFor(model => model.ParentDistrictId, Model.ParentDistricts, string.Empty, new { id = "ddlParentDistrict", onchange = "javascript:SetParentDistrictId(this.value);"})
+                @*<select id="ddlParentDistrict" name="ddlParentDistrict" >
+                </select>*@
+                @Html.ValidationMessageFor(model => model.ParentDistrictId)
+            </div>
+        @*}*@
+        
+        <p>
+            <input type="submit" value="Save" />
+            @Html.ActionLink("Cancel and Return to District List", "List")
+        </p>
+    </fieldset> 
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/changeDropBoxValue.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

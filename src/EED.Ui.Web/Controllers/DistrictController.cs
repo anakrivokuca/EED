@@ -1,9 +1,11 @@
-﻿using EED.Service.District;
+﻿using EED.Domain;
+using EED.Service.District;
 using EED.Service.District_Type;
 using EED.Ui.Web.Filters;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.District;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -66,34 +68,57 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /District/Create
 
-        public ActionResult Create()
+        public ViewResult Create()
         {
-            return View();
+            var model = new CreateViewModel();
+            model = PrepareModelToPopulateDropDownLists(model);
+
+            return View("Edit", model);
         }
 
         //
         // GET: /District/Edit/Id
 
-        public ActionResult Edit(int id)
+        public ViewResult Edit(int id)
         {
-            return View();
+            var district = _service.FindDistrict(id);
+
+            var model = new CreateViewModel();
+            model = model.ConvertDistrictToModel(district);
+            model = PrepareModelToPopulateDropDownLists(model);
+
+            return View(model);
         }
 
         //
         // POST: /District/Edit
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CreateViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                var district = model.ConvertModelToDistrict(model);
+                int projectId = Convert.ToInt32(Session["projectId"]);
+                district.Project = new ElectionProject { Id = projectId };
 
-                return RedirectToAction("Index");
+                //if (model.Id != 0)
+                //{
+                //    var existingDistrict = _service.FindDistrict(model.Id);
+                //    district.DistrictType = existingDistrict.DistrictType;
+                //    district.ParentDistrict = existingDistrict.ParentDistrict;
+                //}
+
+                _service.SaveDistrict(district);
+                TempData["message-success"] = string.Format(
+                    "District {0} has been successfully saved.",
+                    model.Name);
+
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -113,6 +138,52 @@ namespace EED.Ui.Web.Controllers
             {
                 return View();
             }
+        }
+        
+        [HttpPost]
+        public ActionResult PopulateParentDistricts(int districtTypeId)
+        {
+            int projectId = Convert.ToInt32(Session["projectId"]);
+            var districtTypes = GetDistrictTypes(projectId);
+            var parentDistrictType = districtTypes.SingleOrDefault(dt => dt.Id == districtTypeId).ParentDistrictType;
+
+            var districts = GetDistrictsForDistrictType(projectId, parentDistrictType.Id);
+            var selectListDistrict = new SelectList(districts, "Id", "Name");
+
+            return Json(selectListDistrict);
+        }
+
+        private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
+        {
+            int projectId = Convert.ToInt32(Session["projectId"]);
+
+            var districtTypes = GetDistrictTypes(projectId);
+            var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
+            model.DistrictTypes = selectListDistrictType;
+
+            var districts = GetDistrictsForDistrictType(projectId, model.ParentDistrictId);
+            var selectListDistrict = new SelectList(districts, "Id", "Name");
+            model.ParentDistricts = selectListDistrict;
+
+            return model;
+        }
+
+        private IEnumerable<DistrictType> GetDistrictTypes(int projectId)
+        {
+            var districtTypes = _districtTypeService.FindAllDistrictTypesFromProject(projectId).ToList();
+
+            var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
+            districtTypes.Remove(jurisdictionType);
+
+            return districtTypes;
+        }
+
+        private IEnumerable<District> GetDistrictsForDistrictType(int projectId, int districtTypeId)
+        {
+            var districts = _service.FindAllDistrictsFromProject(projectId);
+            districts = districts.Where(d => d.DistrictType.Id == districtTypeId);
+
+            return districts;
         }
     }
 }
