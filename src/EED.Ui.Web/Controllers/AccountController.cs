@@ -1,4 +1,4 @@
-﻿using EED.Service.Membership_Provider;
+﻿using EED.Service.Controller.Membership_Provider;
 using EED.Ui.Web.Models.User;
 using System.Web.Mvc;
 
@@ -6,11 +6,11 @@ namespace EED.Ui.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAuthProvider _authProvider;
+        private readonly IAccountServiceController _serviceController;
 
-        public AccountController(IAuthProvider authProvider)
+        public AccountController(IAccountServiceController serviceController)
         {
-            _authProvider = authProvider;
+            _serviceController = serviceController;
         }
 
         //
@@ -29,7 +29,7 @@ namespace EED.Ui.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_authProvider.Authenticate(model.Username, model.Password))
+                if (_serviceController.Authenticate(model.Username, model.Password))
                 {
                     if (model.Username == "admin")
                         return Redirect(returnUrl ?? Url.Action("List", "User"));
@@ -55,8 +55,8 @@ namespace EED.Ui.Web.Controllers
         [HttpPost]
         public ActionResult Logout()
         {
-            var user = _authProvider.GetUserFromCookie();
-            _authProvider.Logout(user);
+            var user = _serviceController.GetUserFromCookie();
+            _serviceController.Logout(user);
 
             return RedirectToAction("Login", "Account");
         }

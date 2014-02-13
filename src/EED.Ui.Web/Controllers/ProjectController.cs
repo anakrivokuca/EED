@@ -1,7 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.Election_Type;
-using EED.Service.Jurisdiction_Type;
-using EED.Service.Project;
+using EED.Service.Controller.Project;
 using EED.Ui.Web.Helpers;
 using EED.Ui.Web.Models.Project;
 using System;
@@ -13,16 +11,11 @@ namespace EED.Ui.Web.Controllers
     [Authorize]
     public class ProjectController : Controller
     {
-        private readonly IProjectService _service;
-        private readonly IJurisdictionTypeService _jurisdictionTypeService;
-        private readonly IElectionTypeService _electionTypeService;
+        private readonly IProjectServiceController _serviceController;
 
-        public ProjectController(IProjectService service, IJurisdictionTypeService jurisdictionTypeService, 
-            IElectionTypeService electionTypeService)
+        public ProjectController(IProjectServiceController serviceController)
         {
-            _service = service;
-            _jurisdictionTypeService = jurisdictionTypeService;
-            _electionTypeService = electionTypeService;
+            _serviceController = serviceController;
         }
 
         //
@@ -30,10 +23,10 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult List(string searchText)
         {
-            var projects = _service.FindAllProjectsFromUser();
+            var projects = _serviceController.FindAllProjectsFromUser();
 
             if (!String.IsNullOrEmpty(searchText))
-                projects = _service.FilterProjects(projects, searchText).ToList();
+                projects = _serviceController.FilterProjects(projects, searchText).ToList();
 
             var model = new ListViewModel() { 
                 Projects = projects,
@@ -59,7 +52,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
-            var project = _service.FindProject(id);
+            var project = _serviceController.FindProject(id);
 
             var model = new CreateViewModel();
             model = model.ConvertProjectToModel(project);
@@ -79,11 +72,11 @@ namespace EED.Ui.Web.Controllers
                 var project = model.ConvertModelToProject(model);
                 if (model.Id != 0)
                 {
-                    var existingProject = _service.FindProject(model.Id);
+                    var existingProject = _serviceController.FindProject(model.Id);
                     project.JurisdictionType =  existingProject.JurisdictionType;
                     project.ElectionType = existingProject.ElectionType;
                 }
-                _service.SaveProject(project);
+                _serviceController.SaveProject(project);
                 TempData["message-success"] = string.Format(
                     "Project {0} has been successfully saved.", 
                     model.Name);
@@ -105,7 +98,7 @@ namespace EED.Ui.Web.Controllers
         public ActionResult Delete(int id)
         {
             var project = new ElectionProject { Id = id };
-            _service.DeleteProject(project);
+            _serviceController.DeleteProject(project);
             TempData["message-success"] = string.Format(
                 "Project {0} has been successfully deleted.", id);
 
@@ -128,7 +121,7 @@ namespace EED.Ui.Web.Controllers
             foreach (var id in deleteInputs)
             {
                 var project = new ElectionProject { Id = id };
-                _service.DeleteProject(project);
+                _serviceController.DeleteProject(project);
             }
             TempData["message-success"] = string.Format(deleteInputs.Count().ToString() + 
                 " project(s) has been successfully deleted.");
@@ -141,7 +134,7 @@ namespace EED.Ui.Web.Controllers
 
         public ActionResult Open(int id)
         {
-            var project = _service.FindProject(id);
+            var project = _serviceController.FindProject(id);
             if (project != null)
             {
                 Session["projectId"] = id;
@@ -164,10 +157,10 @@ namespace EED.Ui.Web.Controllers
 
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
         {
-            var jurisdictionTypes = _jurisdictionTypeService.FindAllJurisdictionTypes();
+            var jurisdictionTypes = _serviceController.FindAllJurisdictionTypes();
             var selectListJurisdictionType = new SelectList(jurisdictionTypes, "Id", "Name");
 
-            var electionTypes = _electionTypeService.FindAllElectionTypes();
+            var electionTypes = _serviceController.FindAllElectionTypes();
             var selectListElectionType = new SelectList(electionTypes, "Id", "Name");
 
             model.JurisdictionTypes = selectListJurisdictionType;

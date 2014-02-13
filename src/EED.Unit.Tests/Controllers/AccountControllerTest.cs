@@ -1,13 +1,10 @@
-﻿using EED.Service.Membership_Provider;
+﻿using EED.Service.Controller.Membership_Provider;
 using EED.Ui.Web;
 using EED.Ui.Web.Controllers;
-using EED.Ui.Web.Models;
 using EED.Ui.Web.Models.User;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Specialized;
-using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -17,7 +14,7 @@ namespace EED.Unit.Tests.Controllers
     [TestFixture]
     class AccountControllerTest
     {
-        private Mock<IAuthProvider> _mock;
+        private Mock<IAccountServiceController> _mock;
         private AccountController _controller;
         private RouteCollection _routes;
         private Mock<HttpContextBase> _context;
@@ -26,7 +23,7 @@ namespace EED.Unit.Tests.Controllers
         public void Set_Up_AccountControllerTest()
         {
             // Arrange
-            _mock = new Mock<IAuthProvider>();
+            _mock = new Mock<IAccountServiceController>();
             
             _controller = new AccountController(_mock.Object);
 

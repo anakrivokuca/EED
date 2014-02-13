@@ -1,7 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.Election_Type;
-using EED.Service.Jurisdiction_Type;
-using EED.Service.Project;
+using EED.Service.Controller.Project;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.Project;
 using Moq;
@@ -18,7 +16,7 @@ namespace EED.Unit.Tests.Controllers
     [TestFixture]
     class ProjectControllerTest
     {
-        private Mock<IProjectService> _mock;
+        private Mock<IProjectServiceController> _mock;
         private ProjectController _controller;
         private IEnumerable<ElectionProject> _projects;
 
@@ -34,23 +32,10 @@ namespace EED.Unit.Tests.Controllers
                     JurisdictionType = new JurisdictionType { Id = 1 },
                     ElectionType = new ElectionType { Id = 1 } }};
 
-            _mock = new Mock<IProjectService>();
+            _mock = new Mock<IProjectServiceController>();
             _mock.Setup(s => s.FindAllProjectsFromUser()).Returns(_projects);
 
-            var _mockJurisdictionType = new Mock<IJurisdictionTypeService>();
-            _mockJurisdictionType.Setup(s => s.FindAllJurisdictionTypes()).Returns(
-                new List<JurisdictionType> { 
-                    new JurisdictionType { Id = 1, Name = "County"},
-                    new JurisdictionType { Id = 1, Name = "Municipality"}});
-
-            var _mockElectionType = new Mock<IElectionTypeService>();
-            _mockElectionType.Setup(s => s.FindAllElectionTypes()).Returns(
-                new List<ElectionType> { 
-                    new ElectionType { Id = 1, Name = "General Elections"},
-                    new ElectionType { Id = 1, Name = "General Elections"}});
-
-            _controller = new ProjectController(_mock.Object, _mockJurisdictionType.Object, 
-                _mockElectionType.Object);
+            _controller = new ProjectController(_mock.Object);
 
             var session = new Mock<HttpSessionStateBase>();
             var context = new Mock<HttpContextBase>();

@@ -86,6 +86,10 @@
       <Project>{2bd2c28c-10fe-4fe2-9283-376776ec31c3}</Project>
       <Name>EED.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EED.Service.Controller\EED.Service.Controller.csproj">
+      <Project>{f77c0c1f-736f-4c3f-9294-77182b23e690}</Project>
+      <Name>EED.Service.Controller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EED.Service\EED.Service.csproj">
       <Project>{8A5421CE-AC49-42C8-8A70-DB82691E5177}</Project>
       <Name>EED.Service</Name>

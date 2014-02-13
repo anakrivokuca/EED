@@ -39,13 +39,6 @@ namespace EED.Unit.Tests.Controllers
             _mock.Setup(d => d.FindAllDistrictsFromProject(1)).Returns(_districts);
 
             var mockDistrictTypeService = new Mock<IDistrictTypeService>();
-            mockDistrictTypeService.Setup(dt => dt.FindAllDistrictTypesFromProject(1))
-                .Returns(new List<DistrictType> {
-                    new DistrictType { Id = 1, Name = "DistrictType1", 
-                        Project = new ElectionProject { Id = 1} },
-                    new DistrictType { Id = 2, Name = "DistrictType2", 
-                        ParentDistrictType = new DistrictType { Id = 1 },
-                        Project = new ElectionProject { Id = 1} }});
 
             _controller = new DistrictController(_mock.Object, mockDistrictTypeService.Object);
 
