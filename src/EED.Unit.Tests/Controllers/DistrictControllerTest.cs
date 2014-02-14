@@ -1,6 +1,6 @@
 ﻿using EED.Domain;
 using EED.Service.District;
-using EED.Service.District_Type;
+using EED.Service.Project;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.District;
 using Moq;
@@ -36,11 +36,17 @@ namespace EED.Unit.Tests.Controllers
                     Project = new ElectionProject { Id = 1 }}};
 
             _mock = new Mock<IDistrictService>();
-            _mock.Setup(d => d.FindAllDistrictsFromProject(1)).Returns(_districts);
 
-            var mockDistrictTypeService = new Mock<IDistrictTypeService>();
+            var mockProjectService = new Mock<IProjectService>();
+            mockProjectService.Setup(p => p.FindProject(1)).Returns(new ElectionProject
+            {
+                Id = 1,
+                DistrictTypes = new List<DistrictType> { new DistrictType { Id = 1 }, 
+                    new DistrictType { Id = 2, ParentDistrictType = new DistrictType { Id = 1 } } },
+                Districts = _districts.ToList()
+            });
 
-            _controller = new DistrictController(_mock.Object, mockDistrictTypeService.Object);
+            _controller = new DistrictController(_mock.Object, mockProjectService.Object);
 
             var session = new Mock<HttpSessionStateBase>();
             var context = new Mock<HttpContextBase>();

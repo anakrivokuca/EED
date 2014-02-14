@@ -64,7 +64,10 @@ namespace EED.Service.District
                     var existingDistrict = FindDistrict(district.Id);
                     existingDistrict.Name = district.Name;
                     existingDistrict.Abbreviation = district.Abbreviation;
-                    existingDistrict.Project.JurisdictionName = district.Name;
+                    if (existingDistrict.ParentDistrict == null)
+                    {
+                        existingDistrict.Project.JurisdictionName = district.Name;
+                    }
                     district = existingDistrict;
                 }
 

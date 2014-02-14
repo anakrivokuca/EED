@@ -1,6 +1,6 @@
 ﻿using EED.Domain;
 using EED.Service.District;
-using EED.Service.District_Type;
+using EED.Service.Project;
 using EED.Ui.Web.Filters;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.District;
@@ -17,14 +17,16 @@ namespace EED.Ui.Web.Controllers
     public class DistrictController : Controller
     {
         private readonly IDistrictService _service;
-        private readonly IDistrictTypeService _districtTypeService;
+        private readonly IProjectService _projectService;
+
+        private ElectionProject _project;
 
         public int ItemsPerPage = 10;
 
-        public DistrictController(IDistrictService service, IDistrictTypeService districtTypeService)
+        public DistrictController(IDistrictService service, IProjectService projectService)
         {
             _service = service;
-            _districtTypeService = districtTypeService;
+            _projectService = projectService;
         }
 
         //
@@ -32,10 +34,10 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult List(string searchText, int districtTypeId = 0, int page = 1)
         {
-            int projectId = Convert.ToInt32(Session["projectId"]);
-            var districts = GetDistricts(projectId);
+            _project = GetProject();
+            var districts = _project.Districts.AsEnumerable<District>();
 
-            var districtTypes = GetDistrictTypes(projectId);
+            var districtTypes = _project.DistrictTypes;
             var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
 
             if (districtTypeId != 0 || !String.IsNullOrEmpty(searchText))
@@ -100,11 +102,9 @@ namespace EED.Ui.Web.Controllers
             {
                 var district = model.ConvertModelToDistrict(model);
                 
-
                 if (model.Id == 0)
                 {
-                    int projectId = Convert.ToInt32(Session["projectId"]);
-                    district.Project = new ElectionProject { Id = projectId };
+                    district.Project = GetProject();
                 }
                 _service.SaveDistrict(district);
                 
@@ -141,14 +141,15 @@ namespace EED.Ui.Web.Controllers
         [HttpPost]
         public ActionResult PopulateParentDistricts(int districtTypeId)
         {
-            int projectId = Convert.ToInt32(Session["projectId"]);
-            var districtTypes = GetDistrictTypes(projectId);
+            _project = GetProject();
+            var districtTypes = _project.DistrictTypes;
             var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
             districtTypes.Remove(jurisdictionType);
 
-            var parentDistrictType = districtTypes.SingleOrDefault(dt => dt.Id == districtTypeId).ParentDistrictType;
+            var parentDistrictType = districtTypes
+                .SingleOrDefault(dt => dt.Id == districtTypeId).ParentDistrictType;
 
-            var districts = GetDistrictsForDistrictType(projectId, parentDistrictType.Id);
+            var districts = GetDistrictsForDistrictType(_project.Districts, parentDistrictType.Id);
             var selectListDistrict = new SelectList(districts, "Id", "Name");
 
             return Json(selectListDistrict);
@@ -156,18 +157,19 @@ namespace EED.Ui.Web.Controllers
 
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
         {
-            int projectId = Convert.ToInt32(Session["projectId"]);
+            _project = GetProject();
 
-            var districtTypes = GetDistrictTypes(projectId);
+            var districtTypes = _project.DistrictTypes;
             if (model.ParentDistrictId != 0 || model.Id ==0)
             {
-                var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
+                var jurisdictionType = districtTypes
+                    .SingleOrDefault(dt => dt.ParentDistrictType == null);
                 districtTypes.Remove(jurisdictionType);
             }
             var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
             model.DistrictTypes = selectListDistrictType;
 
-            var districts = GetDistrictsForDistrictType(projectId, model.ParentDistrictId);
+            var districts = GetDistrictsForDistrictType(_project.Districts, model.ParentDistrictId);
 
             var selectListDistrict = new SelectList(districts, "Id", "Name");
             model.ParentDistricts = selectListDistrict;
@@ -175,26 +177,17 @@ namespace EED.Ui.Web.Controllers
             return model;
         }
 
-        private IList<DistrictType> GetDistrictTypes(int projectId)
+        private IEnumerable<District> GetDistrictsForDistrictType(IEnumerable<District> districts, int districtTypeId)
         {
-            var districtTypes = _districtTypeService.FindAllDistrictTypesFromProject(projectId).ToList();
-
-            return districtTypes;
-        }
-
-        private IEnumerable<District> GetDistricts(int projectId)
-        {
-            var districts = _service.FindAllDistrictsFromProject(projectId);
-
-            return districts;
-        }
-
-        private IEnumerable<District> GetDistrictsForDistrictType(int projectId, int districtTypeId)
-        {
-            var districts = GetDistricts(projectId);
             districts = districts.Where(d => d.DistrictType.Id == districtTypeId);
 
             return districts;
+        }
+
+        private ElectionProject GetProject()
+        {
+            int projectId = Convert.ToInt32(Session["projectId"]);
+            return _projectService.FindProject(projectId);
         }
     }
 }
