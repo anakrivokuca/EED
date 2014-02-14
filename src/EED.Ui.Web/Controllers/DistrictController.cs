@@ -51,7 +51,7 @@ namespace EED.Ui.Web.Controllers
             };
 
             var districtsPerPage = districts
-                .OrderBy(d => d.Id)
+                .OrderBy(d => d.Name)
                 .Skip((page - 1) * ItemsPerPage)
                 .Take(ItemsPerPage);
 
@@ -121,21 +121,41 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // POST: /District/Delete/5
+        // GET: /District/Delete/5
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var district = _service.FindDistrict(id);
+            _service.DeleteDistrict(district);
+            TempData["message-success"] = string.Format(
+                "District {0} has been successfully deleted.", district.Name);
+
+            return RedirectToAction("List");
+        }
+
+        //
+        // POST: /District/Delete
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int[] deleteInputs)
         {
-            try
+            if (deleteInputs == null)
             {
-                // TODO: Add delete logic here
+                TempData["message-info"] = string.Format(
+                    "None of the districts has been selected for delete action.");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            foreach (var id in deleteInputs)
             {
-                return View();
+                var district = _service.FindDistrict(id);
+                _service.DeleteDistrict(district);
             }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
+                " district(s) has been successfully deleted.");
+
+            return RedirectToAction("List");
         }
         
         [HttpPost]

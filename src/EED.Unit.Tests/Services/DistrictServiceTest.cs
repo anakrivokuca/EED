@@ -129,5 +129,20 @@ namespace EED.Unit.Tests.Services
             _mock.Verify(d => d.Save(district), Times.Once());
         }
         #endregion
+
+        #region Test DeleteDistrict Method
+        [Test]
+        public void DeleteDistrict_ValidDistrict_DoesNotThrowError()
+        {
+            // Arrange
+            var district = new District { Id = 1, Name = "District1" };
+
+            // Act
+            _service.DeleteDistrict(district);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<District>()), Times.Once());
+        }
+        #endregion
     }
 }

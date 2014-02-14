@@ -10,5 +10,6 @@ namespace EED.Service.District
         IEnumerable<Domain.District> FilterDistricts(IEnumerable<Domain.District> districts,
             string searchText, int parentDistrictId);
         void SaveDistrict(Domain.District district);
+        void DeleteDistrict(Domain.District district);
     }
 }

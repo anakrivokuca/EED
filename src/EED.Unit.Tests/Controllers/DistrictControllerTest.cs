@@ -186,5 +186,64 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_GetValidDistrict_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var districtId = 1;
+            var district = new District
+            {
+                Id = districtId,
+                Name = "District1"
+            };
+            _mock.Setup(s => s.FindDistrict(districtId)).Returns(district);
+
+            // Act
+            _controller.Delete(districtId);
+
+            // Assert
+            _mock.Verify(m => m.DeleteDistrict(district), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("District " + district.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostMultipleDistricts_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var districts = new int[] { 1, 2, 3 };
+            _mock.Setup(s => s.FindDistrict(districts[0])).Returns(new District { Id = districts[0] });
+            _mock.Setup(s => s.FindDistrict(districts[1])).Returns(new District { Id = districts[1] });
+            _mock.Setup(s => s.FindDistrict(districts[2])).Returns(new District { Id = districts[2] });
+
+            // Act
+            _controller.Delete(districts);
+
+            // Assert
+            _mock.Verify(m => m.DeleteDistrict(It.IsAny<District>()), Times.Exactly(districts.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(districts.Count() + " district(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoDistrict_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] districts = null;
+
+            // Act
+            _controller.Delete(districts);
+
+            // Assert
+            _mock.Verify(m => m.DeleteDistrict(It.IsAny<District>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the districts has been selected for delete action.",
+                _controller.TempData["message-info"]);
+        }
+        #endregion
     }
 }

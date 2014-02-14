@@ -9,14 +9,10 @@ namespace EED.Service.District
     public class DistrictService : IDistrictService
     {
         private readonly IRepository<Domain.District> _repository;
-        //private readonly IProjectService _projectService;
 
-        public DistrictService(IRepository<Domain.District> repository
-            //, IProjectService projectService
-            )
+        public DistrictService(IRepository<Domain.District> repository)
         {
             _repository = repository;
-            //_projectService = projectService;
         }
 
         public IEnumerable<Domain.District> FindAllDistricts()
@@ -68,6 +64,10 @@ namespace EED.Service.District
                     {
                         existingDistrict.Project.JurisdictionName = district.Name;
                     }
+                    else
+                    {
+                        existingDistrict.ParentDistrict = district.ParentDistrict;
+                    }
                     district = existingDistrict;
                 }
 
@@ -77,6 +77,11 @@ namespace EED.Service.District
             {
                 throw new Exception("Error processing project data - " + ex.Message);
             }
+        }
+        
+        public void DeleteDistrict(Domain.District district)
+        {
+            _repository.Delete(district);
         }
     }
 }
