@@ -70,13 +70,9 @@ namespace EED.Ui.Web.Controllers
             if (ModelState.IsValid)
             {
                 var project = model.ConvertModelToProject(model);
-                if (model.Id != 0)
-                {
-                    var existingProject = _serviceController.FindProject(model.Id);
-                    project.JurisdictionType =  existingProject.JurisdictionType;
-                    project.ElectionType = existingProject.ElectionType;
-                }
+
                 _serviceController.SaveProject(project);
+                
                 TempData["message-success"] = string.Format(
                     "Project {0} has been successfully saved.", 
                     model.Name);

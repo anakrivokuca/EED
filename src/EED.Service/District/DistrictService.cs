@@ -59,15 +59,16 @@ namespace EED.Service.District
         {
             try
             {
-                _repository.Save(district);
+                if (district.Id != 0)
+                {
+                    var existingDistrict = FindDistrict(district.Id);
+                    existingDistrict.Name = district.Name;
+                    existingDistrict.Abbreviation = district.Abbreviation;
+                    existingDistrict.Project.JurisdictionName = district.Name;
+                    district = existingDistrict;
+                }
 
-                //if (district.Id != 0)
-                //{
-                //    var project = _projectService.FindAllProjectsFromUser()
-                //        .Single(p => p.Id == district.Project.Id);
-                //    project.JurisdictionName = district.Name;
-                //    _projectService.SaveProject(project);
-                //}
+                _repository.Save(district);
             }
             catch (Exception ex)
             {

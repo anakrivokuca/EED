@@ -180,9 +180,12 @@ namespace EED.Unit.Tests.Controllers
                 Id = 3,
                 Name = "John",
                 Surname = "Doe",
+                State = "US",
                 Country = "Oklahoma",
                 UserName = "johndoe"
             };
+            var existingUser = _mock.Setup(u => u.GetUser(model.UserName)).Returns(new User { 
+                Id = 3, Name = "John", Surname = "Doe", State = "US", UserName = "johndoe"});
             var user = model.ConvertModelToUser(model);
 
             // Act

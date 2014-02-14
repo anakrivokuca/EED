@@ -2,6 +2,7 @@
 using EED.Domain;
 using EED.Service.District;
 using EED.Service.District_Type;
+using EED.Service.Jurisdiction_Type;
 using EED.Service.Membership_Provider;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,14 @@ namespace EED.Service.Project
     {
         private readonly IRepository<ElectionProject> _repository;
         private readonly IAuthProvider _provider;
-        private readonly IDistrictTypeService _districtTypeService;
-        private readonly IDistrictService _districtService;
+        private readonly IJurisdictionTypeService _jurisdictionTypeService;
 
         public ProjectService(IRepository<ElectionProject> repository, IAuthProvider provider,
-            IDistrictTypeService districtTypeService, IDistrictService districtService)
+            IJurisdictionTypeService jurisdictionTypeService)
         {
             _repository = repository;
             _provider = provider;
-            _districtTypeService = districtTypeService;
-            _districtService = districtService;
+            _jurisdictionTypeService = jurisdictionTypeService;
         }
 
         public IEnumerable<ElectionProject> FindAllProjects()
@@ -61,19 +60,19 @@ namespace EED.Service.Project
         {
             try
             {
-                int userId = _provider.GetUserFromCookie().Id;
-                project.User = new User { Id = userId };
-
-                _repository.Save(project);
+                var jurisdictionType = _jurisdictionTypeService
+                        .FindJurisdictionType(project.JurisdictionType.Id);
 
                 if (project.Id == 0)
                 {
+                    int userId = _provider.GetUserFromCookie().Id;
+                    project.User = new User { Id = userId };
+
                     var districtType = new DistrictType
                     {
-                        Name = project.JurisdictionType.Name,
+                        Name = jurisdictionType.Name,
                         Project = project
                     };
-                    _districtTypeService.SaveDistrictType(districtType);
 
                     var district = new Domain.District
                     {
@@ -81,15 +80,35 @@ namespace EED.Service.Project
                         DistrictType = districtType,
                         Project = project
                     };
-                    _districtService.SaveDistrict(district);
+
+                    project.DistrictTypes = new List<DistrictType>();
+                    project.DistrictTypes.Add(districtType);
+                    project.Districts = new List<Domain.District>();
+                    project.Districts.Add(district);
                 }
                 else
                 {
-                    var district = _districtService.FindAllDistrictsFromProject(project.Id)
-                        .Single(d => d.ParentDistrict == null);
+                    var existingProject = FindProject(project.Id);
+                    existingProject.Name = project.Name;
+                    existingProject.Date = project.Date;
+                    existingProject.Description = project.Description;
+                    existingProject.JurisdictionName = project.JurisdictionName;
+                    existingProject.JurisdictionType = project.JurisdictionType;
+
+                    var districtType = existingProject.DistrictTypes.Single(dt => dt.ParentDistrictType == null);
+                    existingProject.DistrictTypes.Remove(districtType);
+                    districtType.Name = jurisdictionType.Name;
+                    existingProject.DistrictTypes.Add(districtType);
+
+                    var district = existingProject.Districts.Single(d => d.ParentDistrict == null);
+                    existingProject.Districts.Remove(district);
                     district.Name = project.JurisdictionName;
-                    _districtService.SaveDistrict(district);
+                    existingProject.Districts.Add(district);
+
+                    project = existingProject;
                 }
+
+                _repository.Save(project);
             }
             catch (Exception ex)
             {

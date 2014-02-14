@@ -86,8 +86,7 @@ namespace EED.Ui.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                User existingUser = _provider.GetAllUsers().SingleOrDefault
-                    (u => u.UserName == model.UserName);
+                User existingUser = _provider.GetUser(model.UserName);
 
                 var user = model.ConvertModelToUser(model);
                 var status = new MembershipCreateStatus();

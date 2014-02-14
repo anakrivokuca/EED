@@ -11,7 +11,8 @@
     <property name="Abbreviation" />
     <many-to-one name="DistrictType" class="EED.Domain.DistrictType" column="DistrictTypeId" />
     <many-to-one name="ParentDistrict" class="EED.Domain.District" column="ParentDistrictId" />
-    <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
+    <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" 
+                 cascade="save-update" />
   </class>
 
 </hibernate-mapping>

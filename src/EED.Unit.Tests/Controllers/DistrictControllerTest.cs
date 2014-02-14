@@ -139,7 +139,6 @@ namespace EED.Unit.Tests.Controllers
                 Name = "NewDistrict",
                 Abbreviation = "ND",
             };
-            //var districtType = model.ConvertModelToDistrictType(model);
 
             // Act
             var result = _controller.Edit(model);
@@ -162,6 +161,13 @@ namespace EED.Unit.Tests.Controllers
                 Name = "District 2",
                 Abbreviation = "D2"
             };
+            var district = new District
+            {
+                Id = 2,
+                Name = "District2",
+                Abbreviation = "D2"
+            };
+            _mock.Setup(d => d.FindDistrict(model.Id)).Returns(district);
 
             // Act
             var result = _controller.Edit(model);

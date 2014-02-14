@@ -34,6 +34,11 @@ namespace EED.Service.Controller.Project
             return _jurisdictionTypeService.FindAllJurisdictionTypes();
         }
 
+        public JurisdictionType FindJurisdictionType(int id)
+        {
+            return _jurisdictionTypeService.FindJurisdictionType(id);
+        }
+
         public IEnumerable<ElectionProject> FindAllProjects()
         {
             return _service.FindAllProjects();

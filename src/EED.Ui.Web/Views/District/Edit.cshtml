@@ -44,11 +44,11 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.DistrictTypeId)
         </div>
-        @*@if (Model.Id != 0 && Model.ParentDistrictId == 0) {
+        @if (Model.Id != 0 && Model.ParentDistrictId == 0) {
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.DistrictTypeId, Model.DistrictTypes, string.Empty, new { id = "ddlDistrictType", disabled = "disabled"  })
             </div>
-        } else {*@
+        } else {
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.DistrictTypeId, Model.DistrictTypes, string.Empty, new { id = "ddlDistrictType", onchange = "javascript:GetParentDistrict(this.value);"  })
                 @Html.ValidationMessageFor(model => model.DistrictTypeId)
@@ -66,7 +66,7 @@
                 </select>*@
                 @Html.ValidationMessageFor(model => model.ParentDistrictId)
             </div>
-        @*}*@
+        }
         
         <p>
             <input type="submit" value="Save" />

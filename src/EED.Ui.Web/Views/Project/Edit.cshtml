@@ -76,15 +76,8 @@
             @Html.LabelFor(model => model.JurisdictionTypeId)
         </div>
         <div class="editor-field">
-            @if(Model.Id.Equals(0)) {
-                @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty)
-                @Html.ValidationMessageFor(model => model.JurisdictionTypeId)
-            }
-            else
-            {
-                @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty, 
-                    new { disabled = "disabled" })
-            }
+            @Html.DropDownListFor(model => model.JurisdictionTypeId, Model.JurisdictionTypes, string.Empty)
+            @Html.ValidationMessageFor(model => model.JurisdictionTypeId)
         </div>
         
         <p>

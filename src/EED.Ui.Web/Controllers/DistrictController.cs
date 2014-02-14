@@ -33,9 +33,9 @@ namespace EED.Ui.Web.Controllers
         public ViewResult List(string searchText, int districtTypeId = 0, int page = 1)
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
-            var districts = _service.FindAllDistrictsFromProject(projectId);
+            var districts = GetDistricts(projectId);
 
-            var districtTypes = _districtTypeService.FindAllDistrictTypesFromProject(projectId);
+            var districtTypes = GetDistrictTypes(projectId);
             var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
 
             if (districtTypeId != 0 || !String.IsNullOrEmpty(searchText))
@@ -99,17 +99,15 @@ namespace EED.Ui.Web.Controllers
             if (ModelState.IsValid)
             {
                 var district = model.ConvertModelToDistrict(model);
-                int projectId = Convert.ToInt32(Session["projectId"]);
-                district.Project = new ElectionProject { Id = projectId };
+                
 
-                //if (model.Id != 0)
-                //{
-                //    var existingDistrict = _service.FindDistrict(model.Id);
-                //    district.DistrictType = existingDistrict.DistrictType;
-                //    district.ParentDistrict = existingDistrict.ParentDistrict;
-                //}
-
+                if (model.Id == 0)
+                {
+                    int projectId = Convert.ToInt32(Session["projectId"]);
+                    district.Project = new ElectionProject { Id = projectId };
+                }
                 _service.SaveDistrict(district);
+                
                 TempData["message-success"] = string.Format(
                     "District {0} has been successfully saved.",
                     model.Name);
@@ -145,6 +143,9 @@ namespace EED.Ui.Web.Controllers
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
             var districtTypes = GetDistrictTypes(projectId);
+            var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
+            districtTypes.Remove(jurisdictionType);
+
             var parentDistrictType = districtTypes.SingleOrDefault(dt => dt.Id == districtTypeId).ParentDistrictType;
 
             var districts = GetDistrictsForDistrictType(projectId, parentDistrictType.Id);
@@ -158,29 +159,39 @@ namespace EED.Ui.Web.Controllers
             int projectId = Convert.ToInt32(Session["projectId"]);
 
             var districtTypes = GetDistrictTypes(projectId);
+            if (model.ParentDistrictId != 0 || model.Id ==0)
+            {
+                var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
+                districtTypes.Remove(jurisdictionType);
+            }
             var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
             model.DistrictTypes = selectListDistrictType;
 
             var districts = GetDistrictsForDistrictType(projectId, model.ParentDistrictId);
+
             var selectListDistrict = new SelectList(districts, "Id", "Name");
             model.ParentDistricts = selectListDistrict;
 
             return model;
         }
 
-        private IEnumerable<DistrictType> GetDistrictTypes(int projectId)
+        private IList<DistrictType> GetDistrictTypes(int projectId)
         {
             var districtTypes = _districtTypeService.FindAllDistrictTypesFromProject(projectId).ToList();
-
-            var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
-            districtTypes.Remove(jurisdictionType);
 
             return districtTypes;
         }
 
-        private IEnumerable<District> GetDistrictsForDistrictType(int projectId, int districtTypeId)
+        private IEnumerable<District> GetDistricts(int projectId)
         {
             var districts = _service.FindAllDistrictsFromProject(projectId);
+
+            return districts;
+        }
+
+        private IEnumerable<District> GetDistrictsForDistrictType(int projectId, int districtTypeId)
+        {
+            var districts = GetDistricts(projectId);
             districts = districts.Where(d => d.DistrictType.Id == districtTypeId);
 
             return districts;

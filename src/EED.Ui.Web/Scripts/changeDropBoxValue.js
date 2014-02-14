@@ -33,7 +33,7 @@ function SetParentDistrictId(_parentDistrictId) {
     $('#ParentDistrictId').val(_parentDistrictId);
 };
 
-//if ($('#ddlDistrictType').is(':disabled') != true) {
+if ($('#ddlDistrictType').is(':disabled') != true) {
     if ($('#ddlDistrictType').val() != 0)
         body.onLoad = GetParentDistrict($('#ddlDistrictType').val());
-//};
+};

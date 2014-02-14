@@ -17,5 +17,10 @@ namespace EED.Service.Jurisdiction_Type
         {
             return _repository.FindAll();
         }
+        
+        public JurisdictionType FindJurisdictionType(int id)
+        {
+            return _repository.Find(id);
+        }
     }
 }

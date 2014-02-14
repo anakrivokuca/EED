@@ -147,13 +147,6 @@ namespace EED.Unit.Tests.Controllers
                 Description = "Project description.",
                 JurisdictionTypeId = 1
             };
-            _mock.Setup(p => p.FindProject(projectId)).Returns(new ElectionProject
-            {
-                Id = projectId,
-                Name = "Project2",
-                ElectionType = new ElectionType { Id = 1 },
-                JurisdictionType = new JurisdictionType { Id = 1 }
-            });
 
             // Act
             var result = _controller.Edit(model);
