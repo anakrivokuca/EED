@@ -15,11 +15,11 @@
     <many-to-one name="ElectionType" class="EED.Domain.ElectionType" column="ElectionTypeId" />
     <many-to-one name="JurisdictionType" class="EED.Domain.JurisdictionType" 
                  column="JurisdictionTypeId" />
-    <bag name="DistrictTypes" cascade="all-delete-orphan" lazy="false">
+    <bag name="DistrictTypes" cascade="all-delete-orphan" lazy="false" inverse="true">
       <key column="ElectionProjectId" />
       <one-to-many class="DistrictType" />
     </bag>
-    <bag name="Districts" cascade="all-delete-orphan" lazy="false">
+    <bag name="Districts" cascade="all-delete-orphan" lazy="false" inverse="true">
       <key column="ElectionProjectId" />
       <one-to-many class="District" />
     </bag>

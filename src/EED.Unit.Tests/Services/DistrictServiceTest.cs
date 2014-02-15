@@ -48,19 +48,6 @@ namespace EED.Unit.Tests.Services
             // Assert
             Assert.AreEqual(3, result.Count());
         }
-
-        [Test]
-        public void FindAllDistrictsFromProject_GivenTwoDistrictsFromSpecifiedProject_ReturnsTwoDistricts()
-        {
-            // Arrange
-            var projectId = 2;
-
-            // Act
-            var result = _service.FindAllDistrictsFromProject(projectId);
-
-            // Assert
-            Assert.AreEqual(2, result.Count());
-        }
         #endregion
 
         #region Test FilterDistricts Method

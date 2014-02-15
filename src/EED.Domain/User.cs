@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Security;
 
 namespace EED.Domain
@@ -18,5 +19,7 @@ namespace EED.Domain
         public new virtual DateTime? CreationDate { get; set; }
         public new virtual bool IsOnline { get; set; }
         public new virtual bool IsLockedOut { get; set; }
+
+        public IList<ElectionProject> Projects { get; set; }
     }
 }

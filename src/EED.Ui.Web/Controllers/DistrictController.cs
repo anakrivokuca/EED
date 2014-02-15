@@ -162,14 +162,16 @@ namespace EED.Ui.Web.Controllers
         public ActionResult PopulateParentDistricts(int districtTypeId)
         {
             _project = GetProject();
+
             var districtTypes = _project.DistrictTypes;
-            var jurisdictionType = districtTypes.SingleOrDefault(dt => dt.ParentDistrictType == null);
+            var jurisdictionType = districtTypes
+                .SingleOrDefault(dt => dt.ParentDistrictType == null);
             districtTypes.Remove(jurisdictionType);
 
             var parentDistrictType = districtTypes
                 .SingleOrDefault(dt => dt.Id == districtTypeId).ParentDistrictType;
 
-            var districts = GetDistrictsForDistrictType(_project.Districts, parentDistrictType.Id);
+            var districts = GetDistrictsForDistrictType(parentDistrictType);
             var selectListDistrict = new SelectList(districts, "Id", "Name");
 
             return Json(selectListDistrict);
@@ -180,7 +182,7 @@ namespace EED.Ui.Web.Controllers
             _project = GetProject();
 
             var districtTypes = _project.DistrictTypes;
-            if (model.ParentDistrictId != 0 || model.Id ==0)
+            if (model.ParentDistrictId != 0 || model.Id == 0)
             {
                 var jurisdictionType = districtTypes
                     .SingleOrDefault(dt => dt.ParentDistrictType == null);
@@ -189,17 +191,21 @@ namespace EED.Ui.Web.Controllers
             var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
             model.DistrictTypes = selectListDistrictType;
 
-            var districts = GetDistrictsForDistrictType(_project.Districts, model.ParentDistrictId);
+            var districtType = districtTypes
+                .SingleOrDefault(dt => dt.Id == model.DistrictTypeId);
 
+            var districts = GetDistrictsForDistrictType(districtType);
             var selectListDistrict = new SelectList(districts, "Id", "Name");
             model.ParentDistricts = selectListDistrict;
 
             return model;
         }
 
-        private IEnumerable<District> GetDistrictsForDistrictType(IEnumerable<District> districts, int districtTypeId)
+        private IEnumerable<District> GetDistrictsForDistrictType(DistrictType districtType)
         {
-            districts = districts.Where(d => d.DistrictType.Id == districtTypeId);
+            IEnumerable<District> districts = new List<District>();
+            if(districtType != null)
+                districts = districtType.Districts;;
 
             return districts;
         }

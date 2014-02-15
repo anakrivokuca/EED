@@ -57,6 +57,8 @@ namespace EED.Ui.Web.Controllers
         {
             var user = _serviceController.GetUserFromCookie();
             _serviceController.Logout(user);
+            Session["projectId"] = null;
+            Session["projectName"] = null;
 
             return RedirectToAction("Login", "Account");
         }

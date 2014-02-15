@@ -20,13 +20,6 @@ namespace EED.Service.District
             return _repository.FindAll();
         }
 
-        public IEnumerable<Domain.District> FindAllDistrictsFromProject(int projectId)
-        {
-            var districts = FindAllDistricts().Where(d => d.Project.Id == projectId);
-
-            return districts;
-        }
-
         public Domain.District FindDistrict(int id)
         {
             return _repository.Find(id);

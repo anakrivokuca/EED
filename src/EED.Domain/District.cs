@@ -14,5 +14,7 @@ namespace EED.Domain
         public DistrictType DistrictType { get; set; }
         public District ParentDistrict { get; set; }
         public ElectionProject Project { get; set; }
+
+        public IList<District> ChildDistricts { get; set; }
     }
 }

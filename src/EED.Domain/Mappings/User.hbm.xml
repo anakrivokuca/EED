@@ -20,6 +20,10 @@
     <property name="CreationDate" />
     <property name="IsOnline" />
     <property name="IsLockedOut" />
+    <bag name="Projects" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="UserId" />
+      <one-to-many class="ElectionProject" />
+    </bag>
   </class>
 
 </hibernate-mapping>

@@ -164,12 +164,13 @@ namespace EED.Unit.Tests.Controllers
         {
             // Arrange
             var districtType = new DistrictType { Id = 1, Name = "DistrictType1" };
+            _mock.Setup(s => s.FindDistrictType(districtType.Id)).Returns(districtType);
 
             // Act
-            _controller.Delete(districtType.Id, districtType.Name);
+            _controller.Delete(districtType.Id);
 
             // Assert
-            _mock.Verify(m => m.DeleteDistrictType(It.IsAny<DistrictType>()), Times.Once());
+            _mock.Verify(m => m.DeleteDistrictType(districtType), Times.Once());
             Assert.IsNotNull(_controller.TempData["message-success"]);
             Assert.AreEqual("District type " + districtType.Name + " has been successfully deleted.",
                 _controller.TempData["message-success"]);

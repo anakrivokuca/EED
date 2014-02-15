@@ -5,7 +5,6 @@ namespace EED.Service.District
     public interface IDistrictService
     {
         IEnumerable<Domain.District> FindAllDistricts();
-        IEnumerable<Domain.District> FindAllDistrictsFromProject(int projectId);
         Domain.District FindDistrict(int id);
         IEnumerable<Domain.District> FilterDistricts(IEnumerable<Domain.District> districts,
             string searchText, int parentDistrictId);

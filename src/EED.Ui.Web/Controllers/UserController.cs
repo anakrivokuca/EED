@@ -119,12 +119,12 @@ namespace EED.Ui.Web.Controllers
         // POST: /User/Delete
 
         [HttpPost]
-        public ActionResult Delete(int id, string name, string surname, string username)
+        public ActionResult Delete(string username)
         {
-            var user = new User { Id = id };
+            var user = _provider.GetUser(username);
             _provider.DeleteUser(username, true);
             TempData["message-success"] = string.Format("User {0} {1} has been successfully deleted.", 
-                name, surname);
+                user.Name, user.Surname);
             
             return RedirectToAction("List");
         }

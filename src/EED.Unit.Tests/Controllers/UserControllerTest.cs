@@ -222,15 +222,18 @@ namespace EED.Unit.Tests.Controllers
         {
             // Arrange
             var username = "johndoe";
+            var user = new User { Id = 1, Name = "John", Surname = "Doe", UserName = username};
+            _mock.Setup(p => p.GetUser(username)).Returns(user);
             _mock.Setup(p => p.DeleteUser(username, true)).Returns(true);
 
             // Act
-            _controller.Delete(3, "John", "Doe", username);
+            _controller.Delete(username);
 
             // Assert
             _mock.Verify(m => m.DeleteUser(username, true), Times.Once());
             Assert.IsNotNull(_controller.TempData["message-success"]);
-            Assert.AreEqual("User John Doe has been successfully deleted.",
+            Assert.AreEqual("User " + user.Name + " " +  user.Surname + 
+                " has been successfully deleted.",
                 _controller.TempData["message-success"]); 
         }
         #endregion

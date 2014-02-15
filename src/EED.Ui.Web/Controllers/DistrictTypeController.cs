@@ -93,12 +93,12 @@ namespace EED.Ui.Web.Controllers
         // POST: /DistrictType/Delete/
 
         [HttpPost]
-        public ActionResult Delete(int id, string name)
+        public ActionResult Delete(int id)
         {
-            var districtType = new DistrictType { Id = id };
+            var districtType = _service.FindDistrictType(id);
             _service.DeleteDistrictType(districtType);
             TempData["message-success"] = string.Format(
-                "District type {0} has been successfully deleted.", name);
+                "District type {0} has been successfully deleted.", districtType.Name);
 
             return RedirectToAction("List");
         }

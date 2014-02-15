@@ -12,6 +12,14 @@
     <many-to-one name="ParentDistrictType" class="EED.Domain.DistrictType"
                  column="ParentDistrictTypeId" />
     <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
+    <bag name="ChildDistrictTypes" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="ParentDistrictTypeId" />
+      <one-to-many class="DistrictType" />
+    </bag>
+    <bag name="Districts" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="DistrictTypeId" />
+      <one-to-many class="District" />
+    </bag>
   </class>
 
 </hibernate-mapping>

@@ -185,14 +185,16 @@ namespace EED.Unit.Tests.Controllers
         {
             // Arrange
             var projectId = 1;
+            var project = new ElectionProject { Id = projectId, Name = "Project1" };
+            _mock.Setup(p => p.FindProject(projectId)).Returns(project);
 
             // Act
             _controller.Delete(projectId);
 
             // Assert
-            _mock.Verify(m => m.DeleteProject(It.IsAny<ElectionProject>()), Times.Once());
+            _mock.Verify(m => m.DeleteProject(project), Times.Once());
             Assert.IsNotNull(_controller.TempData["message-success"]);
-            Assert.AreEqual("Project " + projectId + " has been successfully deleted.", 
+            Assert.AreEqual("Project " + project.Name + " has been successfully deleted.", 
                 _controller.TempData["message-success"]); 
         }
 
@@ -201,6 +203,9 @@ namespace EED.Unit.Tests.Controllers
         {
             // Arrange
             var projects = new int[] { 1, 2, 3 };
+            _mock.Setup(p => p.FindProject(projects[0])).Returns(new ElectionProject { Id = projects[0] });
+            _mock.Setup(p => p.FindProject(projects[1])).Returns(new ElectionProject { Id = projects[1] });
+            _mock.Setup(p => p.FindProject(projects[2])).Returns(new ElectionProject { Id = projects[2] });
 
             // Act
             _controller.Delete(projects);

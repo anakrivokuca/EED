@@ -93,10 +93,10 @@ namespace EED.Ui.Web.Controllers
         //[MultipleButton(Name = "action", Argument = "Delete")]
         public ActionResult Delete(int id)
         {
-            var project = new ElectionProject { Id = id };
+            var project = _serviceController.FindProject(id);
             _serviceController.DeleteProject(project);
             TempData["message-success"] = string.Format(
-                "Project {0} has been successfully deleted.", id);
+                "Project {0} has been successfully deleted.", project.Name);
 
             return RedirectToAction("List");
         }
@@ -116,7 +116,7 @@ namespace EED.Ui.Web.Controllers
             }
             foreach (var id in deleteInputs)
             {
-                var project = new ElectionProject { Id = id };
+                var project = _serviceController.FindProject(id);
                 _serviceController.DeleteProject(project);
             }
             TempData["message-success"] = string.Format(deleteInputs.Count().ToString() + 

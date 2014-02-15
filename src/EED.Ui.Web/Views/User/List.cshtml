@@ -30,15 +30,12 @@
                     new { @class = "imageEdit", title = "Edit" })
                 @using (Html.BeginForm()) {
                     @Ajax.ActionLink("Delete", "Delete", 
-                        new { id = u.Id, name = u.Name, surname = u.Surname, username = u.UserName }, 
+                        new { username = u.UserName }, 
                         new AjaxOptions { HttpMethod = "POST", 
                             Confirm = "Are you sure you want to delete this item?", 
                             OnSuccess="window.location.reload()" }, 
                         new { @class = "imageDelete", title = "Delete" })
-                    <!--Html.Hidden("Id", u.Id)
-                    Html.Hidden("Name", u.Name)
-                    Html.Hidden("Surname", u.Surname)
-                    Html.Hidden("Username", u.UserName)
+                    <!--Html.Hidden("Username", u.UserName)
                     <input type="submit" value="Delete" title="Delete" class="imageDelete" />-->
                 }
             </td>

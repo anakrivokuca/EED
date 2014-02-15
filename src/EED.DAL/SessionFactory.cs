@@ -1,6 +1,8 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
+using log4net;
 
+//[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace EED.DAL
 {
     public class SessionFactory
@@ -9,6 +11,7 @@ namespace EED.DAL
 
         public static void Init()
         {
+            //log4net.Config.XmlConfigurator.Configure();
             var config = new Configuration().Configure();
             config.AddAssembly("EED.Domain");
 
