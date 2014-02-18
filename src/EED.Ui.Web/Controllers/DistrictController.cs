@@ -1,6 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.District;
-using EED.Service.Project;
+using EED.Service.Controller.District;
 using EED.Ui.Web.Filters;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.District;
@@ -16,17 +15,15 @@ namespace EED.Ui.Web.Controllers
     [SessionExpireFilter]
     public class DistrictController : Controller
     {
-        private readonly IDistrictService _service;
-        private readonly IProjectService _projectService;
+        private readonly IDistrictServiceController _serviceController;
 
         private ElectionProject _project;
 
         public int ItemsPerPage = 10;
 
-        public DistrictController(IDistrictService service, IProjectService projectService)
+        public DistrictController(IDistrictServiceController serviceController)
         {
-            _service = service;
-            _projectService = projectService;
+            _serviceController = serviceController;
         }
 
         //
@@ -41,7 +38,7 @@ namespace EED.Ui.Web.Controllers
             var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
 
             if (districtTypeId != 0 || !String.IsNullOrEmpty(searchText))
-                districts = _service.FilterDistricts(districts, searchText, districtTypeId);
+                districts = _serviceController.FilterDistricts(districts, searchText, districtTypeId);
 
             var pagingInfo = new PagingInfo()
             {
@@ -83,7 +80,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
-            var district = _service.FindDistrict(id);
+            var district = _serviceController.FindDistrict(id);
 
             var model = new CreateViewModel();
             model = model.ConvertDistrictToModel(district);
@@ -106,7 +103,7 @@ namespace EED.Ui.Web.Controllers
                 {
                     district.Project = GetProject();
                 }
-                _service.SaveDistrict(district);
+                _serviceController.SaveDistrict(district);
                 
                 TempData["message-success"] = string.Format(
                     "District {0} has been successfully saved.",
@@ -126,8 +123,8 @@ namespace EED.Ui.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var district = _service.FindDistrict(id);
-            _service.DeleteDistrict(district);
+            var district = _serviceController.FindDistrict(id);
+            _serviceController.DeleteDistrict(district);
             TempData["message-success"] = string.Format(
                 "District {0} has been successfully deleted.", district.Name);
 
@@ -149,8 +146,8 @@ namespace EED.Ui.Web.Controllers
             }
             foreach (var id in deleteInputs)
             {
-                var district = _service.FindDistrict(id);
-                _service.DeleteDistrict(district);
+                var district = _serviceController.FindDistrict(id);
+                _serviceController.DeleteDistrict(district);
             }
             TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
                 " district(s) has been successfully deleted.");
@@ -213,7 +210,7 @@ namespace EED.Ui.Web.Controllers
         private ElectionProject GetProject()
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
-            return _projectService.FindProject(projectId);
+            return _serviceController.FindProject(projectId);
         }
     }
 }

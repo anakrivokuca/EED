@@ -1,4 +1,6 @@
-﻿using EED.Ui.Web.Controllers;
+﻿using EED.Infrastructure;
+using EED.Service.Controller.User;
+using EED.Ui.Web.Controllers;
 using NUnit.Framework;
 using System.Web.Mvc;
 using TechTalk.SpecFlow;
@@ -14,8 +16,9 @@ namespace EED.Acceptance.Tests.Steps
         [When(@"an administrator browses to the Users page")]
         public void WhenAnAdministratorBrowsesToTheUsersPage()
         {
-            //DependencyResolver.SetResolver(new NinjectDependencyResolver());
-            _controller = new UserController();
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            var serviceController = DependencyResolver.Current.GetService<IUserServiceController>();
+            _controller = new UserController(serviceController);
             _result = _controller.List(null);
         }
 

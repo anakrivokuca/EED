@@ -31,7 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,13 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Membership_Provider\IAccountServiceController.cs" />
-    <Compile Include="Membership_Provider\AccountServiceController.cs" />
+    <Compile Include="District\DistrictServiceController.cs" />
+    <Compile Include="District\IDistrictServiceController.cs" />
+    <Compile Include="District_Type\DistrictTypeServiceController.cs" />
+    <Compile Include="District_Type\IDistrictTypeServiceController.cs" />
+    <Compile Include="Account\IAccountServiceController.cs" />
+    <Compile Include="Account\AccountServiceController.cs" />
     <Compile Include="Project\IProjectServiceController.cs" />
     <Compile Include="Project\ProjectServiceController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\IUserServiceController.cs" />
+    <Compile Include="User\UserServiceController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EED.DAL\EED.DAL.csproj">
+      <Project>{2677737f-02fc-420d-94c9-e1e36659df3d}</Project>
+      <Name>EED.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EED.Domain\EED.Domain.csproj">
       <Project>{8f5053c1-911c-49b3-8e66-53c24b62df92}</Project>
       <Name>EED.Domain</Name>

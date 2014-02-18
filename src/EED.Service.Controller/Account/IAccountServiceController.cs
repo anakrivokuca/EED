@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EED.Service.Controller.Membership_Provider
+namespace EED.Service.Controller.Account
 {
     public interface IAccountServiceController
     {
-        User GetUserFromCookie();
+        Domain.User GetUserFromCookie();
         bool Authenticate(string username, string password);
-        void Logout(User user);
+        void Logout(Domain.User user);
     }
 }

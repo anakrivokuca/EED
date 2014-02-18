@@ -1,8 +1,6 @@
-﻿using EED.Domain;
-using EED.Service.Membership_Provider;
-using System;
+﻿using EED.Service.Membership_Provider;
 
-namespace EED.Service.Controller.Membership_Provider
+namespace EED.Service.Controller.Account
 {
     public class AccountServiceController : IAccountServiceController
     {
@@ -13,7 +11,7 @@ namespace EED.Service.Controller.Membership_Provider
             _provider = provider;
         }
 
-        public User GetUserFromCookie()
+        public Domain.User GetUserFromCookie()
         {
             return _provider.GetUserFromCookie();
         }
@@ -23,7 +21,7 @@ namespace EED.Service.Controller.Membership_Provider
             return _provider.Authenticate(username, password);
         }
 
-        public void Logout(User user)
+        public void Logout(Domain.User user)
         {
             _provider.Logout(user);
         }

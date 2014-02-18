@@ -1,5 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.Membership_Provider;
+using EED.Service.Controller.User;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.User;
 using Moq;
@@ -14,7 +14,7 @@ namespace EED.Unit.Tests.Controllers
     [TestFixture]
     class UserControllerTest
     {
-        private Mock<IMembershipProvider> _mock; 
+        private Mock<IUserServiceController> _mock; 
         private UserController _controller;
         private IEnumerable<User> _users;
         
@@ -32,13 +32,12 @@ namespace EED.Unit.Tests.Controllers
                     Email = "johndoe@gmail.com", State = "US", UserName = "johndoe"},
                 new User { Id = 4, Name = "Jane", State = "US"}};
 
-            _mock = new Mock<IMembershipProvider>();
+            _mock = new Mock<IUserServiceController>();
             _mock.Setup(p => p.GetAllUsers()).Returns(_users);
             
-            _controller = new UserController()
+            _controller = new UserController(_mock.Object)
             {
-                ItemsPerPage = 2,
-                _provider = _mock.Object
+                ItemsPerPage = 2
             };
         }
 

@@ -1,4 +1,4 @@
-﻿using EED.Service.Controller.Membership_Provider;
+﻿using EED.Service.Controller.Account;
 using EED.Ui.Web;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.User;

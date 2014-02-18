@@ -1,7 +1,10 @@
 ﻿using EED.DAL;
 using EED.Domain;
-using EED.Service.Controller.Membership_Provider;
+using EED.Service.Controller.Account;
+using EED.Service.Controller.District;
+using EED.Service.Controller.District_Type;
 using EED.Service.Controller.Project;
+using EED.Service.Controller.User;
 using EED.Service.District;
 using EED.Service.District_Type;
 using EED.Service.Election_Type;
@@ -53,7 +56,10 @@ namespace EED.Infrastructure
             _kernel.Bind<IDistrictService>().To<DistrictService>();
 
             _kernel.Bind<IAccountServiceController>().To<AccountServiceController>();
+            _kernel.Bind<IUserServiceController>().To<UserServiceController>();
             _kernel.Bind<IProjectServiceController>().To<ProjectServiceController>();
+            _kernel.Bind<IDistrictTypeServiceController>().To<DistrictTypeServiceController>();
+            _kernel.Bind<IDistrictServiceController>().To<DistrictServiceController>();
         }
 
     }

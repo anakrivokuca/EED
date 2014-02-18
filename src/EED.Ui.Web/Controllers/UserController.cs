@@ -1,10 +1,8 @@
 ﻿using EED.Domain;
-using EED.Infrastructure;
-using EED.Service.Membership_Provider;
+using EED.Service.Controller.User;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.User;
 using System;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -14,15 +12,12 @@ namespace EED.Ui.Web.Controllers
     [Authorize(Users = "admin")]
     public class UserController : Controller
     {
-        public IMembershipProvider _provider;
+        public IUserServiceController _serviceController;
         public int ItemsPerPage = 10;
 
-        public UserController()
+        public UserController(IUserServiceController serviceController)
         {
-            DependencyResolver.SetResolver(new NinjectDependencyResolver());
-            _provider = DependencyResolver.Current.GetService<IMembershipProvider>();
-            _provider.Initialize("", new NameValueCollection());
-            //_provider = (CustomMembershipProvider)Membership.Providers["CustomMembershipProvider"];
+            _serviceController = serviceController;
         }
 
         //
@@ -32,9 +27,9 @@ namespace EED.Ui.Web.Controllers
         {
             ViewBag.Title = "Users";
             
-            var users = _provider.GetAllUsers().ToList();
+            var users = _serviceController.GetAllUsers().ToList();
             if (!String.IsNullOrEmpty(searchText))
-                users = _provider.FilterUsers(users, searchText).ToList();
+                users = _serviceController.FilterUsers(users, searchText).ToList();
 
             var pagingInfo = new PagingInfo()
             {
@@ -71,7 +66,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
-            var user = _provider.GetAllUsers()
+            var user = _serviceController.GetAllUsers()
                 .First(u => u.Id == id);
             var model = new CreateViewModel();
             model = model.ConvertUserToModel(user);
@@ -86,15 +81,15 @@ namespace EED.Ui.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                User existingUser = _provider.GetUser(model.UserName);
+                User existingUser = _serviceController.GetUser(model.UserName);
 
                 var user = model.ConvertModelToUser(model);
                 var status = new MembershipCreateStatus();
                 
                 if (existingUser == null)
-                    user = _provider.CreateUser(user, out status);
+                    user = _serviceController.CreateUser(user, out status);
                 else
-                    _provider.UpdateUser(user);
+                    _serviceController.UpdateUser(user);
                 
                 if (user == null)
                 {
@@ -121,8 +116,8 @@ namespace EED.Ui.Web.Controllers
         [HttpPost]
         public ActionResult Delete(string username)
         {
-            var user = _provider.GetUser(username);
-            _provider.DeleteUser(username, true);
+            var user = _serviceController.GetUser(username);
+            _serviceController.DeleteUser(username, true);
             TempData["message-success"] = string.Format("User {0} {1} has been successfully deleted.", 
                 user.Name, user.Surname);
             

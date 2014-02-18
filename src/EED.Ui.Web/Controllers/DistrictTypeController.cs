@@ -1,5 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.District_Type;
+using EED.Service.Controller.District_Type;
 using EED.Ui.Web.Filters;
 using EED.Ui.Web.Models.District_Type;
 using System;
@@ -13,11 +13,11 @@ namespace EED.Ui.Web.Controllers
     [SessionExpireFilter]
     public class DistrictTypeController : Controller
     {
-        private readonly IDistrictTypeService _service;
+        private readonly IDistrictTypeServiceController _serviceController;
 
-        public DistrictTypeController(IDistrictTypeService service)
+        public DistrictTypeController(IDistrictTypeServiceController serviceController)
         {
-            _service = service;
+            _serviceController = serviceController;
         }
 
         //
@@ -26,10 +26,10 @@ namespace EED.Ui.Web.Controllers
         public ViewResult List(string searchText)
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
-            var districtTypes = _service.FindAllDistrictTypesFromProject(projectId);
+            var districtTypes = _serviceController.FindAllDistrictTypesFromProject(projectId);
 
             if (!String.IsNullOrEmpty(searchText))
-                districtTypes = _service.FilterDistrictTypes(districtTypes, searchText).ToList();
+                districtTypes = _serviceController.FilterDistrictTypes(districtTypes, searchText).ToList();
 
             var model = new ListViewModel() {
                 DistrictTypes = districtTypes,
@@ -55,7 +55,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
-            var districtType = _service.FindDistrictType(id);
+            var districtType = _serviceController.FindDistrictType(id);
 
             var model = new CreateViewModel();
             model = model.ConvertDistrictTypeToModel(districtType);
@@ -76,7 +76,7 @@ namespace EED.Ui.Web.Controllers
                 int projectId = Convert.ToInt32(Session["projectId"]);
                 districtType.Project = new ElectionProject { Id = projectId };
 
-                _service.SaveDistrictType(districtType);
+                _serviceController.SaveDistrictType(districtType);
                 TempData["message-success"] = string.Format(
                     "District type {0} has been successfully saved.",
                     model.Name);
@@ -95,8 +95,8 @@ namespace EED.Ui.Web.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var districtType = _service.FindDistrictType(id);
-            _service.DeleteDistrictType(districtType);
+            var districtType = _serviceController.FindDistrictType(id);
+            _serviceController.DeleteDistrictType(districtType);
             TempData["message-success"] = string.Format(
                 "District type {0} has been successfully deleted.", districtType.Name);
 
@@ -106,7 +106,7 @@ namespace EED.Ui.Web.Controllers
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
-            var districtTypes = _service.FindAllDistrictTypesFromProject(projectId);
+            var districtTypes = _serviceController.FindAllDistrictTypesFromProject(projectId);
             if (model.Id != 0)
             {
                 districtTypes = RemoveSelectedDistrictTypeFromParentsList(model.Id, districtTypes);

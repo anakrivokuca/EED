@@ -1,14 +1,11 @@
 ﻿using EED.Domain;
-using EED.Service.District_Type;
+using EED.Service.Controller.District_Type;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.District_Type;
 using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -18,7 +15,7 @@ namespace EED.Unit.Tests.Controllers
     [TestFixture]
     class DistrictTypeControllerTest
     {
-        private Mock<IDistrictTypeService> _mock;
+        private Mock<IDistrictTypeServiceController> _mock;
         private DistrictTypeController _controller;
         private IEnumerable<DistrictType> _districtTypes;
 
@@ -35,7 +32,7 @@ namespace EED.Unit.Tests.Controllers
                     ParentDistrictType = new DistrictType { Id = 2 },
                     Project = new ElectionProject { Id = 1} },};
 
-            _mock = new Mock<IDistrictTypeService>();
+            _mock = new Mock<IDistrictTypeServiceController>();
             _mock.Setup(s => s.FindAllDistrictTypesFromProject(1)).Returns(_districtTypes);
 
             _controller = new DistrictTypeController(_mock.Object);
