@@ -20,7 +20,7 @@ namespace EED.Unit.Tests.Controllers
         private IEnumerable<DistrictType> _districtTypes;
 
         [SetUp]
-        public void SetUp_ProjectControllerTest()
+        public void SetUp_DistrictTypeControllerTest()
         {
             // Arrange
             _districtTypes = new List<DistrictType> {

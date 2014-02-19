@@ -49,12 +49,14 @@
     <Compile Include="District_Type\IDistrictTypeService.cs" />
     <Compile Include="Election_Type\ElectionTypeService.cs" />
     <Compile Include="Election_Type\IElectionTypeService.cs" />
+    <Compile Include="Precincts\IPrecinctService.cs" />
     <Compile Include="Jurisdiction_Type\IJurisdictionTypeService.cs" />
     <Compile Include="Jurisdiction_Type\JurisdictionTypeService.cs" />
     <Compile Include="Membership_Provider\CustomMembershipProvider.cs" />
     <Compile Include="Membership_Provider\FormsAuthProvider.cs" />
     <Compile Include="Membership_Provider\IAuthProvider.cs" />
     <Compile Include="Membership_Provider\IMembershipProvider.cs" />
+    <Compile Include="Precincts\PrecinctService.cs" />
     <Compile Include="Project\IProjectService.cs" />
     <Compile Include="Project\ProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

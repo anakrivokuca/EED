@@ -1,0 +1,61 @@
+﻿@using EED.Ui.Web.Helpers.Pagination
+@model EED.Ui.Web.Models.Precincts.ListViewModel
+
+@{
+    ViewBag.Title = "Precincts";
+}
+
+@section leftMenu {
+    @Html.Partial("_LeftSideMenuPartial")
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+@using (Html.BeginForm("Delete", "Precinct")) {    
+<table>
+    <tr>
+        <td>@Html.ActionLink("Add New", "Create", null, 
+                new { @class = "imageBarNew", title = "Add new" })</td>
+        <td><input type="submit" value="Delete" title="Delete Selected" class="imageBarDelete" /></td>
+    </tr>
+    <tr>
+        <th><input type="checkbox" name="checkAllInputs" id="cbSelectAll"/></th>
+        <th>Actions</th>
+        <th>Name</th>
+        <th>Number of Eligible Voters</th>
+    </tr>
+    @foreach (var p in Model.Precincts)
+    {
+        <tr>
+            <td><input type="checkbox" name="deleteInputs" value="@p.Id" class="cbSelectRow" /></td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", 
+                    new { id = p.Id }, new { @class = "imageEdit", title = "Edit" })
+                @Ajax.ActionLink("Delete", "Delete", 
+                    new { id = p.Id }, 
+                    new AjaxOptions { 
+                        Confirm = "Are you sure you want to delete this item?", 
+                        OnSuccess="window.location.reload()" }, 
+                    new { @class = "imageDelete", title = "Delete" })
+            </td>
+            <td>@Html.ActionLink(p.Name, "Edit", new { id = p.Id }, new { title = "Edit" })</td>
+            <td>@p.NumberOfEligibleVoters</td>
+        </tr>
+    }
+</table>
+}
+
+<div class="pager">
+    @{var pageInfo = Model.PagingInfo;}
+    @Html.PageLinks(pageInfo, x => Url.Action("List", "Precinct", new {
+        //SearchText = Model.SearchText, 
+        //DistrictId = Model.DistrictId,
+        Page = x}))
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/selectCheckboxes.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+}

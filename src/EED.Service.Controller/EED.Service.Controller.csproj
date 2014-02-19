@@ -48,6 +48,8 @@
     <Compile Include="District_Type\IDistrictTypeServiceController.cs" />
     <Compile Include="Account\IAccountServiceController.cs" />
     <Compile Include="Account\AccountServiceController.cs" />
+    <Compile Include="Precincts\IPrecinctServiceController.cs" />
+    <Compile Include="Precincts\PrecinctServiceController.cs" />
     <Compile Include="Project\IProjectServiceController.cs" />
     <Compile Include="Project\ProjectServiceController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
