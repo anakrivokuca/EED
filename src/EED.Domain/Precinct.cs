@@ -12,5 +12,7 @@ namespace EED.Domain
         public string Name { get; set; }
         public int NumberOfEligibleVoters { get; set; }
         public ElectionProject Project { get; set; }
+
+        public IList<District> Districts { get; set; }
     }
 }

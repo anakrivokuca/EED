@@ -471,7 +471,7 @@ fieldset {
 label {
     display: block;
     font-size: 1.2em;
-    font-weight: 600;
+    font-weight: 300;
 }
 
 label.checkbox {
@@ -523,6 +523,10 @@ textarea {
         padding: 4px;
         margin-right: 4px;
     }
+
+select {
+    height: 170px;
+}
 
 /* info and errors */
 .message-info {

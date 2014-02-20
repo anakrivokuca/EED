@@ -21,12 +21,15 @@ namespace EED.Service.Precincts
         {
             return _repository.FindAll();
         }
-        
-        public IEnumerable<Precinct> FindAllPrecinctsFromProject(int projectId)
-        {
-            var precincts = FindAllPrecincts().Where(p => p.Project.Id == projectId);
 
-            return precincts;
+        public Precinct FindPrecinct(int id)
+        {
+            return _repository.Find(id);
+        }
+
+        public void SavePrecinct(Precinct precinct)
+        {
+            _repository.Save(precinct);
         }
     }
 }

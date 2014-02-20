@@ -32,8 +32,23 @@ namespace EED.Unit.Tests.Controllers
                     Project = new ElectionProject { Id = 1} },};
 
             _mock = new Mock<IPrecinctServiceController>();
-            _mock.Setup(s => s.FindAllPrecinctsFromProject(1)).Returns(_precincts);
-
+            
+            _mock.Setup(p => p.FindProject(1)).Returns(new ElectionProject
+            {
+                Id = 1,
+                Districts = new List<District> { 
+                    new District { Id = 1, Name = "District1", 
+                        DistrictType = new DistrictType { Id = 1, Name = "DistrictType1"}, 
+                        Project = new ElectionProject { Id = 1 }},
+                    new District { Id = 2, Name = "District2", 
+                        DistrictType = new DistrictType { Id = 2, Name = "DistrictType2"}, 
+                        Project = new ElectionProject { Id = 1 }},
+                    new District { Id = 3, Name = "District3", 
+                        DistrictType = new DistrictType { Id = 2, Name = "DistrictType2"}, 
+                        Project = new ElectionProject { Id = 1 }}},
+                Precincts = _precincts.ToList()
+            });
+            
             _controller = new PrecinctController(_mock.Object);
 
             var session = new Mock<HttpSessionStateBase>();
@@ -53,6 +68,83 @@ namespace EED.Unit.Tests.Controllers
 
             // Assert
             Assert.AreEqual(3, result.Count());
+        }
+        #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetPrecinct_ReturnsCreateViewModel()
+        {
+            // Arrange
+            var precinctId = 1;
+            _mock.Setup(s => s.FindPrecinct(precinctId)).Returns(new Precinct
+            {
+                Id = precinctId,
+                Name = "Precinct1",
+                Districts = new List<District> { new District { Id = 1, Name = "District1" } }
+            });
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(precinctId).Model;
+
+            // Assert
+            Assert.AreEqual("Precinct1", result.Name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.NullReferenceException))]
+        public void Edit_GetNonexistentPrecinct_ThrowsException()
+        {
+            // Arrange
+            var precinctId = 101;
+            Precinct precinct = null;
+            _mock.Setup(s => s.FindPrecinct(precinctId)).Returns(precinct);
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(101).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test Edit (Post) Method
+        [Test]
+        public void Edit_PostNewPrecinct_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel { Name = "NewPrecinct" };
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SavePrecinct(It.IsAny<Precinct>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Precinct NewPrecinct has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingPrecinctWithValidChanges_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 2,
+                Name = "Precinct 2"
+            };
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SavePrecinct(It.IsAny<Precinct>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Precinct Precinct 2 has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
     }

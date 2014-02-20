@@ -5,7 +5,9 @@ namespace EED.Service.Controller.Precincts
 {
     public interface IPrecinctServiceController
     {
+        ElectionProject FindProject(int id);
         IEnumerable<Precinct> FindAllPrecincts();
-        IEnumerable<Precinct> FindAllPrecinctsFromProject(int projectId);
+        Precinct FindPrecinct(int id);
+        void SavePrecinct(Precinct precinct);
     }
 }

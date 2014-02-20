@@ -23,6 +23,10 @@
       <key column="ElectionProjectId" />
       <one-to-many class="District" />
     </bag>
+    <bag name="Precincts" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="ElectionProjectId" />
+      <one-to-many class="Precinct" />
+    </bag>
   </class>
 
 </hibernate-mapping>

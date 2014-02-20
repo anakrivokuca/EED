@@ -25,6 +25,7 @@
         <th>Actions</th>
         <th>Name</th>
         <th>Number of Eligible Voters</th>
+        <th>Number of Districts Connected</th>
     </tr>
     @foreach (var p in Model.Precincts)
     {
@@ -42,6 +43,7 @@
             </td>
             <td>@Html.ActionLink(p.Name, "Edit", new { id = p.Id }, new { title = "Edit" })</td>
             <td>@p.NumberOfEligibleVoters</td>
+            <td>@p.Districts.Count</td>
         </tr>
     }
 </table>

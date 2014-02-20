@@ -155,7 +155,7 @@ namespace EED.Unit.Tests.Services
             // Arrange
             var districtType = new DistrictType
             {
-                Name = "NewPDistrictType",
+                Name = "NewDistrictType",
                 Abbreviation = "NDT",
                 ParentDistrictType = new DistrictType { Id = 1 }
             };

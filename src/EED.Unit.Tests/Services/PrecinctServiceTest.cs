@@ -43,33 +43,49 @@ namespace EED.Unit.Tests.Services
         }
         #endregion
 
-        #region Test FindAllPrecinctsFromProject Method
+        #region Test FindPrecinct Method
         [Test]
-        public void FindAllPrecinctsFromProject_GivenTwoPrecinctsForSpecifiedProject_ReturnsTwoPrecincts()
+        public void FindPrecinct_GoodPrecinct_ReturnsPrecinct()
         {
             // Arrange
-            int projectId = 2;
+            var precinctId = 1;
+            _mock.Setup(r => r.Find(precinctId)).Returns(new Precinct { Id = 1, Name = "Precinct1" });
 
             // Act
-            var result = _service.FindAllPrecinctsFromProject(projectId);
+            var result = _service.FindPrecinct(precinctId);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
         }
 
         [Test]
-        public void FindAllPrecinctsFromProject_GivenZeroPrecinctsForSpecifiedProject_ReturnsZeroPrecincts()
+        public void FindPrecinct_NonExistentPrecinct_ReturnsNull()
         {
             // Arrange
-            int projectId = 101;
+            var precinctId = 101;
+            Precinct precinct = null;
+            _mock.Setup(r => r.Find(precinctId)).Returns(precinct);
+
+            //Act
+            var result = _service.FindPrecinct(precinctId);
+
+            //Assert
+            Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test SavePrecinct Method
+        [Test]
+        public void SavePrecinct_NewValidPrecinct_DoesNotThrowError()
+        {
+            // Arrange
+            var precinct = new Precinct { Name = "NewPrecinct" }; 
 
             // Act
-            var result = _service.FindAllPrecinctsFromProject(projectId);
+            _service.SavePrecinct(precinct);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count());
+            _mock.Verify(m => m.Save(precinct));
         }
         #endregion
     }

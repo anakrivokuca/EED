@@ -6,6 +6,7 @@ namespace EED.Service.Precincts
     public interface IPrecinctService
     {
         IEnumerable<Precinct> FindAllPrecincts();
-        IEnumerable<Precinct> FindAllPrecinctsFromProject(int projectId);
+        Precinct FindPrecinct(int id);
+        void SavePrecinct(Precinct precinct);
     }
 }
