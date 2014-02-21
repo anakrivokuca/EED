@@ -12,7 +12,7 @@
     <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
     <bag name="Districts" table="DistrictPrecinct" cascade="none" lazy="false">
       <key column ="PrecinctID" />
-      <many-to-many class="District" column="DistrictID" />
+      <many-to-many class="EED.Domain.District" column="DistrictID" />
     </bag>
   </class>
 

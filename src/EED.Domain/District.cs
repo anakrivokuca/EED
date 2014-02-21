@@ -16,5 +16,6 @@ namespace EED.Domain
         public ElectionProject Project { get; set; }
 
         public IList<District> ChildDistricts { get; set; }
+        public IList<Precinct> Precincts { get; set; }
     }
 }

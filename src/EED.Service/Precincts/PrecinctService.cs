@@ -29,7 +29,47 @@ namespace EED.Service.Precincts
 
         public void SavePrecinct(Precinct precinct)
         {
-            _repository.Save(precinct);
+            try
+            {
+                if (precinct.Districts != null)
+                {
+                    var selectedDistricts = precinct.Districts;
+                    var districts = precinct.Districts;
+
+                    while (selectedDistricts.Count() != 0)
+                    {
+                        var districtIds = districts.Select(sd => sd.Id).ToArray();
+
+                        var parentDistricts = selectedDistricts
+                            .Where(sd => sd.ParentDistrict != null &&
+                                !districtIds.Contains(sd.ParentDistrict.Id))
+                            .Select(sd => sd.ParentDistrict)
+                            .Distinct();
+
+                        districts = districts.Concat(parentDistricts).ToList();
+                        selectedDistricts = parentDistricts.ToList();
+                    }
+                    precinct.Districts = districts.ToList();
+                }
+
+                _repository.Save(precinct);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
+        }
+        
+        public void DeletePrecinct(Precinct precinct)
+        {
+            try
+            {
+                _repository.Delete(precinct);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
     }
 }

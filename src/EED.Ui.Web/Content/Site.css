@@ -524,7 +524,7 @@ textarea {
         margin-right: 4px;
     }
 
-select {
+select[multiple]  {
     height: 170px;
 }
 

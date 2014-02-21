@@ -8,5 +8,6 @@ namespace EED.Service.Precincts
         IEnumerable<Precinct> FindAllPrecincts();
         Precinct FindPrecinct(int id);
         void SavePrecinct(Precinct precinct);
+        void DeletePrecinct(Precinct precinct);
     }
 }

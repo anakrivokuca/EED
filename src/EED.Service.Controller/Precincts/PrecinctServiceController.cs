@@ -39,5 +39,10 @@ namespace EED.Service.Controller.Precincts
         {
             _service.SavePrecinct(precinct);
         }
+
+        public void DeletePrecinct(Precinct precinct)
+        {
+            _service.DeletePrecinct(precinct);
+        }
     }
 }

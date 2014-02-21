@@ -79,13 +79,68 @@ namespace EED.Unit.Tests.Services
         public void SavePrecinct_NewValidPrecinct_DoesNotThrowError()
         {
             // Arrange
-            var precinct = new Precinct { Name = "NewPrecinct" }; 
+            var precinct = new Precinct
+            {
+                Name = "NewPrecinct",
+                Districts = new List<District> { new District { Id = 1 } }
+            }; 
 
             // Act
             _service.SavePrecinct(precinct);
 
             // Assert
             _mock.Verify(m => m.Save(precinct));
+        }
+
+        [Test]
+        public void SavePrecinct_PrecinctWithSelectedChildDistrict_SavesPrecinctWithParentDistricts()
+        {
+            // Arrange
+            var jurisdiction = new District { Id = 1 };
+            var precinct = new Precinct 
+            { 
+                Name = "Precinct1",
+                Districts = new List<District> { 
+                    new District { Id = 2, ParentDistrict = jurisdiction },
+                    new District { Id = 3, ParentDistrict = jurisdiction },
+                    new District { Id = 4, ParentDistrict = new District { 
+                        Id = 5, ParentDistrict = jurisdiction }}}
+            };
+
+            // Act
+            _service.SavePrecinct(precinct);
+
+            // Assert
+            _mock.Verify(m => m.Save(precinct));
+            Assert.AreEqual(5, precinct.Districts.Count);
+        }
+
+        [Test]
+        public void SavePrecinct_PrecinctWithNoDistrictsSelected_DoesNotThrowError()
+        {
+            // Arrange
+            var precinct = new Precinct { Name = "Precinct1" };
+
+            // Act
+            _service.SavePrecinct(precinct);
+
+            // Assert
+            _mock.Verify(m => m.Save(precinct));
+        }
+        #endregion
+
+        #region Test DeletePrecinct Method
+        [Test]
+        public void DeletePrecinct_ValidPrecinct_DoesNotThrowError()
+        {
+            // Arrange
+            var precinct = new Precinct { Id = 1, Name = "Precinct1" };
+
+            // Act
+            _service.DeletePrecinct(precinct);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<Precinct>()), Times.Once());
         }
         #endregion
     }

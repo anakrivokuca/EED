@@ -147,5 +147,64 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_GetValidPrecinct_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var precinctId = 1;
+            var precinct = new Precinct
+            {
+                Id = precinctId,
+                Name = "Precinct1"
+            };
+            _mock.Setup(s => s.FindPrecinct(precinctId)).Returns(precinct);
+
+            // Act
+            _controller.Delete(precinctId);
+
+            // Assert
+            _mock.Verify(m => m.DeletePrecinct(precinct), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Precinct " + precinct.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostMultiplePrecincts_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var precincts = new int[] { 1, 2, 3 };
+            _mock.Setup(s => s.FindPrecinct(precincts[0])).Returns(new Precinct { Id = precincts[0] });
+            _mock.Setup(s => s.FindPrecinct(precincts[1])).Returns(new Precinct { Id = precincts[1] });
+            _mock.Setup(s => s.FindPrecinct(precincts[2])).Returns(new Precinct { Id = precincts[2] });
+
+            // Act
+            _controller.Delete(precincts);
+
+            // Assert
+            _mock.Verify(m => m.DeletePrecinct(It.IsAny<Precinct>()), Times.Exactly(precincts.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(precincts.Count() + " precinct(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoPrecinct_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] precincts = null;
+
+            // Act
+            _controller.Delete(precincts);
+
+            // Assert
+            _mock.Verify(m => m.DeletePrecinct(It.IsAny<Precinct>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the precincts has been selected for delete action.",
+                _controller.TempData["message-info"]);
+        }
+        #endregion
     }
 }

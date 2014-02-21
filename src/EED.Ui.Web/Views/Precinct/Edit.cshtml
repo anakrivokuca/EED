@@ -44,24 +44,24 @@
         <table style="width:70%;">
             <tr>
                 <td>
-            @Html.LabelFor(model => model.DistrictIds)
-            @Html.ListBoxFor(model => model.DistrictIds, 
-                          new MultiSelectList(Model.Districts, "Id", 
-                          "Name", Model.DistrictIds))
-            @Html.ValidationMessageFor(model => model.DistrictIds)
+                    @Html.LabelFor(model => model.DistrictIds)
+                    @Html.ListBoxFor(model => model.DistrictIds, 
+                        new MultiSelectList(Model.Districts, "Id", 
+                            "Name", Model.DistrictIds))
+                    @Html.ValidationMessageFor(model => model.DistrictIds)
                 </td>
                 <td>
-            <input id="btnAddAll" type="button" value=" >> " class="addAllItems" /><br />
-            <input id="btnAdd" type="button" value=" > " class="addItem" /><br />
-            <input id="btnRemove" type="button" value=" < "  class="removeItem" /><br />
-            <input id="btnRemoveAll"type="button" value=" << "  class="removeAllItems" />
+                    <input id="btnAddAll" type="button" value=" >> " class="addAllItems" /><br />
+                    <input id="btnAdd" type="button" value=" > " class="addItem" /><br />
+                    <input id="btnRemove" type="button" value=" < "  class="removeItem" /><br />
+                    <input id="btnRemoveAll"type="button" value=" << "  class="removeAllItems" />
                 </td>
                 <td>
-            @Html.LabelFor(model => model.SelectedDistrictIds)
-            @Html.ListBoxFor(model => model.SelectedDistrictIds, 
-                          new MultiSelectList(Model.SelectedDistricts, "Id", 
-                          "Name", Model.SelectedDistrictIds))
-            @Html.ValidationMessageFor(model => model.SelectedDistrictIds)
+                    @Html.LabelFor(model => model.SelectedDistrictIds)
+                    @Html.ListBoxFor(model => model.SelectedDistrictIds, 
+                        new MultiSelectList(Model.SelectedDistricts, "Id", 
+                            "Name", Model.SelectedDistrictIds))
+                    @Html.ValidationMessageFor(model => model.SelectedDistrictIds)
                 </td>
             </tr>
         </table>

@@ -92,8 +92,7 @@ namespace EED.Ui.Web.Controllers
                 {
                     var selectedDistricts = _serviceController.FindProject(projectId).Districts
                         .Where(d => model.SelectedDistrictIds.Contains(d.Id));
-                    var districts = AddParentDistricts(model, selectedDistricts);
-                    precinct.Districts = districts.ToList();
+                    precinct.Districts = selectedDistricts.ToList();
                 }
                 precinct.Project = new ElectionProject { Id = projectId };
 
@@ -111,29 +110,40 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Precinct/Delete/5
+        // GET: /Precinct/Delete/Id
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var precinct = _serviceController.FindPrecinct(id);
+            _serviceController.DeletePrecinct(precinct);
+            TempData["message-success"] = string.Format(
+                "Precinct {0} has been successfully deleted.", precinct.Name);
+
+            return RedirectToAction("List");
         }
 
         //
-        // POST: /Precinct/Delete/5
+        // POST: /Precinct/Delete
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int[] deleteInputs)
         {
-            try
+            if (deleteInputs == null)
             {
-                // TODO: Add delete logic here
+                TempData["message-info"] = string.Format(
+                    "None of the precincts has been selected for delete action.");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            foreach (var id in deleteInputs)
             {
-                return View();
+                var precinct = _serviceController.FindPrecinct(id);
+                _serviceController.DeletePrecinct(precinct);
             }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
+                " precinct(s) has been successfully deleted.");
+
+            return RedirectToAction("List");
         }
 
         private CreateViewModel PrepareModelToPopulateListBoxes(CreateViewModel model)
@@ -154,25 +164,6 @@ namespace EED.Ui.Web.Controllers
             }
 
             return model;
-        }
-
-        private IEnumerable<District> AddParentDistricts(CreateViewModel model, IEnumerable<District> selectedDistricts)
-        {
-            var districts = selectedDistricts;
-
-            while (selectedDistricts.Count() != 0)
-            {
-                var parentDistricts = selectedDistricts
-                    .Where(sd => sd.ParentDistrict != null &&
-                        !model.SelectedDistrictIds.Contains(sd.ParentDistrict.Id))
-                    .Select(sd => sd.ParentDistrict);
-
-                districts = districts.Concat(parentDistricts);
-                selectedDistricts = parentDistricts;
-                model.SelectedDistrictIds = districts.Select(x => x.Id).ToArray();
-            }
-
-            return districts;
         }
     }
 }

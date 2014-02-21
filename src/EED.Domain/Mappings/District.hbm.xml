@@ -17,6 +17,10 @@
       <key column="ParentDistrictId" />
       <one-to-many class="District" />
     </bag>
+    <bag name="Precincts" table="DistrictPrecinct" cascade="none" lazy="false">
+      <key column ="DistrictID" />
+      <many-to-many class="EED.Domain.Precinct" column="PrecinctID" />
+    </bag>
   </class>
 
 </hibernate-mapping>
