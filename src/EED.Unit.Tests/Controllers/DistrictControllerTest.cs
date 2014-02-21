@@ -83,9 +83,9 @@ namespace EED.Unit.Tests.Controllers
         {
             // Arrange
             var searchText = "District1";
-            var districtTypeId = 1;
-            _mock.Setup(d => d.FilterDistricts(_districts, searchText, districtTypeId)).Returns(
-                new List<District> { new District { Id = districtTypeId, Name = searchText }});
+            var districtId = 1;
+            _mock.Setup(d => d.FilterDistricts(_districts, searchText, districtId)).Returns(
+                new List<District> { new District { Id = districtId, Name = searchText }});
 
             // Act
             var result = ((ListViewModel)_controller.List(searchText, 1).Model).DistrictsPerPage;

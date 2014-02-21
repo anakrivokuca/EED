@@ -35,6 +35,12 @@ namespace EED.Service.Controller.Precincts
             return _service.FindPrecinct(id);
         }
 
+        public IEnumerable<Precinct> FilterPrecincts(IEnumerable<Precinct> precincts, 
+            string searchText, int districtId)
+        {
+            return _service.FilterPrecincts(precincts, searchText, districtId);
+        }
+
         public void SavePrecinct(Precinct precinct)
         {
             _service.SavePrecinct(precinct);

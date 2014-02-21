@@ -27,6 +27,25 @@ namespace EED.Service.Precincts
             return _repository.Find(id);
         }
 
+        public IEnumerable<Precinct> FilterPrecincts(IEnumerable<Precinct> precincts,
+            string searchText, int districtId)
+        {
+            string text = searchText.Trim();
+            if (!String.IsNullOrEmpty(text))
+            {
+                precincts = precincts
+                    .Where(p => (String.Equals(p.Name, text, StringComparison.CurrentCultureIgnoreCase)));
+            }
+
+            if (districtId != 0)
+            {
+                precincts = precincts
+                    .Where(p => p.Districts != null && p.Districts.Select(d => d.Id).ToArray().Contains(districtId));
+            }
+
+            return precincts;
+        }
+
         public void SavePrecinct(Precinct precinct)
         {
             try

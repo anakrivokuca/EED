@@ -5,6 +5,26 @@
     ViewBag.Title = "Precincts";
 }
 
+@section filter {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h2>Filter @ViewBag.Title</h2>
+            </hgroup>
+            @using (Html.BeginForm("List", "Precinct", FormMethod.Get))
+            {
+                @Html.LabelFor(m => m.SearchText)
+                @Html.TextBoxFor(m => m.SearchText)
+                
+                @Html.LabelFor(m => m.DistrictId)
+                @Html.DropDownListFor(m => m.DistrictId, Model.Districts, string.Empty)
+                
+                <input type="submit" value="Search" />
+            }
+        </div>
+    </section>
+}
+
 @section leftMenu {
     @Html.Partial("_LeftSideMenuPartial")
 }
@@ -27,7 +47,7 @@
         <th>Number of Eligible Voters</th>
         <th>Number of Districts Connected</th>
     </tr>
-    @foreach (var p in Model.Precincts)
+    @foreach (var p in Model.PrecinctsPerPage)
     {
         <tr>
             <td><input type="checkbox" name="deleteInputs" value="@p.Id" class="cbSelectRow" /></td>

@@ -20,11 +20,13 @@ namespace EED.Unit.Tests.Services
             // Arrange
             _mock = new Mock<IRepository<Precinct>>();
             _mock.Setup(r => r.FindAll()).Returns(new List<Precinct> {
-                new Precinct { Id = 1, Name = "Precinct1", 
+                new Precinct { Id = 1, Name = "Precinct1",
                     Project = new ElectionProject { Id = 1} },
                 new Precinct { Id = 2, Name = "Precinct2", 
+                    Districts = new List<District> { new District { Id = 2 }},
                     Project = new ElectionProject { Id = 2} },
                 new Precinct { Id = 3, Name = "Precinct3", 
+                    Districts = new List<District> { new District { Id = 2 }},
                     Project = new ElectionProject { Id = 2} },});
 
             _service = new PrecinctService(_mock.Object);
@@ -71,6 +73,54 @@ namespace EED.Unit.Tests.Services
 
             //Assert
             Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test FilterPrecincts Method
+        [Test]
+        public void FilterPrecincts_ByNameAndDistrict_ReturnsOnePrecinct()
+        {
+            // Arrange
+            var precincts = _mock.Object.FindAll();
+            var precinctName = "Precinct1";
+
+            // Act
+            var resultByName = _service.FilterPrecincts(precincts, precinctName, 0);
+            var resultByDistrict = _service.FilterPrecincts(precincts, "", 2);
+
+            // Assert
+            var precinctList = resultByName.ToList();
+            Assert.AreEqual(1, precinctList.Count());
+            Assert.AreEqual(precinctName, precinctList[0].Name,
+                "Precinct with specified name should be " + precinctName + ".");
+
+            precinctList = resultByDistrict.ToList();
+            Assert.AreEqual(2, precinctList.Count());
+            Assert.AreEqual("Precinct2", precinctList[0].Name,
+                "First precinct with specified district should be Precinct2.");
+            Assert.AreEqual("Precinct3", precinctList[1].Name,
+                "Second precinct with specified district type should be Precinct3.");
+        }
+
+        [Test]
+        public void FilterPrecincts_ByIncorrectValues_ReturnsPrecinctsWithoutError()
+        {
+            // Arrange
+            var precincts = _mock.Object.FindAll();
+
+            // Act
+            var resultWithSpaces = _service.FilterPrecincts(precincts, "  Precinct1   ", 0);
+            var resultWithNonexistentPrecinct = _service.FilterPrecincts(precincts, "NonexistentPrecinct", 5);
+
+            // Assert
+            var precinctsList = resultWithSpaces.ToList();
+            Assert.AreEqual(1, precinctsList.Count(),
+                "One precinct should be listed with specified criteria.");
+            Assert.AreEqual("Precinct1", precinctsList[0].Name,
+                "Precinct with specified criteria should be Precinct1.");
+
+            Assert.AreEqual(0, resultWithNonexistentPrecinct.Count(),
+                "No precinct should be listed with specified criteria.");
         }
         #endregion
 

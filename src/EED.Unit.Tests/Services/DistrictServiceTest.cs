@@ -87,14 +87,14 @@ namespace EED.Unit.Tests.Services
             var resultWithNonexistentDistrict = _service.FilterDistricts(districts, "NonexistentDistrict", 5);
 
             // Assert
-            var districtTypesList = resultWithSpaces.ToList();
-            Assert.AreEqual(1, districtTypesList.Count(),
-                "One district types should be listed with specified criteria.");
-            Assert.AreEqual("District1", districtTypesList[0].Name,
-                "District type with specified criteria should be District1.");
+            var districtsList = resultWithSpaces.ToList();
+            Assert.AreEqual(1, districtsList.Count(),
+                "One district should be listed with specified criteria.");
+            Assert.AreEqual("District1", districtsList[0].Name,
+                "District with specified criteria should be District1.");
 
             Assert.AreEqual(0, resultWithNonexistentDistrict.Count(),
-                "No district type should be listed with specified criteria.");
+                "No district should be listed with specified criteria.");
         }
         #endregion
 

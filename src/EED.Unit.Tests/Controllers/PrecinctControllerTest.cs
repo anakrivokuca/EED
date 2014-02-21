@@ -64,10 +64,39 @@ namespace EED.Unit.Tests.Controllers
         public void List_GivenThreePrecincts_ReturnsThreePrecincts()
         {
             // Act
-            var result = ((ListViewModel)_controller.List().Model).Precincts;
+            var result = ((ListViewModel)_controller.List(null).Model).PrecinctsPerPage;
 
             // Assert
             Assert.AreEqual(3, result.Count());
+        }
+
+        [Test]
+        public void List_GivenThreePrecinctsAndTwoPrecinctsPerPage_ReturnsOnePrecinctOnTheSecondPage()
+        {
+            // Arrange
+            _controller.ItemsPerPage = 2;
+
+            // Act
+            var result = ((ListViewModel)_controller.List(null, 0, 2).Model).PrecinctsPerPage;
+
+            // Assert
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void List_GetFilteredPrecincts_ReturnsOnePrecinct()
+        {
+            // Arrange
+            var searchText = "Precinct1";
+            var precinctId = 1;
+            _mock.Setup(d => d.FilterPrecincts(_precincts, searchText, precinctId)).Returns(
+                new List<Precinct> { new Precinct { Id = precinctId, Name = searchText } });
+
+            // Act
+            var result = ((ListViewModel)_controller.List(searchText, 1).Model).PrecinctsPerPage;
+
+            // Assert
+            Assert.AreEqual(1, result.Count());
         }
         #endregion
 

@@ -25,10 +25,17 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /Precinct/
 
-        public ViewResult List(int page = 1)
+        public ViewResult List(string searchText, int districtId = 0, int page = 1)
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
-            var precincts = _serviceController.FindProject(projectId).Precincts;
+            var project = _serviceController.FindProject(projectId);
+            var precincts = project.Precincts.AsEnumerable();
+
+            var districts = project.Districts;
+            var selectListDistrict = new SelectList(districts, "Id", "Name");
+
+            if (districtId != 0 || !String.IsNullOrEmpty(searchText))
+                precincts = _serviceController.FilterPrecincts(precincts, searchText, districtId);
 
             var pagingInfo = new PagingInfo()
             {
@@ -44,8 +51,11 @@ namespace EED.Ui.Web.Controllers
 
             var model = new ListViewModel()
             {
-                Precincts = precinctsPerPage,
-                PagingInfo = pagingInfo
+                PrecinctsPerPage = precinctsPerPage,
+                PagingInfo = pagingInfo,
+                SearchText = searchText,
+                Districts = selectListDistrict,
+                DistrictId = districtId
             };
 
             return View(model);
