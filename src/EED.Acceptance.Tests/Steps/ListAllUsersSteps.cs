@@ -1,7 +1,9 @@
 ﻿using EED.Infrastructure;
 using EED.Service.Controller.User;
 using EED.Ui.Web.Controllers;
+using EED.Ui.Web.Models.User;
 using NUnit.Framework;
+using System.Linq;
 using System.Web.Mvc;
 using TechTalk.SpecFlow;
 
@@ -11,14 +13,16 @@ namespace EED.Acceptance.Tests.Steps
     public class ListAllUsersSteps
     {
         private UserController _controller;
+        private IUserServiceController _serviceController;
         private ActionResult _result;
 
         [When(@"an administrator browses to the Users page")]
+        [Given(@"I am on the Users page")]
         public void WhenAnAdministratorBrowsesToTheUsersPage()
         {
             DependencyResolver.SetResolver(new NinjectDependencyResolver());
-            var serviceController = DependencyResolver.Current.GetService<IUserServiceController>();
-            _controller = new UserController(serviceController);
+            _serviceController = DependencyResolver.Current.GetService<IUserServiceController>();
+            _controller = new UserController(_serviceController);
             _result = _controller.List(null);
         }
 
@@ -26,10 +30,17 @@ namespace EED.Acceptance.Tests.Steps
         public void ThenTheUsersPageShouldBeDisplayed()
         {
             Assert.IsInstanceOf<ViewResult>(_result);
-            Assert.IsEmpty(((ViewResult)_result).ViewName);
-            Assert.AreEqual("Users",
-                   _controller.ViewBag.Title,
-                   "Page title is wrong. Expected to be at the Users page");
+            Assert.AreEqual("Users", _controller.ViewBag.Title);
+        }
+
+        [Then(@"all users from the database should be listed")]
+        public void ThenAllUsersFromTheDatabaseShouldBeListed()
+        {
+            var listedUsers = ((ListViewModel)((ViewResult)_result).Model).Users.ToList();
+            Assert.IsTrue(listedUsers.Count() > 0);
+
+            var usersInDatabase = _serviceController.GetAllUsers();
+            Assert.AreEqual(usersInDatabase.Count(), listedUsers.Count());
         }
     }
 }

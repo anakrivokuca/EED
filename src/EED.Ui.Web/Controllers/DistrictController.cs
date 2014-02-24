@@ -31,6 +31,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult List(string searchText, int districtTypeId = 0, int page = 1)
         {
+            ViewBag.Title = "Districts";
+
             _project = GetProject();
             var districts = _project.Districts.AsEnumerable<District>();
 
@@ -69,6 +71,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Create()
         {
+            ViewBag.Title = "Add New District";
+
             var model = new CreateViewModel();
             model = PrepareModelToPopulateDropDownLists(model);
 
@@ -80,6 +84,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
+            ViewBag.Title = "Edit";
+
             var district = _serviceController.FindDistrict(id);
 
             var model = new CreateViewModel();

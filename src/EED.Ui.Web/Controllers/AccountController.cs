@@ -18,6 +18,7 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Login()
         {
+            ViewBag.Title = "Login";
             return View();
         }
 

@@ -1,21 +1,7 @@
 ﻿@model EED.Ui.Web.Models.Precincts.CreateViewModel
 
-@{
-    if(Model.Id.Equals(0)) {
-        ViewBag.Title = "Add New Precinct";
-    }
-    else {
-        ViewBag.Title = "Edit";
-    }
-}
-
 <hgroup class="title">
-    @if (Model.Id.Equals(0)) {
-        <h1>@ViewBag.Title</h1>
-    }
-    else {
-        <h1>@ViewBag.Title @Model.Name</h1>
-    }
+    <h1>@ViewBag.Title @Model.Name</h1>
 </hgroup>
 
 @using (Html.BeginForm("Edit", "Precinct")) {

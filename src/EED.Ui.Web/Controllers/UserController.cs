@@ -58,6 +58,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Create()
         {
+            ViewBag.Title = "Add New User";
+
             return View("Edit", new CreateViewModel());
         }
 
@@ -66,6 +68,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
+            ViewBag.Title = "Edit";
+
             var user = _serviceController.GetAllUsers()
                 .First(u => u.Id == id);
             var model = new CreateViewModel();

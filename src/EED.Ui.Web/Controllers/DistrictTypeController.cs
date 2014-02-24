@@ -25,6 +25,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult List(string searchText)
         {
+            ViewBag.Title = "District Types";
+
             int projectId = Convert.ToInt32(Session["projectId"]);
             var districtTypes = _serviceController.FindAllDistrictTypesFromProject(projectId);
 
@@ -44,6 +46,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Create()
         {
+            ViewBag.Title = "Add New District Type";
+
             var model = new CreateViewModel();
             model = PrepareModelToPopulateDropDownLists(model);
 
@@ -55,6 +59,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
+            ViewBag.Title = "Edit";
+
             var districtType = _serviceController.FindDistrictType(id);
 
             var model = new CreateViewModel();

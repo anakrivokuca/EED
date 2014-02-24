@@ -23,6 +23,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult List(string searchText)
         {
+            ViewBag.Title = "Projects";
+
             var projects = _serviceController.FindAllProjectsFromUser();
 
             if (!String.IsNullOrEmpty(searchText))
@@ -41,6 +43,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Create()
         {
+            ViewBag.Title = "Add New Project";
+
             var model = new CreateViewModel();
             model = PrepareModelToPopulateDropDownLists(model);
 
@@ -52,6 +56,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
+            ViewBag.Title = "Edit";
+
             var project = _serviceController.FindProject(id);
 
             var model = new CreateViewModel();

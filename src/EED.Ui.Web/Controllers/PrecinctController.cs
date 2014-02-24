@@ -27,6 +27,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult List(string searchText, int districtId = 0, int page = 1)
         {
+            ViewBag.Title = "Precincts";
+
             int projectId = Convert.ToInt32(Session["projectId"]);
             var project = _serviceController.FindProject(projectId);
             var precincts = project.Precincts.AsEnumerable();
@@ -66,6 +68,8 @@ namespace EED.Ui.Web.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Title = "Add New Precinct";
+
             var model = new CreateViewModel();
             model = PrepareModelToPopulateListBoxes(model);
 
@@ -77,6 +81,8 @@ namespace EED.Ui.Web.Controllers
 
         public ViewResult Edit(int id)
         {
+            ViewBag.Title = "Edit";
+
             var precinct = _serviceController.FindPrecinct(id);
 
             var model = new CreateViewModel();
