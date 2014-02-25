@@ -33,6 +33,13 @@ namespace EED.Acceptance.Tests.Steps
             _result = _controller.Create();
         }
 
+        [Given(@"there are more than (.*) users")]
+        public void GivenThereAreMoreThanUsers(int itemsPerPage)
+        {
+            var users = DatabaseHelper.FindAll<User>();
+            Assert.IsTrue(users.Count() > itemsPerPage);
+        }
+
         [Given(@"the user with ""(.*)"" username exists")]
         public void GivenTheUserWithUsernameExists(string username)
         {
@@ -118,9 +125,19 @@ namespace EED.Acceptance.Tests.Steps
         [Then(@"all users from the database should be listed")]
         public void ThenAllUsersFromTheDatabaseShouldBeListed()
         {
+            var numberofUsers = ((ListViewModel)((ViewResult)_result).Model).PagingInfo.TotalNumberOfItems;
+            Assert.IsTrue(numberofUsers > 0);
+
+            var usersInDatabase = DatabaseHelper.FindAll<User>();
+            Assert.AreEqual(usersInDatabase.Count(), numberofUsers);
+        }
+
+        [Then(@"only (.*) users are listed on the screen")]
+        public void ThenOnlyUsersAreListedOnTheScreen(int itemsPerPage)
+        {
             var listedUsers = ((ListViewModel)((ViewResult)_result).Model).Users.ToList();
             Assert.IsTrue(listedUsers.Count() > 0);
-            Assert.AreEqual(2, listedUsers.Count());
+            Assert.AreEqual(itemsPerPage, listedUsers.Count());
         }
 
         [Then(@"the user ""(.*)"" should be listed on the screen")]
