@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -48,30 +52,58 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerObjects\UserControllerObject.cs" />
     <Compile Include="Events\UserHook.cs" />
-    <Compile Include="Features\AddUser.feature.cs">
+    <Compile Include="Features\User_Features\AddUser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AddUser.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\ListAllUsers.feature.cs">
+    <Compile Include="Features\User_Features\FilterUsers.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FilterUsers.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\User_Features\ListAllUsers.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ListAllUsers.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\User_Features\DeleteUser.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeleteUser.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\User_Features\NavigateToUserPages.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NavigateToUserPages.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Steps\AddUserSteps.cs" />
-    <Compile Include="Steps\ListAllUsersSteps.cs" />
+    <Compile Include="Steps\UserSteps.cs" />
+    <Compile Include="Utils\DatabaseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Features\AddUser.feature">
+    <None Include="Features\User_Features\AddUser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AddUser.feature.cs</LastGenOutput>
     </None>
-    <None Include="Features\ListAllUsers.feature">
+    <None Include="Features\User_Features\FilterUsers.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FilterUsers.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\User_Features\ListAllUsers.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ListAllUsers.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\User_Features\DeleteUser.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeleteUser.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\User_Features\NavigateToUserPages.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>NavigateToUserPages.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace EED.Acceptance.Tests.Features
+namespace EED.Acceptance.Tests.Features.User_Features
 {
     using TechTalk.SpecFlow;
     
@@ -19,21 +19,21 @@ namespace EED.Acceptance.Tests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("List All Users")]
-    public partial class ListAllUsersFeature
+    [NUnit.Framework.DescriptionAttribute("Delete user")]
+    public partial class DeleteUserFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "ListAllUsers.feature"
+#line 1 "DeleteUser.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "List All Users", "In order to preview users\r\nAs an administrator\r\nI want to list all existing users" +
-                    "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Delete user", "In order to remove old users\r\nAs an administrator\r\nI want to be able to delete us" +
+                    "er", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -66,31 +66,35 @@ namespace EED.Acceptance.Tests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Navigate to the Users page")]
-        public virtual void NavigateToTheUsersPage()
+        [NUnit.Framework.DescriptionAttribute("Delete valid user")]
+        public virtual void DeleteValidUser()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to the Users page", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete valid user", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.When("an administrator browses to the Users page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 8
- testRunner.Then("the Users page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("List all users")]
-        public virtual void ListAllUsers()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("List all users", ((string[])(null)));
-#line 10
-this.ScenarioSetup(scenarioInfo);
-#line 11
  testRunner.Given("I am on the Users page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Surname",
+                        "Email",
+                        "UserName",
+                        "Password"});
+            table1.AddRow(new string[] {
+                        "John",
+                        "Doe",
+                        "johndoe@ny.com",
+                        "johndoe",
+                        "johndoe123!"});
+#line 8
+ testRunner.When("I select the valid user:", ((string)(null)), table1, "When ");
+#line 11
+ testRunner.And("I try to delete the user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.Then("all users from the database should be listed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I should see a success message \"User John Doe has been successfully deleted.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 13
+ testRunner.And("the user \"johndoe\" should not be saved in the database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

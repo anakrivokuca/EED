@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace EED.Acceptance.Tests.Features
+namespace EED.Acceptance.Tests.Features.User_Features
 {
     using TechTalk.SpecFlow;
     
@@ -65,40 +65,44 @@ namespace EED.Acceptance.Tests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Navigate to the Add New User page")]
-        public virtual void NavigateToTheAddNewUserPage()
+        public virtual void FeatureBackground()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to the Add New User page", ((string[])(null)));
 #line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.When("an administrator browses to the Add New User page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 8
- testRunner.Then("the Add New User page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I am on the Add New User page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Add new valid user")]
-        [NUnit.Framework.CategoryAttribute("addNewUser")]
         public virtual void AddNewValidUser()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add new valid user", new string[] {
-                        "addNewUser"});
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add new valid user", ((string[])(null)));
+#line 9
 this.ScenarioSetup(scenarioInfo);
-#line 12
- testRunner.Given("I am on the Add New User page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 6
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Surname",
+                        "Email",
+                        "UserName",
+                        "Password"});
+            table1.AddRow(new string[] {
+                        "John",
+                        "Doe",
+                        "johndoe@ny.com",
+                        "johndoe",
+                        "johndoe123!"});
+#line 10
+ testRunner.When("I enter the valid user data:", ((string)(null)), table1, "When ");
 #line 13
- testRunner.When("I enter the valid user data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 14
  testRunner.And("I try to save the user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+ testRunner.Then("I should see a success message \"User John Doe has been successfully saved.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
- testRunner.Then("I should see a success message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 16
- testRunner.And("the user should be listed on the screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the user \"johndoe\" should be saved in the database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -108,14 +112,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddUserWithAnExistingEmail()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add user with an existing email", ((string[])(null)));
-#line 18
+#line 17
 this.ScenarioSetup(scenarioInfo);
-#line 19
- testRunner.Given("I am on the Add New User page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
- testRunner.When("I enter the valid user data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 6
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Surname",
+                        "Email",
+                        "UserName",
+                        "Password"});
+            table2.AddRow(new string[] {
+                        "Jane",
+                        "Smith",
+                        "janesmith@oklahoma.com",
+                        "jane",
+                        "janesmith123!"});
+#line 18
+ testRunner.When("I enter the valid user data:", ((string)(null)), table2, "When ");
 #line 21
- testRunner.But("the email \"johndoe@ny.com\" is already taken", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
+ testRunner.But("the email \"janesmith@oklahoma.com\" is already taken", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
 #line 22
  testRunner.And("I try to save the user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
@@ -134,15 +151,28 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add user with invalid password", exampleTags);
 #line 25
 this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Surname",
+                        "Email",
+                        "UserName",
+                        "Password"});
+            table3.AddRow(new string[] {
+                        "John",
+                        "Doe",
+                        "johndoe@ny.com",
+                        "johndoe",
+                        string.Format("{0}", password)});
 #line 26
- testRunner.Given("I am on the Add New User page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
- testRunner.When("I enter the valid user data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 28
- testRunner.And(string.Format("I enter the password \"{0}\"", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I enter the valid user data:", ((string)(null)), table3, "When ");
 #line 29
- testRunner.And("I try to save the user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.But(string.Format("I enter the invalid password \"{0}\"", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
 #line 30
+ testRunner.And("I try to save the user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
  testRunner.Then("I should see an error on the screen \"User is not saved. InvalidPassword\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
