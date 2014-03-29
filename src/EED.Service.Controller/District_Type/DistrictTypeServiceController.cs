@@ -17,11 +17,6 @@ namespace EED.Service.Controller.District_Type
             _service = service;
         }
 
-        public IEnumerable<DistrictType> FindAllDistrictTypes()
-        {
-            return _service.FindAllDistrictTypes();
-        }
-
         public IEnumerable<DistrictType> FindAllDistrictTypesFromProject(int projectId)
         {
             return _service.FindAllDistrictTypesFromProject(projectId);

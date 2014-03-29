@@ -22,11 +22,6 @@ namespace EED.Service.Controller.District
             return _projectService.FindProject(id);
         }
 
-        public IEnumerable<Domain.District> FindAllDistricts()
-        {
-            return _service.FindAllDistricts();
-        }
-
         public Domain.District FindDistrict(int id)
         {
             return _service.FindDistrict(id);

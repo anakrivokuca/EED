@@ -96,14 +96,14 @@ namespace EED.Service.Project
                     existingProject.JurisdictionType = project.JurisdictionType;
 
                     var districtType = existingProject.DistrictTypes.Single(dt => dt.ParentDistrictType == null);
-                    existingProject.DistrictTypes.Remove(districtType);
+                    //existingProject.DistrictTypes.Remove(districtType);
                     districtType.Name = jurisdictionType.Name;
-                    existingProject.DistrictTypes.Add(districtType);
+                    //existingProject.DistrictTypes.Add(districtType);
 
                     var district = existingProject.Districts.Single(d => d.ParentDistrict == null);
-                    existingProject.Districts.Remove(district);
+                    //existingProject.Districts.Remove(district);
                     district.Name = project.JurisdictionName;
-                    existingProject.Districts.Add(district);
+                    //existingProject.Districts.Add(district);
 
                     project = existingProject;
                 }

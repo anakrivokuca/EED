@@ -26,11 +26,6 @@ namespace EED.Service.Controller.User
             return _provider.GetUser(username);
         }
 
-        public string GetUserNameByEmail(string email)
-        {
-            return _provider.GetUserNameByEmail(email);
-        }
-
         public Domain.User CreateUser(Domain.User user, out MembershipCreateStatus status)
         {
             return _provider.CreateUser(user, out status);

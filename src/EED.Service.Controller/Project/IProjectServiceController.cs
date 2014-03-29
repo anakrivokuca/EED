@@ -11,8 +11,6 @@ namespace EED.Service.Controller.Project
     {
         IEnumerable<ElectionType> FindAllElectionTypes();
         IEnumerable<JurisdictionType> FindAllJurisdictionTypes();
-        JurisdictionType FindJurisdictionType(int id);
-        IEnumerable<ElectionProject> FindAllProjects();
         IEnumerable<ElectionProject> FindAllProjectsFromUser();
         ElectionProject FindProject(int id);
         IEnumerable<ElectionProject> FilterProjects(IEnumerable<ElectionProject> projects,

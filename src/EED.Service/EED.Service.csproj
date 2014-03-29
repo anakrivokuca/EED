@@ -49,6 +49,8 @@
     <Compile Include="District_Type\IDistrictTypeService.cs" />
     <Compile Include="Election_Type\ElectionTypeService.cs" />
     <Compile Include="Election_Type\IElectionTypeService.cs" />
+    <Compile Include="Offices\IOfficeService.cs" />
+    <Compile Include="Offices\OfficeService.cs" />
     <Compile Include="Precincts\IPrecinctService.cs" />
     <Compile Include="Jurisdiction_Type\IJurisdictionTypeService.cs" />
     <Compile Include="Jurisdiction_Type\JurisdictionTypeService.cs" />
@@ -71,6 +73,7 @@
       <Name>EED.Domain</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

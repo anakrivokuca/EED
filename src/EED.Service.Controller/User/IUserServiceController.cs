@@ -7,7 +7,6 @@ namespace EED.Service.Controller.User
     {
         IEnumerable<Domain.User> GetAllUsers();
         Domain.User GetUser(string username);
-        string GetUserNameByEmail(string email);
         Domain.User CreateUser(Domain.User user, out MembershipCreateStatus status);
         void UpdateUser(Domain.User user);
         bool DeleteUser(string username, bool deleteAllRelatedData);

@@ -60,6 +60,7 @@
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\DistrictControllerTest.cs" />
     <Compile Include="Controllers\DistrictTypeControllerTest.cs" />
+    <Compile Include="Controllers\OfficeControllerTest.cs" />
     <Compile Include="Controllers\PrecinctControllerTest.cs" />
     <Compile Include="Controllers\ProjectControllerTest.cs" />
     <Compile Include="PaginationTest.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Services\CustomMembershipProviderTest.cs" />
     <Compile Include="Services\DistrictServiceTest.cs" />
     <Compile Include="Services\DistrictTypeServiceTest.cs" />
+    <Compile Include="Services\OfficeServiceTest.cs" />
     <Compile Include="Services\PrecinctServiceTest.cs" />
     <Compile Include="Services\ProjectServiceTest.cs" />
   </ItemGroup>

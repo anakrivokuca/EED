@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="EED.Domain"
+                   namespace="EED.Domain">
+
+  <class name="Office" lazy="false">
+    <id name="Id">
+      <generator class="native" />
+    </id>
+    <property name="Name" />
+    <property name="NumberOfPositions" />
+    <property name="OfficeType" column="OfficeTypeId" />
+    <!--<many-to-one name="OfficeType" class="EED.Domain.OfficeType" column="OfficeTypeId" />-->
+    <many-to-one name="DistrictType" class="EED.Domain.DistrictType" column="DistrictTypeId" />
+    <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
+  </class>
+
+</hibernate-mapping>

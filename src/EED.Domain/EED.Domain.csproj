@@ -48,6 +48,7 @@
     <Compile Include="ElectionProject.cs" />
     <Compile Include="ElectionType.cs" />
     <Compile Include="JurisdictionType.cs" />
+    <Compile Include="Office.cs" />
     <Compile Include="Precinct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
@@ -63,13 +64,18 @@
     <EmbeddedResource Include="Mappings\JurisdictionType.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\DistrictType.hbm.xml" />
+    <EmbeddedResource Include="Mappings\DistrictType.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\District.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\Precinct.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\Office.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

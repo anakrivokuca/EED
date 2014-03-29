@@ -24,11 +24,6 @@ namespace EED.Service.Controller.Precincts
         {
             return _projectService.FindProject(id);
         }
-
-        public IEnumerable<Precinct> FindAllPrecincts()
-        {
-            return _service.FindAllPrecincts();
-        }
         
         public Precinct FindPrecinct(int id)
         {

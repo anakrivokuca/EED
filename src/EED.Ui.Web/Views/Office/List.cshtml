@@ -1,0 +1,63 @@
+﻿@using EED.Ui.Web.Helpers.Pagination
+@model EED.Ui.Web.Models.Offices.ListViewModel
+
+@section leftMenu {
+    @Html.Partial("_LeftSideMenuPartial")
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+@using (Html.BeginForm("Delete", "Office")) {    
+<table>
+    <tr>
+        <td>@Html.ActionLink("Add New", "Create", null, 
+                new { @class = "imageBarNew", title = "Add new" })</td>
+        <td><input type="submit" value="Delete" title="Delete Selected" class="imageBarDelete" /></td>
+    </tr>
+    <tr>
+        <th><input type="checkbox" name="checkAllInputs" id="cbSelectAll"/></th>
+        <th>Actions</th>
+        <th>Name</th>
+        <th>Office Type</th>
+        <th>Number of Positions</th>
+        <th>District Type</th>
+    </tr>
+    @foreach (var o in Model.OfficesPerPage)
+    {
+        <tr>
+            <td><input type="checkbox" name="deleteInputs" value="@o.Id" class="cbSelectRow" /></td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", 
+                    new { id = o.Id }, new { @class = "imageEdit", title = "Edit" })
+                @{
+                    string question = "Are you sure you want to delete this item?";
+                    
+                    @Ajax.ActionLink("Delete", "Delete", 
+                        new { id = o.Id }, 
+                        new AjaxOptions { 
+                            Confirm = question, 
+                            OnSuccess="window.location.reload()" }, 
+                        new { @class = "imageDelete", title = "Delete" })
+                }
+            </td>
+            <td>@Html.ActionLink(o.Name, "Edit", new { id = o.Id }, new { title = "Edit" })</td>
+            <td>@o.OfficeType</td>
+            <td>@o.NumberOfPositions</td>
+            <td>@o.DistrictType.Name</td>
+        </tr>
+    }
+</table>
+}
+
+<div class="pager">
+    @{var pageInfo = Model.PagingInfo;}
+    @Html.PageLinks(pageInfo, x => Url.Action("List", "Office", new {
+        Page = x}))
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/selectCheckboxes.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+}
