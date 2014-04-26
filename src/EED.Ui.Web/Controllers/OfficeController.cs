@@ -1,6 +1,7 @@
 ﻿using EED.Domain;
 using EED.Service.Controller.Offices;
 using EED.Ui.Web.Filters;
+using EED.Ui.Web.Helpers;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.Offices;
 using System;
@@ -61,52 +62,57 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /Office/Create
 
-        public ActionResult Create()
+        public ViewResult Create()
         {
-            return View();
+            ViewBag.Title = "Add New Office";
+
+            var model = new CreateViewModel() { NumberOfPositions = 1 };
+            model = PrepareModelToPopulateDropDownLists(model);
+
+            return View("Edit", model);
         }
 
         //
-        // POST: /Office/Create
+        // GET: /Office/Edit/Id
+
+        public ViewResult Edit(int id)
+        {
+            ViewBag.Title = "Edit";
+
+            var office = _serviceController.FindOffice(id);
+
+            var model = new CreateViewModel();
+            model = model.ConvertOfficeToModel(office);
+            model = PrepareModelToPopulateDropDownLists(model);
+
+            return View(model);
+        }
+
+        //
+        // POST: /Office/Edit
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Edit(CreateViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                var office = model.ConvertModelToOffice(model);
 
-                return RedirectToAction("Index");
+                if (model.Id == 0)
+                {
+                    office.Project = GetProject();
+                }
+                _serviceController.SaveOffice(office);
+
+                TempData["message-success"] = string.Format(
+                    "Office {0} has been successfully saved.",
+                    model.Name);
+
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Office/Edit/5
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Office/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                return View(model);
             }
         }
 
@@ -134,6 +140,35 @@ namespace EED.Ui.Web.Controllers
             {
                 return View();
             }
+        }
+
+        private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
+        {
+            _project = GetProject();
+
+            var districtTypes = _project.DistrictTypes;
+            
+            var selectListDistrictType = new SelectList(districtTypes, "Id", "Name");
+            model.DistrictTypes = selectListDistrictType;
+
+            var districtType = districtTypes
+                .SingleOrDefault(dt => dt.Id == model.DistrictTypeId);
+
+            var officeTypes = Enum.GetValues(typeof(OfficeType));
+
+            OfficeType officeType = OfficeType.Candidacy;
+            foreach (OfficeType ot in officeTypes)
+            {
+                if ((int)ot == model.OfficeTypeId)
+                {
+                    officeType = ot;
+                }
+            }
+
+            var selectListOfficeType = officeType.ToSelectList();
+            model.OfficeTypes = selectListOfficeType;
+
+            return model;
         }
 
         private ElectionProject GetProject()

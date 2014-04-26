@@ -27,7 +27,7 @@ namespace EED.Service.Controller.Offices
 
         public Office FindOffice(int id)
         {
-            throw new NotImplementedException();
+            return _service.FindOffice(id);
         }
 
         public IEnumerable<Office> FilterOffices(IEnumerable<Office> offices, string searchText)
@@ -37,7 +37,7 @@ namespace EED.Service.Controller.Offices
 
         public void SaveOffice(Office office)
         {
-            throw new NotImplementedException();
+            _service.SaveOffice(office);
         }
 
         public void DeleteOffice(Office office)

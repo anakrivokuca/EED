@@ -94,5 +94,93 @@ namespace EED.Unit.Tests.Controllers
             Assert.AreEqual(1, result.Count());
         }
         #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetOffice_ReturnsCreateViewModel()
+        {
+            // Arrange
+            var officeId = 1;
+            _mock.Setup(s => s.FindOffice(officeId)).Returns(new Office
+            {
+                Id = officeId,
+                Name = "Office1",
+                DistrictType = new DistrictType { Id = 1 },
+                OfficeType = OfficeType.Candidacy
+            });
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(officeId).Model;
+
+            // Assert
+            Assert.AreEqual("Office1", result.Name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.NullReferenceException))]
+        public void Edit_GetNonexistentOffice_ThrowsException()
+        {
+            // Arrange
+            var officeId = 101;
+            Office office = null;
+            _mock.Setup(s => s.FindOffice(officeId)).Returns(office);
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(officeId).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
+
+        #region Test Edit (Post) Method
+        [Test]
+        public void Edit_PostNewOffice_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Name = "NewOffice",
+                NumberOfPositions = 2,
+            };
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveOffice(It.IsAny<Office>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Office NewOffice has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingOfficeWithValidChanges_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 2,
+                Name = "Office 2"
+            };
+            var office = new Office
+            {
+                Id = 2,
+                Name = "Office2"
+            };
+            _mock.Setup(d => d.FindOffice(model.Id)).Returns(office);
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveOffice(It.IsAny<Office>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Office Office 2 has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+        #endregion
     }
 }

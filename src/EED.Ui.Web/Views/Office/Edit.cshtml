@@ -1,0 +1,56 @@
+﻿@model EED.Ui.Web.Models.Offices.CreateViewModel
+
+<hgroup class="title">
+    <h1>@ViewBag.Title @Model.Name</h1>
+</hgroup>
+
+@using (Html.BeginForm("Edit", "Office")) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Office</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DistrictTypeId)
+        </div>
+        <div class="editor-field">
+                @Html.DropDownListFor(model => model.DistrictTypeId, Model.DistrictTypes, string.Empty)
+                @Html.ValidationMessageFor(model => model.DistrictTypeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OfficeTypeId)
+        </div>
+        <div class="editor-field">
+                @Html.DropDownListFor(model => model.OfficeTypeId, Model.OfficeTypes, string.Empty)
+                @Html.ValidationMessageFor(model => model.OfficeTypeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumberOfPositions)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NumberOfPositions)
+            @Html.ValidationMessageFor(model => model.NumberOfPositions)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+            @Html.ActionLink("Cancel and Return to Office List", "List")
+        </p>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

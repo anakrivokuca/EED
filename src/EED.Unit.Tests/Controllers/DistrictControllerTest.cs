@@ -126,7 +126,7 @@ namespace EED.Unit.Tests.Controllers
             _mock.Setup(s => s.FindDistrict(districtId)).Returns(district);
 
             // Act
-            var result = (CreateViewModel)_controller.Edit(101).Model;
+            var result = (CreateViewModel)_controller.Edit(districtId).Model;
 
             // Assert
             Assert.IsNull(result);
@@ -156,7 +156,7 @@ namespace EED.Unit.Tests.Controllers
         }
 
         [Test]
-        public void Edit_PostExistingDistrictTypeWithValidChanges_ReturnsRedirectResult()
+        public void Edit_PostExistingDistrictWithValidChanges_ReturnsRedirectResult()
         {
             // Arrange
             var model = new CreateViewModel

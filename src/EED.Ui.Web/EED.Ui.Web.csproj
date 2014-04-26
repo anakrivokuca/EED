@@ -148,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EnumToSelectList.cs" />
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Models\District\ListViewModel.cs" />
     <Compile Include="Models\District_Type\CreateViewModel.cs" />
     <Compile Include="Models\District_Type\ListViewModel.cs" />
+    <Compile Include="Models\Offices\CreateViewModel.cs" />
     <Compile Include="Models\Offices\ListViewModel.cs" />
     <Compile Include="Models\Precincts\CreateViewModel.cs" />
     <Compile Include="Models\Precincts\ListViewModel.cs" />
@@ -291,6 +293,7 @@
     <Content Include="Views\Precinct\List.cshtml" />
     <Content Include="Views\Precinct\Edit.cshtml" />
     <Content Include="Views\Office\List.cshtml" />
+    <Content Include="Views\Office\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

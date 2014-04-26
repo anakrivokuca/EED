@@ -83,5 +83,24 @@ namespace EED.Unit.Tests.Services
                 "No office should be listed with specified criteria.");
         }
         #endregion
+
+        #region Test SaveOffice Method
+        [Test]
+        public void SaveOffice_NewValidOffice_DoesNotThrowError()
+        {
+            // Arrange
+            var office = new Office
+            {
+                Name = "NewOffice",
+                DistrictType = new DistrictType { Id = 1 },
+            };
+
+            // Act
+            _service.SaveOffice(office);
+
+            // Assert
+            _mock.Verify(d => d.Save(office), Times.Once());
+        }
+        #endregion
     }
 }
