@@ -11,7 +11,7 @@ namespace EED.Service.Controller.Offices
     {
         ElectionProject FindProject(int id);
         Office FindOffice(int id);
-        IEnumerable<Office> FilterOffices(IEnumerable<DistrictType> districtTypes, string searchText);
+        IEnumerable<Office> FilterOffices(IEnumerable<Office> offices, string searchText);
         void SaveOffice(Office office);
         void DeleteOffice(Office office);
     }

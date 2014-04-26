@@ -2,6 +2,7 @@
 using EED.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EED.Service.Offices
 {
@@ -24,9 +25,15 @@ namespace EED.Service.Offices
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Office> FilterOffices(IEnumerable<DistrictType> districtTypes, string searchText)
+        public IEnumerable<Office> FilterOffices(IEnumerable<Office> offices, string searchText)
         {
-            throw new NotImplementedException();
+            string text = searchText.Trim();
+            if (!String.IsNullOrEmpty(text))
+            {
+                offices = offices
+                    .Where(o => (String.Equals(o.Name, text, StringComparison.CurrentCultureIgnoreCase)));
+            }
+            return offices;
         }
 
         public void SaveOffice(Office office)

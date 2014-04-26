@@ -59,7 +59,7 @@ namespace EED.Unit.Tests.Controllers
         public void List_GivenThreeOffices_ReturnsThreeOffices()
         {
             // Act
-            var result = ((ListViewModel)_controller.List().Model).OfficesPerPage;
+            var result = ((ListViewModel)_controller.List(null).Model).OfficesPerPage;
 
             // Assert
             Assert.AreEqual(3, result.Count());
@@ -72,7 +72,23 @@ namespace EED.Unit.Tests.Controllers
             _controller.ItemsPerPage = 2;
 
             // Act
-            var result = ((ListViewModel)_controller.List(2).Model).OfficesPerPage;
+            var result = ((ListViewModel)_controller.List(null, 2).Model).OfficesPerPage;
+
+            // Assert
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void List_GetFilteredOffices_ReturnsOneOffice()
+        {
+            // Arrange
+            var searchText = "Office1";
+            _mock.Setup(o => o.FilterOffices(_offices, searchText)).Returns(
+                new List<Office> {
+                    new Office { Id = 1, Name = "Office1" }});
+
+            // Act
+            var result = ((ListViewModel)_controller.List(searchText).Model).OfficesPerPage;
 
             // Assert
             Assert.AreEqual(1, result.Count());

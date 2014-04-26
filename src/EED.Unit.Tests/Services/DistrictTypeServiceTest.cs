@@ -138,7 +138,7 @@ namespace EED.Unit.Tests.Services
             // Assert
             var districtTypesList = resultWithSpaces.ToList();
             Assert.AreEqual(1, districtTypesList.Count,
-                "One district types should be listed with specified criteria.");
+                "One district type should be listed with specified criteria.");
             Assert.AreEqual("DistrictType1", districtTypesList[0].Name,
                 "District type with specified criteria should be DistrictType1.");
 

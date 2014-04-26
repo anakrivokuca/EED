@@ -30,9 +30,9 @@ namespace EED.Service.Controller.Offices
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Office> FilterOffices(IEnumerable<DistrictType> districtTypes, string searchText)
+        public IEnumerable<Office> FilterOffices(IEnumerable<Office> offices, string searchText)
         {
-            throw new NotImplementedException();
+            return _service.FilterOffices(offices, searchText);
         }
 
         public void SaveOffice(Office office)

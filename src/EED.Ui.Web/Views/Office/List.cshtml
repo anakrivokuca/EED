@@ -1,6 +1,10 @@
 ﻿@using EED.Ui.Web.Helpers.Pagination
 @model EED.Ui.Web.Models.Offices.ListViewModel
 
+@section filter {
+    @Html.Partial("_FilterPartial")
+}
+
 @section leftMenu {
     @Html.Partial("_LeftSideMenuPartial")
 }

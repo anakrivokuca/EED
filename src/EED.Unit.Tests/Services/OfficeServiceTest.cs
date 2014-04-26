@@ -44,5 +44,44 @@ namespace EED.Unit.Tests.Services
             Assert.AreEqual(3, result.Count());
         }
         #endregion
+
+        #region Test FilterOffices Method
+        [Test]
+        public void FilterOffices_ByName_ReturnsOneOffice()
+        {
+            // Arrange
+            var offices = _mock.Object.FindAll();
+
+            // Act
+            var resultByName = _service.FilterOffices(offices, "Office1");
+
+            // Assert
+            var officesList = resultByName.ToList();
+            Assert.AreEqual(1, officesList.Count);
+            Assert.AreEqual("Office1", officesList[0].Name);
+        }
+
+        [Test]
+        public void FilterOffices_ByIncorrectValues_ReturnsOfficesWithoutError()
+        {
+            // Arrange
+            var offices = _mock.Object.FindAll();
+
+            // Act
+            var resultWithSpaces = _service.FilterOffices(offices, "  Office1   ");
+            var resultWithNonexistentOffice = _service.FilterOffices(offices, "NonexistentOffice");
+
+            // Assert
+            var officesList = resultWithSpaces.ToList();
+            Assert.AreEqual(1, officesList.Count,
+                "One office should be listed with specified criteria.");
+            Assert.AreEqual("Office1", officesList[0].Name,
+                "Office with specified criteria should be Office1.");
+
+            officesList = resultWithNonexistentOffice.ToList();
+            Assert.AreEqual(0, officesList.Count,
+                "No office should be listed with specified criteria.");
+        }
+        #endregion
     }
 }

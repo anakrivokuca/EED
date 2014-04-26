@@ -26,12 +26,15 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /Office/
 
-        public ViewResult List(int page = 1)
+        public ViewResult List(string searchText, int page = 1)
         {
             ViewBag.Title = "Offices";
 
             _project = GetProject();
             var offices = _project.Offices.AsEnumerable<Office>();
+
+            if (!String.IsNullOrEmpty(searchText))
+                offices = _serviceController.FilterOffices(offices, searchText).ToList();
 
             var pagingInfo = new PagingInfo()
             {
@@ -48,6 +51,7 @@ namespace EED.Ui.Web.Controllers
             var model = new ListViewModel()
             {
                 OfficesPerPage = officesPerPage,
+                SearchText = searchText,
                 PagingInfo = pagingInfo
             };
 
