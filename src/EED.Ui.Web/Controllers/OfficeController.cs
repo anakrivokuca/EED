@@ -121,25 +121,36 @@ namespace EED.Ui.Web.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var office = _serviceController.FindOffice(id);
+            _serviceController.DeleteOffice(office);
+            TempData["message-success"] = string.Format(
+                "Office {0} has been successfully deleted.", office.Name);
+
+            return RedirectToAction("List");
         }
 
         //
         // POST: /Office/Delete/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int[] deleteInputs)
         {
-            try
+            if (deleteInputs == null)
             {
-                // TODO: Add delete logic here
+                TempData["message-info"] = string.Format(
+                    "None of the offices has been selected for delete action.");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            foreach (var id in deleteInputs)
             {
-                return View();
+                var office = _serviceController.FindOffice(id);
+                _serviceController.DeleteOffice(office);
             }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
+                " office(s) has been successfully deleted.");
+
+            return RedirectToAction("List");
         }
 
         private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)

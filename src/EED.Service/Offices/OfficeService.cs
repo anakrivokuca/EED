@@ -60,7 +60,7 @@ namespace EED.Service.Offices
 
         public void DeleteOffice(Office office)
         {
-            throw new NotImplementedException();
+            _repository.Delete(office);
         }
     }
 }

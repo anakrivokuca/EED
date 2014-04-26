@@ -102,5 +102,20 @@ namespace EED.Unit.Tests.Services
             _mock.Verify(d => d.Save(office), Times.Once());
         }
         #endregion
+
+        #region Test DeleteOffice Method
+        [Test]
+        public void DeleteOffice_ValidOffice_DoesNotThrowError()
+        {
+            // Arrange
+            var office = new Office { Id = 1, Name = "Office1" };
+
+            // Act
+            _service.DeleteOffice(office);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<Office>()), Times.Once());
+        }
+        #endregion
     }
 }

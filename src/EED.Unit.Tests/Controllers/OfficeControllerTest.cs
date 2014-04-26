@@ -182,5 +182,64 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_GetValidOffice_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var officeId = 1;
+            var office = new Office
+            {
+                Id = officeId,
+                Name = "Office1"
+            };
+            _mock.Setup(s => s.FindOffice(officeId)).Returns(office);
+
+            // Act
+            _controller.Delete(officeId);
+
+            // Assert
+            _mock.Verify(m => m.DeleteOffice(office), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Office " + office.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostMultipleOffices_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var offices = new int[] { 1, 2, 3 };
+            _mock.Setup(s => s.FindOffice(offices[0])).Returns(new Office { Id = offices[0] });
+            _mock.Setup(s => s.FindOffice(offices[1])).Returns(new Office { Id = offices[1] });
+            _mock.Setup(s => s.FindOffice(offices[2])).Returns(new Office { Id = offices[2] });
+
+            // Act
+            _controller.Delete(offices);
+
+            // Assert
+            _mock.Verify(m => m.DeleteOffice(It.IsAny<Office>()), Times.Exactly(offices.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(offices.Count() + " office(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoOffice_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] offices = null;
+
+            // Act
+            _controller.Delete(offices);
+
+            // Assert
+            _mock.Verify(m => m.DeleteOffice(It.IsAny<Office>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the offices has been selected for delete action.",
+                _controller.TempData["message-info"]);
+        }
+        #endregion
     }
 }

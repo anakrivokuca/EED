@@ -42,7 +42,7 @@ namespace EED.Service.Controller.Offices
 
         public void DeleteOffice(Office office)
         {
-            throw new NotImplementedException();
+            _service.DeleteOffice(office);
         }
     }
 }
