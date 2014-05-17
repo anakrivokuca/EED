@@ -1,6 +1,8 @@
 ﻿using EED.DAL;
 using EED.Domain;
+using EED.Service.Contests;
 using EED.Service.Controller.Account;
+using EED.Service.Controller.Contests;
 using EED.Service.Controller.District;
 using EED.Service.Controller.District_Type;
 using EED.Service.Controller.Offices;
@@ -52,6 +54,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IRepository<District>>().To<Repository<District>>();
             _kernel.Bind<IRepository<Precinct>>().To<Repository<Precinct>>();
             _kernel.Bind<IRepository<Office>>().To<Repository<Office>>();
+            _kernel.Bind<IRepository<Contest>>().To<Repository<Contest>>();
 
             _kernel.Bind<IMembershipProvider>().To<CustomMembershipProvider>();
             _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
@@ -62,6 +65,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IDistrictService>().To<DistrictService>();
             _kernel.Bind<IPrecinctService>().To<PrecinctService>();
             _kernel.Bind<IOfficeService>().To<OfficeService>();
+            _kernel.Bind<IContestService>().To<ContestService>();
 
             _kernel.Bind<IAccountServiceController>().To<AccountServiceController>();
             _kernel.Bind<IUserServiceController>().To<UserServiceController>();
@@ -70,6 +74,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IDistrictServiceController>().To<DistrictServiceController>();
             _kernel.Bind<IPrecinctServiceController>().To<PrecinctServiceController>();
             _kernel.Bind<IOfficeServiceController>().To<OfficeServiceController>();
+            _kernel.Bind<IContestServiceController>().To<ContestServiceController>();
         }
     }
 }

@@ -31,6 +31,10 @@
       <key column="ElectionProjectId" />
       <one-to-many class="Office" />
     </bag>
+    <bag name="Contests" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="ElectionProjectId" />
+      <one-to-many class="Contest" />
+    </bag>
   </class>
 
 </hibernate-mapping>

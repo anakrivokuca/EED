@@ -138,6 +138,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ContestController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\DistrictTypeController.cs" />
     <Compile Include="Controllers\OfficeController.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
+    <Compile Include="Models\Contests\ListViewModel.cs" />
     <Compile Include="Models\District\CreateViewModel.cs" />
     <Compile Include="Models\District\ListViewModel.cs" />
     <Compile Include="Models\District_Type\CreateViewModel.cs" />
@@ -294,6 +296,7 @@
     <Content Include="Views\Precinct\Edit.cshtml" />
     <Content Include="Views\Office\List.cshtml" />
     <Content Include="Views\Office\Edit.cshtml" />
+    <Content Include="Views\Contest\List.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
