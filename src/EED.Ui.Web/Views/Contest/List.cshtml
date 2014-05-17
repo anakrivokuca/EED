@@ -2,7 +2,23 @@
 @model EED.Ui.Web.Models.Contests.ListViewModel
 
 @section filter {
-    @Html.Partial("_FilterPartial")
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h2>Filter @ViewBag.Title</h2>
+            </hgroup>
+            @using (Html.BeginForm("List", "Contest", FormMethod.Get))
+            {
+                @Html.LabelFor(m => m.SearchText)
+                @Html.TextBoxFor(m => m.SearchText)
+                
+                @Html.LabelFor(m => m.OfficeId)
+                @Html.DropDownListFor(m => m.OfficeId, Model.Offices, string.Empty)
+                
+                <input type="submit" value="Search" />
+            }
+        </div>
+    </section>
 }
 
 @section leftMenu {
@@ -57,7 +73,9 @@
 
 <div class="pager">
     @{var pageInfo = Model.PagingInfo;}
-    @Html.PageLinks(pageInfo, x => Url.Action("List", "Office", new {
+    @Html.PageLinks(pageInfo, x => Url.Action("List", "Contest", new {
+        SearchText = Model.SearchText, 
+        OfficeId = Model.OfficeId,
         Page = x}))
 </div>
 

@@ -29,15 +29,18 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /Contest/
 
-        public ViewResult List(string searchText, int page = 1)
+        public ViewResult List(string searchText, int officeId = 0, int page = 1)
         {
             ViewBag.Title = "Contests";
 
             _project = GetProject();
             var contests = _project.Contests.AsEnumerable<Contest>();
 
-            if (!String.IsNullOrEmpty(searchText))
-                contests = _serviceController.FilterContests(contests, searchText).ToList();
+            var offices = _project.Offices;
+            var selectListOffice = new SelectList(offices, "Id", "Name");
+
+            if (officeId != 0 || !String.IsNullOrEmpty(searchText))
+                contests = _serviceController.FilterContests(contests, searchText, officeId).ToList();
 
             var pagingInfo = new PagingInfo()
             {
@@ -54,8 +57,10 @@ namespace EED.Ui.Web.Controllers
             var model = new ListViewModel()
             {
                 ContestsPerPage = contestsPerPage,
+                PagingInfo = pagingInfo,
                 SearchText = searchText,
-                PagingInfo = pagingInfo
+                Offices = selectListOffice,
+                OfficeId = officeId
             };
 
             return View(model);

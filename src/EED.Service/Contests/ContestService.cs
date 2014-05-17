@@ -2,6 +2,7 @@
 using EED.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EED.Service.Contests
 {
@@ -24,16 +25,22 @@ namespace EED.Service.Contests
             return _repository.Find(id);
         }
 
-        public IEnumerable<Contest> FilterContests(IEnumerable<Contest> contests, string searchText)
+        public IEnumerable<Contest> FilterContests(IEnumerable<Contest> contests, string searchText, int officeId)
         {
-            throw new NotImplementedException();
-            //string text = searchText.Trim();
-            //if (!String.IsNullOrEmpty(text))
-            //{
-            //    contests = contests
-            //        .Where(o => (String.Equals(o.Name, text, StringComparison.CurrentCultureIgnoreCase)));
-            //}
-            //return contests;
+            string text = searchText.Trim();
+            if (!String.IsNullOrEmpty(text))
+            {
+                contests = contests
+                    .Where(c => (String.Equals(c.Name, text, StringComparison.CurrentCultureIgnoreCase)));
+            }
+
+            if (officeId != 0)
+            {
+                contests = contests
+                    .Where(c => c.Office != null && c.Office.Id == officeId);
+            }
+
+            return contests;
         }
 
         public void SaveContest(Contest contest)

@@ -7,7 +7,7 @@ namespace EED.Service.Controller.Contests
     {
         ElectionProject FindProject(int id);
         Contest FindContest(int id);
-        IEnumerable<Contest> FilterContests(IEnumerable<Contest> contests, string searchText);
+        IEnumerable<Contest> FilterContests(IEnumerable<Contest> contests, string searchText, int officeId);
         void SaveContest(Contest contest);
         void DeleteContest(Contest contest);
     }

@@ -24,13 +24,12 @@ namespace EED.Service.Controller.Contests
 
         public Contest FindContest(int id)
         {
-            throw new NotImplementedException();
-            //return _service.FindContest(id);
+            return _service.FindContest(id);
         }
 
-        public IEnumerable<Contest> FilterContests(IEnumerable<Contest> contests, string searchText)
+        public IEnumerable<Contest> FilterContests(IEnumerable<Contest> contests, string searchText, int officeId)
         {
-            return _service.FilterContests(contests, searchText);
+            return _service.FilterContests(contests, searchText, officeId);
         }
 
         public void SaveContest(Contest contest)
