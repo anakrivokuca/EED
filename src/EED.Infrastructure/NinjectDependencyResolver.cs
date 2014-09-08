@@ -9,7 +9,7 @@ using EED.Service.Controller.Offices;
 using EED.Service.Controller.Precincts;
 using EED.Service.Controller.Project;
 using EED.Service.Controller.User;
-using EED.Service.District;
+using EED.Service.Districts;
 using EED.Service.District_Type;
 using EED.Service.Election_Type;
 using EED.Service.Jurisdiction_Type;

@@ -1,6 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
-using EED.Service.District;
+using EED.Service.Districts;
 using EED.Service.District_Type;
 using EED.Service.Jurisdiction_Type;
 using EED.Service.Membership_Provider;

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace EED.Ui.Web.Models.District
+namespace EED.Ui.Web.Models.Districts
 {
     public class CreateViewModel
     {

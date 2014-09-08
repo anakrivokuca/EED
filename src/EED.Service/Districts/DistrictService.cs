@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EED.Service.District
+namespace EED.Service.Districts
 {
     public class DistrictService : IDistrictService
     {

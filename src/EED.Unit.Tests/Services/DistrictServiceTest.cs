@@ -1,6 +1,6 @@
 ﻿using EED.DAL;
 using EED.Domain;
-using EED.Service.District;
+using EED.Service.Districts;
 using EED.Service.Project;
 using Moq;
 using NUnit.Framework;

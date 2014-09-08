@@ -1,5 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.District;
+using EED.Service.Districts;
 using EED.Service.Project;
 using System;
 using System.Collections.Generic;

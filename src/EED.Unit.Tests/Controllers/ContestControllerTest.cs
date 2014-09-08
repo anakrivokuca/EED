@@ -103,5 +103,43 @@ namespace EED.Unit.Tests.Controllers
             Assert.AreEqual(1, result.Count());
         }
         #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetContest_ReturnsCreateViewModel()
+        {
+            // Arrange
+            var contestId = 1;
+            _mock.Setup(s => s.FindContest(contestId)).Returns(new Contest
+            {
+                Id = contestId,
+                Name = "Contest1",
+                Office = new Office { Id = 1 },
+                District = new District { Id = 2 }
+            });
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(contestId).Model;
+
+            // Assert
+            Assert.AreEqual("Contest1", result.Name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.NullReferenceException))]
+        public void Edit_GetNonexistentContest_ThrowsException()
+        {
+            // Arrange
+            var contestId = 101;
+            Contest contest = null;
+            _mock.Setup(s => s.FindContest(contestId)).Returns(contest);
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(contestId).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
     }
 }

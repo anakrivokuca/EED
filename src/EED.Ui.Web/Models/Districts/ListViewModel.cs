@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Mvc;
 
-namespace EED.Ui.Web.Models.District
+namespace EED.Ui.Web.Models.Districts
 {
     public class ListViewModel
     {

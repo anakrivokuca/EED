@@ -1,4 +1,4 @@
-﻿@model EED.Ui.Web.Models.District.CreateViewModel
+﻿@model EED.Ui.Web.Models.Districts.CreateViewModel
 
 <hgroup class="title">
     <h1>@ViewBag.Title @Model.Name</h1>
@@ -62,7 +62,7 @@
 }
 
 @section Scripts {
-    @Scripts.Render("~/Scripts/changeDropBoxValue.js")
+    @Scripts.Render("~/Scripts/changeParentDistrictDropBoxValue.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     @Scripts.Render("~/bundles/jqueryval")
 }

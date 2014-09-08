@@ -1,7 +1,7 @@
 ﻿using EED.Domain;
 using EED.Service.Controller.District;
 using EED.Ui.Web.Controllers;
-using EED.Ui.Web.Models.District;
+using EED.Ui.Web.Models.Districts;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;

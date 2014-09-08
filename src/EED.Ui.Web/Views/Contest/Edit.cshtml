@@ -1,0 +1,66 @@
+﻿@model EED.Ui.Web.Models.Contests.CreateViewModel
+
+<hgroup class="title">
+    <h1>@ViewBag.Title @Model.Name</h1>
+</hgroup>
+
+@using (Html.BeginForm("Edit", "Contest")) {
+    @Html.ValidationSummary(true);
+    <fieldset>
+        <legend>District</legend>
+        
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OfficeId)
+        </div>
+        @if (Model.Id != 0 && Model.OfficeId == 0) {
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.OfficeId, Model.Offices, string.Empty, new { id = "ddlOffice", disabled = "disabled"  })
+            </div>
+        } else {
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.OfficeId, Model.Offices, string.Empty, new { id = "ddlOffice", onchange = "javascript:GetDistrict(this.value);"  })
+                @Html.ValidationMessageFor(model => model.OfficeId)
+            </div>
+            
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DistrictId)
+            </div>
+            <div class="editor-field">
+                @if (Model.DistrictId != 0) {
+                        @Html.HiddenFor(model => model.DistrictId);
+                    }
+                @Html.DropDownListFor(model => model.DistrictId, Model.Districts, string.Empty, new { id = "ddlDistrict", onchange = "javascript:SetDistrictId(this.value);"})
+                @Html.ValidationMessageFor(model => model.DistrictId)
+            </div>
+        }
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumberOfPositions)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NumberOfPositions)
+            @Html.ValidationMessageFor(model => model.NumberOfPositions)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+            @Html.ActionLink("Cancel and Return to Contest List", "List")
+        </p>
+    </fieldset> 
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/changeDistrictDropBoxValue.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

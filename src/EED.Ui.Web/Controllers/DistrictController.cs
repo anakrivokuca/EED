@@ -2,7 +2,7 @@
 using EED.Service.Controller.District;
 using EED.Ui.Web.Filters;
 using EED.Ui.Web.Helpers.Pagination;
-using EED.Ui.Web.Models.District;
+using EED.Ui.Web.Models.Districts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -208,7 +208,7 @@ namespace EED.Ui.Web.Controllers
         {
             IEnumerable<District> districts = new List<District>();
             if(districtType != null)
-                districts = districtType.Districts;;
+                districts = districtType.Districts;
 
             return districts;
         }

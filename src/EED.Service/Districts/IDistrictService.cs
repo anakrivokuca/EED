@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EED.Service.District
+namespace EED.Service.Districts
 {
     public interface IDistrictService
     {

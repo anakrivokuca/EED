@@ -71,7 +71,12 @@ namespace EED.Ui.Web.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Title = "Add New Contest";
+
+            var model = new CreateViewModel();
+            model = PrepareModelToPopulateDropDownLists(model);
+
+            return View("Edit", model);
         }
 
         //
@@ -93,28 +98,46 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Contest/Edit/5
+        // GET: /Contest/Edit/Id
 
-        public ActionResult Edit(int id)
+        public ViewResult Edit(int id)
         {
-            return View();
+            ViewBag.Title = "Edit";
+
+            var contest = _serviceController.FindContest(id);
+
+            var model = new CreateViewModel();
+            model = model.ConvertContestToModel(contest);
+            model = PrepareModelToPopulateDropDownLists(model);
+
+            return View(model);
         }
 
         //
-        // POST: /Contest/Edit/5
+        // POST: /Contest/Edit/Id
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CreateViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                var contest = model.ConvertModelToContest(model);
 
-                return RedirectToAction("Index");
+                if (model.Id == 0)
+                {
+                    contest.Project = GetProject();
+                }
+                _serviceController.SaveContest(contest);
+
+                TempData["message-success"] = string.Format(
+                    "Contest {0} has been successfully saved.",
+                    model.Name);
+
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -142,6 +165,54 @@ namespace EED.Ui.Web.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult PopulateDistricts(int officeId)
+        {
+            _project = GetProject();
+
+            var offices = _project.Offices;
+            var office = offices.SingleOrDefault(o => o.Id == officeId);
+
+            var districts = GetDistrictsForOffice(office);
+            var selectListDistrict = new SelectList(districts, "Id", "Name");
+
+            return Json(selectListDistrict);
+        }
+
+        private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
+        {
+            _project = GetProject();
+
+            var offices = _project.Offices;
+
+            var selectListOffice = new SelectList(offices, "Id", "Name");
+            model.Offices = selectListOffice;
+
+            var office = offices
+                .SingleOrDefault(o => o.Id == model.OfficeId);
+
+            IEnumerable<District> districts = GetDistrictsForOffice(office);
+
+            var selectListDistrict = new SelectList(districts, "Id", "Name");
+            model.Districts = selectListDistrict;
+
+            return model;
+        }
+
+        private IEnumerable<District> GetDistrictsForOffice(Office office)
+        {
+            IEnumerable<District> districts;
+            if (office == null)
+            {
+                districts = _project.Districts;
+            }
+            else
+            {
+                districts = _project.Districts.Where(d => d.DistrictType == office.DistrictType);
+            }
+            return districts;
         }
 
         private ElectionProject GetProject()
