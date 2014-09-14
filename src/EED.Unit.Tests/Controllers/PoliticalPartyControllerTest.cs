@@ -95,5 +95,42 @@ namespace EED.Unit.Tests.Controllers
             Assert.AreEqual(1, result.Count());
         }
         #endregion
+
+        #region Test Edit (Get) Method
+        [Test]
+        public void Edit_GetPoliticalParty_ReturnsCreateViewModel()
+        {
+            // Arrange
+            var politicalPartyId = 1;
+            _mock.Setup(s => s.FindPoliticalParty(politicalPartyId)).Returns(new PoliticalParty
+            {
+                Id = politicalPartyId,
+                Name = "PoliticalParty1",
+                Abbreviation = "PP1"
+            });
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(politicalPartyId).Model;
+
+            // Assert
+            Assert.AreEqual("PoliticalParty1", result.Name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.NullReferenceException))]
+        public void Edit_GetNonexistentPoliticalParty_ThrowsException()
+        {
+            // Arrange
+            var politicalPartyId = 101;
+            PoliticalParty politicalParty = null;
+            _mock.Setup(s => s.FindPoliticalParty(politicalPartyId)).Returns(politicalParty);
+
+            // Act
+            var result = (CreateViewModel)_controller.Edit(politicalPartyId).Model;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+        #endregion
     }
 }

@@ -64,35 +64,28 @@ namespace EED.Ui.Web.Controllers
         //
         // GET: /PoliticalParty/Create
 
-        public ActionResult Create()
+        public ViewResult Create()
         {
-            return View();
+            ViewBag.Title = "Add New Political Party";
+
+            var model = new CreateViewModel();
+
+            return View("Edit", model);
         }
 
         //
-        // POST: /PoliticalParty/Create
+        // GET: /PoliticalParty/Edit/Id
 
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ViewResult Edit(int id)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            ViewBag.Title = "Edit";
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            var politicalParty = _serviceController.FindPoliticalParty(id);
 
-        //
-        // GET: /PoliticalParty/Edit/5
+            var model = new CreateViewModel();
+            model = model.ConvertPoliticalPartyToModel(politicalParty);
 
-        public ActionResult Edit(int id)
-        {
-            return View();
+            return View(model);
         }
 
         //

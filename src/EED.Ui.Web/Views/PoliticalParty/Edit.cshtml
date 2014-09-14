@@ -1,0 +1,48 @@
+﻿@model EED.Ui.Web.Models.Political_Party.CreateViewModel
+
+<hgroup class="title">
+    <h1>@ViewBag.Title @Model.Name</h1>
+</hgroup>
+
+@using (Html.BeginForm("Edit", "PoliticalParty")) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Political Party</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Abbreviation)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Abbreviation)
+            @Html.ValidationMessageFor(model => model.Abbreviation)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Image)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" })
+            @Html.ValidationMessageFor(model => model.Image)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+            @Html.ActionLink("Cancel and Return to Political Party List", "List")
+        </p>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

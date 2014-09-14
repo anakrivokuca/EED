@@ -162,6 +162,7 @@
     <Compile Include="Models\District_Type\ListViewModel.cs" />
     <Compile Include="Models\Offices\CreateViewModel.cs" />
     <Compile Include="Models\Offices\ListViewModel.cs" />
+    <Compile Include="Models\Political_Party\CreateViewModel.cs" />
     <Compile Include="Models\Political_Party\ListViewModel.cs" />
     <Compile Include="Models\Precincts\CreateViewModel.cs" />
     <Compile Include="Models\Precincts\ListViewModel.cs" />
@@ -303,6 +304,7 @@
     <Content Include="Views\Contest\List.cshtml" />
     <Content Include="Views\Contest\Edit.cshtml" />
     <Content Include="Views\PoliticalParty\List.cshtml" />
+    <Content Include="Views\PoliticalParty\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
