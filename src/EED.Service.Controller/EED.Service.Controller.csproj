@@ -44,8 +44,8 @@
   <ItemGroup>
     <Compile Include="Contests\ContestServiceController.cs" />
     <Compile Include="Contests\IContestServiceController.cs" />
-    <Compile Include="District\DistrictServiceController.cs" />
-    <Compile Include="District\IDistrictServiceController.cs" />
+    <Compile Include="Districts\DistrictServiceController.cs" />
+    <Compile Include="Districts\IDistrictServiceController.cs" />
     <Compile Include="District_Type\DistrictTypeServiceController.cs" />
     <Compile Include="District_Type\IDistrictTypeServiceController.cs" />
     <Compile Include="Account\IAccountServiceController.cs" />

@@ -1,5 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.Controller.District;
+using EED.Service.Controller.Districts;
 using EED.Ui.Web.Filters;
 using EED.Ui.Web.Helpers.Pagination;
 using EED.Ui.Web.Models.Districts;

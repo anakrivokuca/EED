@@ -1,4 +1,5 @@
 ﻿using EED.DAL;
+using EED.Domain;
 using EED.Service.Project;
 using System;
 using System.Collections.Generic;
@@ -8,24 +9,24 @@ namespace EED.Service.Districts
 {
     public class DistrictService : IDistrictService
     {
-        private readonly IRepository<Domain.District> _repository;
+        private readonly IRepository<District> _repository;
 
-        public DistrictService(IRepository<Domain.District> repository)
+        public DistrictService(IRepository<District> repository)
         {
             _repository = repository;
         }
 
-        public IEnumerable<Domain.District> FindAllDistricts()
+        public IEnumerable<District> FindAllDistricts()
         {
             return _repository.FindAll();
         }
 
-        public Domain.District FindDistrict(int id)
+        public District FindDistrict(int id)
         {
             return _repository.Find(id);
         }
 
-        public IEnumerable<Domain.District> FilterDistricts(IEnumerable<Domain.District> districts, 
+        public IEnumerable<District> FilterDistricts(IEnumerable<District> districts, 
             string searchText, int districtTypeId)
         {
             string text = searchText.Trim();
@@ -44,7 +45,7 @@ namespace EED.Service.Districts
             return districts;
         }
 
-        public void SaveDistrict(Domain.District district)
+        public void SaveDistrict(District district)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace EED.Service.Districts
             }
         }
         
-        public void DeleteDistrict(Domain.District district)
+        public void DeleteDistrict(District district)
         {
             _repository.Delete(district);
         }

@@ -4,7 +4,7 @@ using EED.Service.Project;
 using System;
 using System.Collections.Generic;
 
-namespace EED.Service.Controller.District
+namespace EED.Service.Controller.Districts
 {
     public class DistrictServiceController : IDistrictServiceController
     {
@@ -27,17 +27,17 @@ namespace EED.Service.Controller.District
             return _service.FindDistrict(id);
         }
 
-        public IEnumerable<Domain.District> FilterDistricts(IEnumerable<Domain.District> districts, string searchText, int parentDistrictId)
+        public IEnumerable<Domain.District> FilterDistricts(IEnumerable<District> districts, string searchText, int parentDistrictId)
         {
             return _service.FilterDistricts(districts, searchText, parentDistrictId);
         }
 
-        public void SaveDistrict(Domain.District district)
+        public void SaveDistrict(District district)
         {
             _service.SaveDistrict(district);
         }
 
-        public void DeleteDistrict(Domain.District district)
+        public void DeleteDistrict(District district)
         {
             _service.DeleteDistrict(district);
         }

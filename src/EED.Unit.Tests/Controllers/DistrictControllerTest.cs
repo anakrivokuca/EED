@@ -1,5 +1,5 @@
 ﻿using EED.Domain;
-using EED.Service.Controller.District;
+using EED.Service.Controller.Districts;
 using EED.Ui.Web.Controllers;
 using EED.Ui.Web.Models.Districts;
 using Moq;

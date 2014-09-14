@@ -3,7 +3,7 @@ using EED.Domain;
 using EED.Service.Contests;
 using EED.Service.Controller.Account;
 using EED.Service.Controller.Contests;
-using EED.Service.Controller.District;
+using EED.Service.Controller.Districts;
 using EED.Service.Controller.District_Type;
 using EED.Service.Controller.Offices;
 using EED.Service.Controller.Precincts;
