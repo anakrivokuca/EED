@@ -95,5 +95,25 @@ namespace EED.Unit.Tests.Services
                 "No contest should be listed with specified criteria.");
         }
         #endregion
+
+        #region Test SaveContest Method
+        [Test]
+        public void SaveContest_NewValidContest_DoesNotThrowError()
+        {
+            // Arrange
+            var contest = new Contest
+            {
+                Name = "NewContest",
+                District = new District { Id = 1 },
+                Office = new Office { Id = 1 }
+            };
+
+            // Act
+            _service.SaveContest(contest);
+
+            // Assert
+            _mock.Verify(d => d.Save(contest), Times.Once());
+        }
+        #endregion
     }
 }

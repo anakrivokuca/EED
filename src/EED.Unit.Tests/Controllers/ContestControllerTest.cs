@@ -141,5 +141,54 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsNull(result);
         }
         #endregion
+
+        #region Test Edit (Post) Method
+        [Test]
+        public void Edit_PostNewContest_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Name = "NewContest"
+            };
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveContest(It.IsAny<Contest>()), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Contest NewContest has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Edit_PostExistingContestWithValidChanges_ReturnsRedirectResult()
+        {
+            // Arrange
+            var model = new CreateViewModel
+            {
+                Id = 2,
+                Name = "Contest 2"
+            };
+            var contest = new Contest
+            {
+                Id = 2,
+                Name = "Contest2"
+            };
+            _mock.Setup(d => d.FindContest(model.Id)).Returns(contest);
+
+            // Act
+            var result = _controller.Edit(model);
+
+            // Assert
+            _mock.Verify(m => m.SaveContest(It.IsAny<Contest>()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Contest Contest 2 has been successfully saved.",
+                _controller.TempData["message-success"]);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+        #endregion
     }
 }

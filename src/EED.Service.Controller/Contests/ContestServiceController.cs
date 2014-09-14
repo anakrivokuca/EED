@@ -34,7 +34,7 @@ namespace EED.Service.Controller.Contests
 
         public void SaveContest(Contest contest)
         {
-            throw new NotImplementedException();
+            _service.SaveContest(contest);
         }
 
         public void DeleteContest(Contest contest)

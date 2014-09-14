@@ -45,7 +45,23 @@ namespace EED.Service.Contests
 
         public void SaveContest(Contest contest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (contest.Id != 0)
+                {
+                    var existingContest = FindContest(contest.Id);
+                    existingContest.Name = contest.Name;
+                    existingContest.NumberOfPositions = contest.NumberOfPositions;
+                    existingContest.Office = contest.Office;
+                    existingContest.District = contest.District;
+                    contest = existingContest;
+                }
+                _repository.Save(contest);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
 
         public void DeleteContest(Contest contest)
