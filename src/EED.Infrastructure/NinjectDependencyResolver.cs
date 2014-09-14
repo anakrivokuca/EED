@@ -21,6 +21,8 @@ using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using EED.Service.Political_Party;
+using EED.Service.Controller.Political_Party;
 
 namespace EED.Infrastructure
 {
@@ -55,6 +57,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IRepository<Precinct>>().To<Repository<Precinct>>();
             _kernel.Bind<IRepository<Office>>().To<Repository<Office>>();
             _kernel.Bind<IRepository<Contest>>().To<Repository<Contest>>();
+            _kernel.Bind<IRepository<PoliticalParty>>().To<Repository<PoliticalParty>>();
 
             _kernel.Bind<IMembershipProvider>().To<CustomMembershipProvider>();
             _kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
@@ -66,6 +69,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IPrecinctService>().To<PrecinctService>();
             _kernel.Bind<IOfficeService>().To<OfficeService>();
             _kernel.Bind<IContestService>().To<ContestService>();
+            _kernel.Bind<IPoliticalPartyService>().To<PoliticalPartyService>();
 
             _kernel.Bind<IAccountServiceController>().To<AccountServiceController>();
             _kernel.Bind<IUserServiceController>().To<UserServiceController>();
@@ -74,7 +78,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IDistrictServiceController>().To<DistrictServiceController>();
             _kernel.Bind<IPrecinctServiceController>().To<PrecinctServiceController>();
             _kernel.Bind<IOfficeServiceController>().To<OfficeServiceController>();
-            _kernel.Bind<IContestServiceController>().To<ContestServiceController>();
+            _kernel.Bind<IPoliticalPartyServiceController>().To<PoliticalPartyServiceController>();
         }
     }
 }

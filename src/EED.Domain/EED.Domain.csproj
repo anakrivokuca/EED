@@ -50,6 +50,7 @@
     <Compile Include="ElectionType.cs" />
     <Compile Include="JurisdictionType.cs" />
     <Compile Include="Office.cs" />
+    <Compile Include="PoliticalParty.cs" />
     <Compile Include="Precinct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
@@ -80,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\Contest.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\PoliticalParty.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

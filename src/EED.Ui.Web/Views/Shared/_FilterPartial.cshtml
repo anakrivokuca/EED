@@ -1,6 +1,10 @@
 ﻿@{ 
     string title = ViewBag.Title;
     string controller = ViewBag.Title.Replace(" ", "").TrimEnd('s');
+    if (ViewBag.Title == "PoliticalParties")
+    {
+        controller = "PoliticalParty";
+    }
 }
 <section class="featured">
     <div class="content-wrapper">

@@ -53,6 +53,8 @@
     <Compile Include="Election_Type\IElectionTypeService.cs" />
     <Compile Include="Offices\IOfficeService.cs" />
     <Compile Include="Offices\OfficeService.cs" />
+    <Compile Include="Political_Party\IPoliticalPartyService.cs" />
+    <Compile Include="Political_Party\PoliticalPartyService.cs" />
     <Compile Include="Precincts\IPrecinctService.cs" />
     <Compile Include="Jurisdiction_Type\IJurisdictionTypeService.cs" />
     <Compile Include="Jurisdiction_Type\JurisdictionTypeService.cs" />

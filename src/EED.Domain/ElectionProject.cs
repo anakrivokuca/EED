@@ -19,5 +19,6 @@ namespace EED.Domain
         public IList<Precinct> Precincts { get; set; }
         public IList<Office> Offices { get; set; }
         public IList<Contest> Contests { get; set; }
+        public IList<PoliticalParty> PoliticalParties { get; set; }
     }
 }

@@ -52,6 +52,8 @@
     <Compile Include="Account\AccountServiceController.cs" />
     <Compile Include="Offices\IOfficeServiceController.cs" />
     <Compile Include="Offices\OfficeServiceController.cs" />
+    <Compile Include="Political_Party\IPoliticalPartyServiceController.cs" />
+    <Compile Include="Political_Party\PoliticalPartyServiceController.cs" />
     <Compile Include="Precincts\IPrecinctServiceController.cs" />
     <Compile Include="Precincts\PrecinctServiceController.cs" />
     <Compile Include="Project\IProjectServiceController.cs" />
