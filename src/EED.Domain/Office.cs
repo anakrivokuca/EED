@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 namespace EED.Domain
 {
     public class Office
@@ -9,6 +10,8 @@ namespace EED.Domain
         public OfficeType OfficeType { get; set; }
         public DistrictType DistrictType { get; set; }
         public ElectionProject Project { get; set; }
+
+        public IList<Contest> Contests { get; set; }
     }
 
     public enum OfficeType

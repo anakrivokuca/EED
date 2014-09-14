@@ -115,5 +115,20 @@ namespace EED.Unit.Tests.Services
             _mock.Verify(d => d.Save(contest), Times.Once());
         }
         #endregion
+
+        #region Test DeleteContest Method
+        [Test]
+        public void DeleteContest_ValidContest_DoesNotThrowError()
+        {
+            // Arrange
+            var contest = new Contest { Id = 1, Name = "Contest1" };
+
+            // Act
+            _service.DeleteContest(contest);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<Contest>()), Times.Once());
+        }
+        #endregion
     }
 }

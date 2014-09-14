@@ -13,6 +13,10 @@
     <!--<many-to-one name="OfficeType" class="EED.Domain.OfficeType" column="OfficeTypeId" />-->
     <many-to-one name="DistrictType" class="EED.Domain.DistrictType" column="DistrictTypeId" />
     <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
+    <bag name="Contests" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="OfficeId" />
+      <one-to-many class="Contest" />
+    </bag>
   </class>
 
 </hibernate-mapping>

@@ -190,5 +190,64 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_GetValidContest_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var contestId = 1;
+            var contest = new Contest
+            {
+                Id = contestId,
+                Name = "Contest1"
+            };
+            _mock.Setup(s => s.FindContest(contestId)).Returns(contest);
+
+            // Act
+            _controller.Delete(contestId);
+
+            // Assert
+            _mock.Verify(m => m.DeleteContest(contest), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Contest " + contest.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostMultipleContests_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var contests = new int[] { 1, 2, 3 };
+            _mock.Setup(s => s.FindContest(contests[0])).Returns(new Contest { Id = contests[0] });
+            _mock.Setup(s => s.FindContest(contests[1])).Returns(new Contest { Id = contests[1] });
+            _mock.Setup(s => s.FindContest(contests[2])).Returns(new Contest { Id = contests[2] });
+
+            // Act
+            _controller.Delete(contests);
+
+            // Assert
+            _mock.Verify(m => m.DeleteContest(It.IsAny<Contest>()), Times.Exactly(contests.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(contests.Count() + " contest(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoContest_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] contests = null;
+
+            // Act
+            _controller.Delete(contests);
+
+            // Assert
+            _mock.Verify(m => m.DeleteContest(It.IsAny<Contest>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the contests has been selected for delete action.",
+                _controller.TempData["message-info"]);
+        }
+        #endregion
     }
 }

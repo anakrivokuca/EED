@@ -66,7 +66,7 @@ namespace EED.Service.Contests
 
         public void DeleteContest(Contest contest)
         {
-            throw new NotImplementedException();
+            _repository.Delete(contest);
         }
     }
 }

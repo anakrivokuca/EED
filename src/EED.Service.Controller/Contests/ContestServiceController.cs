@@ -39,7 +39,7 @@ namespace EED.Service.Controller.Contests
 
         public void DeleteContest(Contest contest)
         {
-            throw new NotImplementedException();
+            _service.DeleteContest(contest);
         }
     }
 }

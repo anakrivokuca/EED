@@ -142,29 +142,41 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Contest/Delete/5
+        // GET: /District/Delete/5
 
+        [HttpGet]
         public ActionResult Delete(int id)
         {
-            return View();
+            var contest = _serviceController.FindContest(id);
+            _serviceController.DeleteContest(contest);
+            TempData["message-success"] = string.Format(
+                "Contest {0} has been successfully deleted.", contest.Name);
+
+            return RedirectToAction("List");
         }
 
         //
-        // POST: /Contest/Delete/5
+        // POST: /Contest/Delete
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int[] deleteInputs)
         {
-            try
+            if (deleteInputs == null)
             {
-                // TODO: Add delete logic here
+                TempData["message-info"] = string.Format(
+                    "None of the contests has been selected for delete action.");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            foreach (var id in deleteInputs)
             {
-                return View();
+                var contest = _serviceController.FindContest(id);
+                _serviceController.DeleteContest(contest);
             }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
+                " contest(s) has been successfully deleted.");
+
+            return RedirectToAction("List");
         }
 
         [HttpPost]
