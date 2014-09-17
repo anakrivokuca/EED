@@ -9,7 +9,7 @@
     </id>
     <property name="Name" />
     <property name="Abbreviation" />
-    <property name="Image" />
+    <property name="Image" length="2147483647" />
     <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
   </class>
 

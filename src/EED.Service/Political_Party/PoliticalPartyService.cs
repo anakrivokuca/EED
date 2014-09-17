@@ -40,7 +40,23 @@ namespace EED.Service.Political_Party
 
         public void SavePoliticalParty(PoliticalParty politicalParty)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (politicalParty.Id != 0)
+                {
+                    var existingPoliticalParty = FindPoliticalParty(politicalParty.Id);
+                    existingPoliticalParty.Name = politicalParty.Name;
+                    existingPoliticalParty.Abbreviation = politicalParty.Abbreviation;
+                    existingPoliticalParty.Image = politicalParty.Image;
+                    politicalParty = existingPoliticalParty;
+                }
+
+                _repository.Save(politicalParty);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
 
         public void DeletePoliticalParty(PoliticalParty politicalParty)

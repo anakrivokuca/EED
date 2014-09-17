@@ -14,7 +14,7 @@ namespace EED.Ui.Web.Models.Political_Party
 
         public string Abbreviation { get; set; }
 
-        public string Image { get; set; }
+        public System.Web.HttpPostedFileBase Image { get; set; }
 
         public PoliticalParty ConvertModelToPoliticalParty(CreateViewModel model)
         {
@@ -23,8 +23,15 @@ namespace EED.Ui.Web.Models.Political_Party
                 Id = model.Id,
                 Name = model.Name,
                 Abbreviation = model.Abbreviation,
-                Image = model.Image
+                //Image = model.Image
             };
+
+            if (model.Image != null)
+            {
+                var target = new System.IO.MemoryStream();
+                model.Image.InputStream.CopyTo(target);
+                politicalParty.Image = target.ToArray();
+            }
 
             return politicalParty;
         }
@@ -36,7 +43,7 @@ namespace EED.Ui.Web.Models.Political_Party
                 Id = politicalParty.Id,
                 Name = politicalParty.Name,
                 Abbreviation = politicalParty.Abbreviation,
-                Image = politicalParty.Image
+                //Image = politicalParty.Image
             };
 
             return model;

@@ -4,13 +4,15 @@
     <h1>@ViewBag.Title @Model.Name</h1>
 </hgroup>
 
-@using (Html.BeginForm("Edit", "PoliticalParty")) {
+@using (Html.BeginForm("Edit", "PoliticalParty", FormMethod.Post, 
+    new { id = "form", enctype="multipart/form-data" })) {
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Political Party</legend>
 
         @Html.HiddenFor(model => model.Id)
 
+        <div style="float: left">
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
         </div>
@@ -34,11 +36,15 @@
             @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" })
             @Html.ValidationMessageFor(model => model.Image)
         </div>
-
+            
         <p>
             <input type="submit" value="Save" />
             @Html.ActionLink("Cancel and Return to Political Party List", "List")
         </p>
+        </div>
+        <div style="float: left; margin: 0px 0px 0px 100px">
+            <img src="@Url.Action("ShowImage", "PoliticalParty", new { id = Model.Id })" height="200" width="200" alt="Saved Logo" />
+        </div>
     </fieldset>
 }
 

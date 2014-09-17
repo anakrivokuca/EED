@@ -11,7 +11,7 @@ namespace EED.Domain
         public int Id { get; set; }
         public string Name { get; set; }
         public string Abbreviation { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
         public ElectionProject Project { get; set; }
     }
 }

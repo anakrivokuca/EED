@@ -86,5 +86,23 @@ namespace EED.Unit.Tests.Services
                 "No political party should be listed with specified criteria.");
         }
         #endregion
+
+        #region Test SavePoliticalParty Method
+        [Test]
+        public void SavePoliticalParty_NewValidPoliticalParty_DoesNotThrowError()
+        {
+            // Arrange
+            var politicalParty = new PoliticalParty
+            {
+                Name = "NewPoliticalParty"
+            };
+
+            // Act
+            _service.SavePoliticalParty(politicalParty);
+
+            // Assert
+            _mock.Verify(d => d.Save(politicalParty), Times.Once());
+        }
+        #endregion
     }
 }

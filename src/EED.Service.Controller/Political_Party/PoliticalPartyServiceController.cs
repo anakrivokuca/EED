@@ -37,7 +37,7 @@ namespace EED.Service.Controller.Political_Party
 
         public void SavePoliticalParty(PoliticalParty politicalParty)
         {
-            throw new NotImplementedException();
+            _service.SavePoliticalParty(politicalParty);
         }
 
         public void DeletePoliticalParty(PoliticalParty politicalParty)

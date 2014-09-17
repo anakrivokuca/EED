@@ -88,21 +88,52 @@ namespace EED.Ui.Web.Controllers
             return View(model);
         }
 
+        public FileContentResult ShowImage(int id)
+        {
+            var politicalParty = _serviceController.FindPoliticalParty(id);
+
+            if(politicalParty.Image != null)
+            {
+                return File(politicalParty.Image, politicalParty.Name);
+            }
+            return null;
+        }
+
         //
         // POST: /PoliticalParty/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CreateViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                
+                var politicalParty = model.ConvertModelToPoliticalParty(model);
+                
+                //var upload = Request.Files["Image"];
+                //if (upload.ContentLength > 0)
+                //{
+                //    string savedFileName = System.IO.Path.Combine(
+                //          @"C:\temp",
+                //          "Developer.jpg");
+                //    upload.SaveAs(savedFileName);
+                //}
 
-                return RedirectToAction("Index");
+                if (model.Id == 0)
+                {
+                    politicalParty.Project = GetProject();
+                }
+                _serviceController.SavePoliticalParty(politicalParty);
+
+                TempData["message-success"] = string.Format(
+                    "Political party {0} has been successfully saved.",
+                    model.Name);
+
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return View(model);
             }
         }
 
