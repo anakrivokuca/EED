@@ -33,7 +33,7 @@
             @Html.LabelFor(model => model.Image)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" })
+            @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*", id="imgInp" })
             @Html.ValidationMessageFor(model => model.Image)
         </div>
             
@@ -42,13 +42,23 @@
             @Html.ActionLink("Cancel and Return to Political Party List", "List")
         </p>
         </div>
-        <div style="float: left; margin: 0px 0px 0px 100px">
-            <img src="@Url.Action("ShowImage", "PoliticalParty", new { id = Model.Id })" height="200" width="200" alt="Saved Logo" />
-        </div>
+        @if (Model.HasImage)
+        {
+            <div style="float: left; margin: 0px 0px 0px 100px">
+                <img src="@Url.Action("ShowImage", "PoliticalParty", new { id = Model.Id })" id="image" height="200" width="200" alt="Saved Logo" />
+            </div>
+        }
+        else
+        {
+            <div id="divImg" style="float: left; margin: 0px 0px 0px 100px; display: none">
+                <img src="@Url.Action("ShowImage", "PoliticalParty", new { id = Model.Id })" id="hiddenImage" height="200" width="200" alt="Saved Logo" />
+            </div>
+        }
     </fieldset>
 }
 
 @section Scripts {
+    @Scripts.Render("~/Scripts/updateImage.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     @Scripts.Render("~/bundles/jqueryval")
 }

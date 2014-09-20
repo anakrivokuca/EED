@@ -16,6 +16,8 @@ namespace EED.Ui.Web.Models.Political_Party
 
         public System.Web.HttpPostedFileBase Image { get; set; }
 
+        public bool HasImage { get; set; }
+
         public PoliticalParty ConvertModelToPoliticalParty(CreateViewModel model)
         {
             var politicalParty = new PoliticalParty()
@@ -43,8 +45,12 @@ namespace EED.Ui.Web.Models.Political_Party
                 Id = politicalParty.Id,
                 Name = politicalParty.Name,
                 Abbreviation = politicalParty.Abbreviation,
-                //Image = politicalParty.Image
             };
+
+            if (politicalParty.Image != null)
+            {
+                model.HasImage = true;
+            }
 
             return model;
         }
