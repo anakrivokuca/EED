@@ -61,7 +61,14 @@ namespace EED.Service.Political_Party
 
         public void DeletePoliticalParty(PoliticalParty politicalParty)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _repository.Delete(politicalParty);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
     }
 }

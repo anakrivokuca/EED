@@ -42,7 +42,7 @@ namespace EED.Service.Controller.Political_Party
 
         public void DeletePoliticalParty(PoliticalParty politicalParty)
         {
-            throw new NotImplementedException();
+            _service.DeletePoliticalParty(politicalParty);
         }
     }
 }

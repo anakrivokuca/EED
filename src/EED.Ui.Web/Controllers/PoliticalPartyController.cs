@@ -92,7 +92,7 @@ namespace EED.Ui.Web.Controllers
         {
             var politicalParty = _serviceController.FindPoliticalParty(id);
 
-            if(politicalParty.Image != null)
+            if (politicalParty != null && politicalParty.Image != null)
             {
                 return File(politicalParty.Image, politicalParty.Name);
             }
@@ -109,15 +109,6 @@ namespace EED.Ui.Web.Controllers
             {
                 
                 var politicalParty = model.ConvertModelToPoliticalParty(model);
-                
-                //var upload = Request.Files["Image"];
-                //if (upload.ContentLength > 0)
-                //{
-                //    string savedFileName = System.IO.Path.Combine(
-                //          @"C:\temp",
-                //          "Developer.jpg");
-                //    upload.SaveAs(savedFileName);
-                //}
 
                 if (model.Id == 0)
                 {
@@ -142,25 +133,36 @@ namespace EED.Ui.Web.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var politicalParty = _serviceController.FindPoliticalParty(id);
+            _serviceController.DeletePoliticalParty(politicalParty);
+            TempData["message-success"] = string.Format(
+                "Political party {0} has been successfully deleted.", politicalParty.Name);
+
+            return RedirectToAction("List");
         }
 
         //
-        // POST: /PoliticalParty/Delete/5
+        // POST: /PoliticalParty/Delete
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int[] deleteInputs)
         {
-            try
+            if (deleteInputs == null)
             {
-                // TODO: Add delete logic here
+                TempData["message-info"] = string.Format(
+                    "None of the political parties has been selected for delete action.");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            foreach (var id in deleteInputs)
             {
-                return View();
+                var politicalParty = _serviceController.FindPoliticalParty(id);
+                _serviceController.DeletePoliticalParty(politicalParty);
             }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
+                " political party(s) has been successfully deleted.");
+
+            return RedirectToAction("List");
         }
 
         private ElectionProject GetProject()

@@ -181,5 +181,64 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_GetValidPoliticalParty_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var politicalPartyId = 1;
+            var politicalParty = new PoliticalParty
+            {
+                Id = politicalPartyId,
+                Name = "PoliticalParty1"
+            };
+            _mock.Setup(s => s.FindPoliticalParty(politicalPartyId)).Returns(politicalParty);
+
+            // Act
+            _controller.Delete(politicalPartyId);
+
+            // Assert
+            _mock.Verify(m => m.DeletePoliticalParty(politicalParty), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Political party " + politicalParty.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostMultiplePoliticalParties_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var politicalParties = new int[] { 1, 2, 3 };
+            _mock.Setup(s => s.FindPoliticalParty(politicalParties[0])).Returns(new PoliticalParty { Id = politicalParties[0] });
+            _mock.Setup(s => s.FindPoliticalParty(politicalParties[1])).Returns(new PoliticalParty { Id = politicalParties[1] });
+            _mock.Setup(s => s.FindPoliticalParty(politicalParties[2])).Returns(new PoliticalParty { Id = politicalParties[2] });
+
+            // Act
+            _controller.Delete(politicalParties);
+
+            // Assert
+            _mock.Verify(m => m.DeletePoliticalParty(It.IsAny<PoliticalParty>()), Times.Exactly(politicalParties.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(politicalParties.Count() + " political party(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoPoliticalParty_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] politicalParties = null;
+
+            // Act
+            _controller.Delete(politicalParties);
+
+            // Assert
+            _mock.Verify(m => m.DeletePoliticalParty(It.IsAny<PoliticalParty>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the political parties has been selected for delete action.",
+                _controller.TempData["message-info"]);
+        }
+        #endregion
     }
 }

@@ -104,5 +104,20 @@ namespace EED.Unit.Tests.Services
             _mock.Verify(d => d.Save(politicalParty), Times.Once());
         }
         #endregion
+
+        #region Test DeletePoliticalParty Method
+        [Test]
+        public void DeletePoliticalParty_ValidPoliticalParty_DoesNotThrowError()
+        {
+            // Arrange
+            var politicalParty = new PoliticalParty { Id = 1, Name = "PoliticalParty1" };
+
+            // Act
+            _service.DeletePoliticalParty(politicalParty);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<PoliticalParty>()), Times.Once());
+        }
+        #endregion
     }
 }
