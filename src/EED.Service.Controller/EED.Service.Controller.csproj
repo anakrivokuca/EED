@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Choices\ChoiceServiceController.cs" />
+    <Compile Include="Choices\IChoiceServiceController.cs" />
     <Compile Include="Contests\ContestServiceController.cs" />
     <Compile Include="Contests\IContestServiceController.cs" />
     <Compile Include="Districts\DistrictServiceController.cs" />

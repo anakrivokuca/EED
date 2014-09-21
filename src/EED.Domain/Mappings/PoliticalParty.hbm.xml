@@ -11,6 +11,10 @@
     <property name="Abbreviation" />
     <property name="Image" length="2147483647" />
     <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
+    <bag name="Choices" table="PoliticalPartyChoice" cascade="none" lazy="false">
+      <key column ="PoliticalPartyID" />
+      <many-to-many class="EED.Domain.Choice" column="ChoiceID" />
+    </bag>
   </class>
 
 </hibernate-mapping>

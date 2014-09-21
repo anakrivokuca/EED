@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="EED.Domain"
+                   namespace="EED.Domain">
+
+  <class name="Choice" lazy="false">
+    <id name="Id">
+      <generator class="native" />
+    </id>
+    <property name="Name" />
+    <many-to-one name="Contest" class="EED.Domain.Contest" column="ContestId" />
+    <many-to-one name="Project" class="EED.Domain.ElectionProject" column="ElectionProjectId" />
+    <bag name="PoliticalParties" table="PoliticalPartyChoice" cascade="none" lazy="false">
+      <key column ="ChoiceID" />
+      <many-to-many class="EED.Domain.PoliticalParty" column="PoliticalPartyID" />
+    </bag>
+  </class>
+
+</hibernate-mapping>

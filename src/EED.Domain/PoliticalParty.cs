@@ -13,5 +13,7 @@ namespace EED.Domain
         public string Abbreviation { get; set; }
         public byte[] Image { get; set; }
         public ElectionProject Project { get; set; }
+
+        public IList<Choice> Choices { get; set; }
     }
 }
