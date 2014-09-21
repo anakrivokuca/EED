@@ -22,17 +22,17 @@ namespace EED.Service.Controller.Choices
 
         public ElectionProject FindProject(int id)
         {
-            throw new NotImplementedException();
+            return _projectService.FindProject(id);
         }
 
         public Choice FindChoice(int id)
         {
-            throw new NotImplementedException();
+            return _service.FindChoice(id);
         }
 
         public IEnumerable<Choice> FilterChoices(IEnumerable<Choice> choices, string searchText, int contestId)
         {
-            throw new NotImplementedException();
+            return _service.FilterChoices(choices, searchText, contestId);
         }
 
         public void SaveChoice(Choice choice)

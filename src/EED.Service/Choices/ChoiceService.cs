@@ -19,17 +19,30 @@ namespace EED.Service.Choices
 
         public IEnumerable<Choice> FindAllChoices()
         {
-            throw new NotImplementedException();
+            return _repository.FindAll();
         }
 
         public Choice FindChoice(int id)
         {
-            throw new NotImplementedException();
+            return _repository.Find(id);
         }
 
         public IEnumerable<Choice> FilterChoices(IEnumerable<Choice> choices, string searchText, int contestId)
         {
-            throw new NotImplementedException();
+            string text = searchText.Trim();
+            if (!String.IsNullOrEmpty(text))
+            {
+                choices = choices
+                    .Where(c => (String.Equals(c.Name, text, StringComparison.CurrentCultureIgnoreCase)));
+            }
+
+            if (contestId != 0)
+            {
+                choices = choices
+                    .Where(c => c.Contest != null && c.Contest.Id == contestId);
+            }
+
+            return choices;
         }
 
         public void SaveChoice(Domain.Choice choice)

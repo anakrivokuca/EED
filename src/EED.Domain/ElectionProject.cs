@@ -20,5 +20,6 @@ namespace EED.Domain
         public IList<Office> Offices { get; set; }
         public IList<Contest> Contests { get; set; }
         public IList<PoliticalParty> PoliticalParties { get; set; }
+        public IList<Choice> Choices { get; set; }
     }
 }
