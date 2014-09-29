@@ -139,25 +139,36 @@ namespace EED.Ui.Web.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var choice = _serviceController.FindChoice(id);
+            _serviceController.DeleteChoice(choice);
+            TempData["message-success"] = string.Format(
+                "Choice {0} has been successfully deleted.", choice.Name);
+
+            return RedirectToAction("List");
         }
 
         //
         // POST: /Choice/Delete/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int[] deleteInputs)
         {
-            try
+            if (deleteInputs == null)
             {
-                // TODO: Add delete logic here
+                TempData["message-info"] = string.Format(
+                    "None of the choices has been selected for delete action.");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            foreach (var id in deleteInputs)
             {
-                return View();
+                var choice = _serviceController.FindChoice(id);
+                _serviceController.DeleteChoice(choice);
             }
+            TempData["message-success"] = string.Format(deleteInputs.Count().ToString() +
+                " choice(s) has been successfully deleted.");
+
+            return RedirectToAction("List");
         }
 
         private ElectionProject GetProject()

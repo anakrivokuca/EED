@@ -42,7 +42,7 @@ namespace EED.Service.Controller.Choices
 
         public void DeleteChoice(Choice choice)
         {
-            throw new NotImplementedException();
+            _service.DeleteChoice(choice);
         }
     }
 }

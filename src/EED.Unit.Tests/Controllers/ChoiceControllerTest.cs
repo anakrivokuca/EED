@@ -192,5 +192,64 @@ namespace EED.Unit.Tests.Controllers
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
         #endregion
+
+        #region Test Delete Method
+        [Test]
+        public void Delete_GetValidChoice_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var choiceId = 1;
+            var choice = new Choice
+            {
+                Id = choiceId,
+                Name = "Choice1"
+            };
+            _mock.Setup(s => s.FindChoice(choiceId)).Returns(choice);
+
+            // Act
+            _controller.Delete(choiceId);
+
+            // Assert
+            _mock.Verify(m => m.DeleteChoice(choice), Times.Once());
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual("Choice " + choice.Name + " has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostMultipleChoices_ReturnsSuccessMessage()
+        {
+            // Arrange
+            var choices = new int[] { 1, 2, 3 };
+            _mock.Setup(s => s.FindChoice(choices[0])).Returns(new Choice { Id = choices[0] });
+            _mock.Setup(s => s.FindChoice(choices[1])).Returns(new Choice { Id = choices[1] });
+            _mock.Setup(s => s.FindChoice(choices[2])).Returns(new Choice { Id = choices[2] });
+
+            // Act
+            _controller.Delete(choices);
+
+            // Assert
+            _mock.Verify(m => m.DeleteChoice(It.IsAny<Choice>()), Times.Exactly(choices.Count()));
+            Assert.IsNotNull(_controller.TempData["message-success"]);
+            Assert.AreEqual(choices.Count() + " choice(s) has been successfully deleted.",
+                _controller.TempData["message-success"]);
+        }
+
+        [Test]
+        public void Delete_PostNoChoice_ReturnsInfoMessage()
+        {
+            // Arrange
+            int[] choices = null;
+
+            // Act
+            _controller.Delete(choices);
+
+            // Assert
+            _mock.Verify(m => m.DeleteChoice(It.IsAny<Choice>()), Times.Never);
+            Assert.IsNotNull(_controller.TempData["message-info"]);
+            Assert.AreEqual("None of the choices has been selected for delete action.",
+                _controller.TempData["message-info"]);
+        }
+        #endregion
     }
 }

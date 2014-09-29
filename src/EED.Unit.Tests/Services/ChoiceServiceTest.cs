@@ -119,5 +119,20 @@ namespace EED.Unit.Tests.Services
             _mock.Verify(d => d.Save(choice), Times.Once());
         }
         #endregion
+
+        #region Test DeleteChoice Method
+        [Test]
+        public void DeleteChoice_ValidChoice_DoesNotThrowError()
+        {
+            // Arrange
+            var choice = new Choice { Id = 1, Name = "Choice1" };
+
+            // Act
+            _service.DeleteChoice(choice);
+
+            // Assert
+            _mock.Verify(m => m.Delete(It.IsAny<Choice>()), Times.Once());
+        }
+        #endregion
     }
 }

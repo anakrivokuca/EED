@@ -67,7 +67,7 @@ namespace EED.Service.Choices
 
         public void DeleteChoice(Choice choice)
         {
-            throw new NotImplementedException();
+            _repository.Delete(choice);
         }
     }
 }
