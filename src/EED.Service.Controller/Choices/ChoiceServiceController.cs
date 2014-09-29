@@ -37,7 +37,7 @@ namespace EED.Service.Controller.Choices
 
         public void SaveChoice(Choice choice)
         {
-            throw new NotImplementedException();
+            _service.SaveChoice(choice);
         }
 
         public void DeleteChoice(Choice choice)

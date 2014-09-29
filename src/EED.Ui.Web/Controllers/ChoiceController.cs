@@ -102,17 +102,35 @@ namespace EED.Ui.Web.Controllers
         // POST: /Choice/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CreateViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                _project = GetProject();
+                var choice = model.ConvertModelToChoice(model);
 
-                return RedirectToAction("Index");
+                if (model.SelectedPoliticalPartyIds != null)
+                {
+                    var selectedPoliticalParties = _project.PoliticalParties
+                        .Where(o => model.SelectedPoliticalPartyIds.Contains(o.Id));
+                    choice.PoliticalParties = selectedPoliticalParties.ToList();
+                }
+
+                if (model.Id == 0)
+                {
+                    choice.Project = _project;
+                }
+                _serviceController.SaveChoice(choice);
+
+                TempData["message-success"] = string.Format(
+                    "Choice {0} has been successfully saved.",
+                    model.Name);
+
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return View(model);
             }
         }
 

@@ -100,5 +100,24 @@ namespace EED.Unit.Tests.Services
                 "No choice should be listed with specified criteria.");
         }
         #endregion
+
+        #region Test SaveChoice Method
+        [Test]
+        public void SaveChoice_NewValidContest_DoesNotThrowError()
+        {
+            // Arrange
+            var choice = new Choice
+            {
+                Name = "NewChoice",
+                Contest = new Contest { Id = 1 }
+            };
+
+            // Act
+            _service.SaveChoice(choice);
+
+            // Assert
+            _mock.Verify(d => d.Save(choice), Times.Once());
+        }
+        #endregion
     }
 }

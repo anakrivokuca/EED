@@ -45,9 +45,24 @@ namespace EED.Service.Choices
             return choices;
         }
 
-        public void SaveChoice(Domain.Choice choice)
+        public void SaveChoice(Choice choice)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (choice.Id != 0)
+                {
+                    var existingChoice = FindChoice(choice.Id);
+                    existingChoice.Name = choice.Name;
+                    existingChoice.Contest = choice.Contest;
+                    existingChoice.PoliticalParties = choice.PoliticalParties;
+                    choice = existingChoice;
+                }
+                _repository.Save(choice);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error processing project data - " + ex.Message);
+            }
         }
 
         public void DeleteChoice(Choice choice)
