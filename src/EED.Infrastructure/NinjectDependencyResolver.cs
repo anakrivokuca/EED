@@ -82,6 +82,7 @@ namespace EED.Infrastructure
             _kernel.Bind<IDistrictServiceController>().To<DistrictServiceController>();
             _kernel.Bind<IPrecinctServiceController>().To<PrecinctServiceController>();
             _kernel.Bind<IOfficeServiceController>().To<OfficeServiceController>();
+            _kernel.Bind<IContestServiceController>().To<ContestServiceController>();
             _kernel.Bind<IPoliticalPartyServiceController>().To<PoliticalPartyServiceController>();
             _kernel.Bind<IChoiceServiceController>().To<ChoiceServiceController>();
         }

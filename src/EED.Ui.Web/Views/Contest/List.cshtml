@@ -52,7 +52,15 @@
                 @Html.ActionLink("Edit", "Edit", 
                     new { id = c.Id }, new { @class = "imageEdit", title = "Edit" })
                 @{
-                    string question = "Are you sure you want to delete this item?";
+                    string question;
+                    if (c.Choices.Count != 0)
+                    {
+                        question = "The item contains choices which will be also deleted. Are you sure you want to continue?";
+                    }
+                    else
+                    {
+                        question = "Are you sure you want to delete this item?";
+                    }
                     
                     @Ajax.ActionLink("Delete", "Delete", 
                         new { id = c.Id }, 

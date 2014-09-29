@@ -14,5 +14,7 @@ namespace EED.Domain
         public Office Office { get; set; }
         public District District { get; set; }
         public ElectionProject Project { get; set; }
+
+        public IList<Choice> Choices { get; set; }
     }
 }
