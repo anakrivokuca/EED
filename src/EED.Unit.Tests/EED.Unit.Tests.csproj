@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTest.cs" />
+    <Compile Include="Controllers\ChoiceControllerTest.cs" />
     <Compile Include="Controllers\ContestControllerTest.cs" />
     <Compile Include="Controllers\DistrictControllerTest.cs" />
     <Compile Include="Controllers\DistrictTypeControllerTest.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="PaginationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
+    <Compile Include="Services\ChoiceServiceTest.cs" />
     <Compile Include="Services\ContestServiceTest.cs" />
     <Compile Include="Services\CustomMembershipProviderTest.cs" />
     <Compile Include="Services\DistrictServiceTest.cs" />

@@ -155,6 +155,7 @@
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
     <Compile Include="Helpers\Pagination\PagingHtmlHelper.cs" />
     <Compile Include="Helpers\Pagination\PagingInfo.cs" />
+    <Compile Include="Models\Choices\CreateViewModel.cs" />
     <Compile Include="Models\Choices\ListViewModel.cs" />
     <Compile Include="Models\Contests\CreateViewModel.cs" />
     <Compile Include="Models\Contests\ListViewModel.cs" />
@@ -309,6 +310,7 @@
     <Content Include="Views\PoliticalParty\List.cshtml" />
     <Content Include="Views\PoliticalParty\Edit.cshtml" />
     <Content Include="Views\Choice\List.cshtml" />
+    <Content Include="Views\Choice\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

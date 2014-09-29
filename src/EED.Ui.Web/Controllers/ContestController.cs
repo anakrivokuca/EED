@@ -80,24 +80,6 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // POST: /Contest/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
         // GET: /Contest/Edit/Id
 
         public ViewResult Edit(int id)

@@ -1,34 +1,34 @@
 ﻿$(function () {
     $('.addAllItems').click(function () {
-        $("#DistrictIds option").appendTo("#SelectedDistrictIds");
-        $("#SelectedDistrictIds option").prop('selected', false);
+        $("#ItemIds option").appendTo("#SelectedItemIds");
+        $("#SelectedItemIds option").prop('selected', false);
     });
 });
 
 $(function () {
     $('.addItem').click(function () {
-        $("#DistrictIds option:selected").appendTo("#SelectedDistrictIds");
-        $("#SelectedDistrictIds option").prop('selected', false);
+        $("#ItemIds option:selected").appendTo("#SelectedItemIds");
+        $("#SelectedItemIds option").prop('selected', false);
     });
 });
 
 $(function () {
     $('.removeItem').click(function () {
-        $("#SelectedDistrictIds option:selected").appendTo("#DistrictIds");
-        $("#DistrictIds option").prop('selected', false);
+        $("#SelectedItemIds option:selected").appendTo("#ItemIds");
+        $("#ItemIds option").prop('selected', false);
     });
 });
 
 $(function () {
     $('.removeAllItems').click(function () {
-        $("#SelectedDistrictIds option").appendTo("#DistrictIds");
-        $("#DistrictIds option").prop('selected', false);
+        $("#SelectedItemIds option").appendTo("#ItemIds");
+        $("#ItemIds option").prop('selected', false);
     });
 });
 
 $(function () {
     $("form").submit(function () {
         // Before submitted by the browser modifies the 'selected' options
-        $('#SelectedDistrictIds option').prop('selected', true);
+        $('#SelectedItemIds option').prop('selected', true);
     });
 });

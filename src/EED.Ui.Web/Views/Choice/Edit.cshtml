@@ -1,0 +1,85 @@
+﻿@model EED.Ui.Web.Models.Choices.CreateViewModel
+
+<hgroup class="title">
+    <h1>@ViewBag.Title @Model.Name</h1>
+</hgroup>
+
+@using (Html.BeginForm("Edit", "Choice")) {
+    @Html.ValidationSummary(true);
+    <fieldset>
+        <legend>District</legend>
+        
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContestId)
+        </div>
+       @* @if (Model.Id != 0 && Model.ContestId == 0) {
+            *@<div class="editor-field">
+                @Html.DropDownListFor(model => model.ContestId, Model.Contests
+                //, string.Empty, new { id = "ddlOffice", disabled = "disabled"  }
+                )
+            </div>
+        @*} else {
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.OfficeId, Model.Offices, string.Empty, new { id = "ddlOffice", onchange = "javascript:GetDistrict(this.value);"  })
+                @Html.ValidationMessageFor(model => model.OfficeId)
+            </div>*@
+            
+            @*<div class="editor-label">
+                @Html.LabelFor(model => model.DistrictId)
+            </div>
+            <div class="editor-field">
+                @if (Model.DistrictId != 0) {
+                        @Html.HiddenFor(model => model.DistrictId);
+                    }
+                @Html.DropDownListFor(model => model.DistrictId, Model.Districts, string.Empty, new { id = "ddlDistrict", onchange = "javascript:SetDistrictId(this.value);"})
+                @Html.ValidationMessageFor(model => model.DistrictId)
+            </div>
+        }*@
+        
+        <table style="width:70%;">
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.PoliticalPartyIds)
+                    @Html.ListBoxFor(model => model.PoliticalPartyIds, 
+                        new MultiSelectList(Model.PoliticalParties, "Id", 
+                            "Name", Model.PoliticalPartyIds), new {@id="ItemIds"})
+                    @Html.ValidationMessageFor(model => model.PoliticalPartyIds)
+                </td>
+                <td>
+                    <input id="btnAddAll" type="button" value=" >> " class="addAllItems" /><br />
+                    <input id="btnAdd" type="button" value=" > " class="addItem" /><br />
+                    <input id="btnRemove" type="button" value=" < "  class="removeItem" /><br />
+                    <input id="btnRemoveAll"type="button" value=" << "  class="removeAllItems" />
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.SelectedPoliticalPartyIds)
+                    @Html.ListBoxFor(model => model.SelectedPoliticalPartyIds, 
+                        new MultiSelectList(Model.SelectedPoliticalParties, "Id", 
+                            "Name", Model.SelectedPoliticalPartyIds), new {@id="SelectedItemIds"})
+                    @Html.ValidationMessageFor(model => model.SelectedPoliticalPartyIds)
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            <input type="submit" value="Save" />
+            @Html.ActionLink("Cancel and Return to Choice List", "List")
+        </p>
+    </fieldset> 
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/addRemoveItemsFromListBox.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

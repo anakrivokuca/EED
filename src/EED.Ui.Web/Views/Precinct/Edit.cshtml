@@ -33,7 +33,7 @@
                     @Html.LabelFor(model => model.DistrictIds)
                     @Html.ListBoxFor(model => model.DistrictIds, 
                         new MultiSelectList(Model.Districts, "Id", 
-                            "Name", Model.DistrictIds))
+                            "Name", Model.DistrictIds), new {@id="ItemIds"})
                     @Html.ValidationMessageFor(model => model.DistrictIds)
                 </td>
                 <td>
@@ -46,7 +46,7 @@
                     @Html.LabelFor(model => model.SelectedDistrictIds)
                     @Html.ListBoxFor(model => model.SelectedDistrictIds, 
                         new MultiSelectList(Model.SelectedDistricts, "Id", 
-                            "Name", Model.SelectedDistrictIds))
+                            "Name", Model.SelectedDistrictIds), new {@id="SelectedItemIds"})
                     @Html.ValidationMessageFor(model => model.SelectedDistrictIds)
                 </td>
             </tr>

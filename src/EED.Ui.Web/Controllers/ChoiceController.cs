@@ -67,45 +67,35 @@ namespace EED.Ui.Web.Controllers
         }
 
         //
-        // GET: /Choice/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
         // GET: /Choice/Create
 
         public ActionResult Create()
         {
-            return View();
-        }
+            ViewBag.Title = "Add New Choice";
 
-        //
-        // POST: /Choice/Create
+            var model = new CreateViewModel();
+            model = PrepareModelToPopulateDropDownLists(model);
+            model = PrepareModelToPopulateListBoxes(model);
 
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View("Edit", model);
         }
 
         //
         // GET: /Choice/Edit/5
 
-        public ActionResult Edit(int id)
+        public ViewResult Edit(int id)
         {
-            return View();
+            ViewBag.Title = "Edit";
+
+            var choice = _serviceController.FindChoice(id);
+
+            var model = new CreateViewModel();
+            model = model.ConvertChoiceToModel(choice);
+            model = PrepareModelToPopulateDropDownLists(model);
+            model.SelectedPoliticalParties = choice.PoliticalParties.OrderBy(o => o.Name).ToList();
+            model = PrepareModelToPopulateListBoxes(model);
+
+            return View(model);
         }
 
         //
@@ -156,6 +146,41 @@ namespace EED.Ui.Web.Controllers
         {
             int projectId = Convert.ToInt32(Session["projectId"]);
             return _serviceController.FindProject(projectId);
+        }
+
+        private CreateViewModel PrepareModelToPopulateDropDownLists(CreateViewModel model)
+        {
+            _project = GetProject();
+
+            var contests = _project.Contests;
+            var selectListContest = new SelectList(contests, "Id", "Name");
+            model.Contests = selectListContest;
+
+            var contest = contests
+                .SingleOrDefault(o => o.Id == model.ContestId);
+
+            return model;
+        }
+
+        private CreateViewModel PrepareModelToPopulateListBoxes(CreateViewModel model)
+        {
+            _project = GetProject();
+
+            model.PoliticalParties =_project.PoliticalParties.ToList();
+
+            if (model.Id != 0)
+            {
+                model.SelectedPoliticalPartyIds = model.SelectedPoliticalParties.Select(x => x.Id).ToArray();
+                model.PoliticalParties = model.PoliticalParties
+                    .Where(o => !model.SelectedPoliticalPartyIds.Contains(o.Id))
+                    .OrderBy(o => o.Name).ToList();
+            }
+            else
+            {
+                model.SelectedPoliticalParties = new List<PoliticalParty>();
+            }
+
+            return model;
         }
     }
 }
