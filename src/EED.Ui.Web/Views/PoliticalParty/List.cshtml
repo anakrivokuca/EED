@@ -48,7 +48,7 @@
             </td>
             <td>@Html.ActionLink(o.Name, "Edit", new { id = o.Id }, new { title = "Edit" })</td>
             <td>@o.Abbreviation</td>
-            <td>@o</td>
+            <td>@o.Choices.Count</td>
         </tr>
     }
 </table>
