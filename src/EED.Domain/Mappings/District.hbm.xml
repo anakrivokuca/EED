@@ -21,6 +21,10 @@
       <key column ="DistrictID" />
       <many-to-many class="EED.Domain.Precinct" column="PrecinctID" />
     </bag>
+    <bag name="Contests" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column ="DistrictID" />
+      <one-to-many class="Contest" />
+    </bag>
   </class>
 
 </hibernate-mapping>

@@ -12,5 +12,6 @@ namespace EED.Domain
 
         public IList<DistrictType> ChildDistrictTypes { get; set; }
         public IList<District> Districts { get; set; }
+        public IList<Office> Offices { get; set; }
     }
 }

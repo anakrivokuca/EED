@@ -20,6 +20,10 @@
       <key column="DistrictTypeId" />
       <one-to-many class="District" />
     </bag>
+    <bag name="Offices" cascade="all-delete-orphan" lazy="false" inverse="true">
+      <key column="DistrictTypeId" />
+      <one-to-many class="Office" />
+    </bag>
   </class>
 
 </hibernate-mapping>

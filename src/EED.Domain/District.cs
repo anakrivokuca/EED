@@ -17,5 +17,6 @@ namespace EED.Domain
 
         public IList<District> ChildDistricts { get; set; }
         public IList<Precinct> Precincts { get; set; }
+        public IList<Contest> Contests { get; set; }
     }
 }
